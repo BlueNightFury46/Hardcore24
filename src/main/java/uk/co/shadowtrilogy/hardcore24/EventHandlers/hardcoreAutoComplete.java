@@ -20,12 +20,17 @@ public class hardcoreAutoComplete implements TabCompleter {
             if(args.length >= 0){
                 if(args.length == 1){
                     List<String> list = new ArrayList<>();
-                    list.add("remove");
-                    list.add("add");
-                    list.add("permissions-add");
-                    list.add("permissions-remove");
-                    
-                    return list;
+                    if(commandSender.isOp() || commandSender.hasPermission("hardcore.commands")) {
+                        list.add("remove");
+                        list.add("add");
+                        list.add("log");
+                        if (commandSender.isOp()) {
+                            list.add("permissions-add");
+                            list.add("permissions-remove");
+                        }
+
+                        return list;
+                    }
                 } else if (args.length == 2) {
 
                    return null;

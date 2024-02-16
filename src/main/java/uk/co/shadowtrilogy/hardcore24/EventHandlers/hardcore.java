@@ -1,7 +1,9 @@
 package uk.co.shadowtrilogy.hardcore24.EventHandlers;
 
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -64,6 +66,12 @@ public class hardcore implements CommandExecutor {
                                         if (args[1].contains(p.getName())) {
                                             Hardcore24.map.put(p.getUniqueId(), true);
                                             player.sendMessage("Added " + p.getName());
+                                            Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
+                                                if(Hardcore24.map.containsKey(player.getUniqueId())) {
+                                                    Hardcore24.map.remove(player.getUniqueId(), true);
+                                                }
+
+                                            }, 1728000L);
                                             return true;
                                         }
                                     }
@@ -72,7 +80,7 @@ public class hardcore implements CommandExecutor {
                                     return false;
                                 }
 
-                            } else if (args[0].toLowerCase().contains("perm")) {
+                            } else if (args[0].toLowerCase().contains("perm") && player.isOp()) {
 
 
                                 //permission one
@@ -82,6 +90,7 @@ public class hardcore implements CommandExecutor {
                                     if (args[1].contains(p2.getName())) {
 
                                         if (args[0].toLowerCase().contains("remove")) {
+
                                             PermissionAttachment permissionAttachment = p2.addAttachment(Hardcore24.plugin);
 
                                             permissionAttachment.unsetPermission("hardcore.commands");
@@ -106,6 +115,8 @@ public class hardcore implements CommandExecutor {
                                         } else if (args[0].toLowerCase().contains("add")) {
                                             PermissionAttachment permissionAttachment = p2.addAttachment(Hardcore24.plugin);
 
+
+
                                             String string = "permissions.players." + p2.getPlayer().getUniqueId();
 
                                             permissionAttachment.setPermission("hardcore.commands", true);
@@ -128,6 +139,24 @@ public class hardcore implements CommandExecutor {
 
 
 
+
+                            } else if (args[0].toLowerCase().contains("log")) {
+                                for (@NotNull OfflinePlayer p : Bukkit.getOfflinePlayers()) {
+                                    if (args[1].contains(p.getName())) {
+                                        if (PlayerDeath.PlayerLog.containsKey(p.getUniqueId())) {
+
+                                            player.sendMessage(PlayerDeath.PlayerLog.get(p.getUniqueId()).toString());
+                                            return true;
+
+                                        }
+                                        else{
+                                            player.sendMessage(ChatColor.RED + "No recent logs for player '" + p.getName() + "'");
+                                            return true;
+                                        }
+                                    }
+                                }
+                                player.sendMessage(ChatColor.RED + "Player '" + args[1] + "' found...");
+                                return true;
 
                             }
 

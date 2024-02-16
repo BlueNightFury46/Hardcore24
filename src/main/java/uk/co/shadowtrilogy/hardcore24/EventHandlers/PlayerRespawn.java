@@ -35,15 +35,16 @@ public class PlayerRespawn implements Listener {
                 }
             }, 2L);
 
+
             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
-                if (e.getPlayer().getWorld().equals(world_hardcore) || e.getPlayer().getWorld().equals(world_end) || e.getPlayer().getWorld().equals(world_nether)) {
+                if (Hardcore24.map.containsKey(e.getPlayer().getUniqueId()) && e.getPlayer().getWorld().equals(world_hardcore) || Hardcore24.map.containsKey(e.getPlayer().getUniqueId()) && e.getPlayer().getWorld().equals(world_end) || Hardcore24.map.containsKey(e.getPlayer().getUniqueId()) && e.getPlayer().getWorld().equals(world_nether)) {
 
                     e.getPlayer().teleport(new Location(world, x, y, z));
                 }
             }, 5L);
 
             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
-                if (e.getPlayer().getWorld().equals(world_hardcore) || e.getPlayer().getWorld().equals(world_end) || e.getPlayer().getWorld().equals(world_nether)) {
+                if (Hardcore24.map.containsKey(e.getPlayer().getUniqueId()) && e.getPlayer().getWorld().equals(world_hardcore) || Hardcore24.map.containsKey(e.getPlayer().getUniqueId()) && e.getPlayer().getWorld().equals(world_end) || Hardcore24.map.containsKey(e.getPlayer().getUniqueId()) && e.getPlayer().getWorld().equals(world_nether)) {
 
                     e.getPlayer().teleport(new Location(world, x, y, z));
                 }

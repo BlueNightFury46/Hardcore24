@@ -15,10 +15,14 @@ import org.bukkit.inventory.EnchantingInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.PermissionAttachment;
+import org.bukkit.util.ChatPaginator;
 import uk.co.shadowtrilogy.hardcore24.Hardcore24;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -26,7 +30,9 @@ import java.util.UUID;
 
 public class PlayerDeath implements Listener {
 
-
+    public static HashMap<UUID, String> PlayerLogg = new HashMap<>();
+    public static Map PlayerLog = PlayerLogg;
+    String string;
 
 
 
@@ -55,6 +61,8 @@ public class PlayerDeath implements Listener {
             if(Hardcore24.map.containsKey(player.getUniqueId())){
                 e.setCancelled(true);
                 player.sendMessage(ChatColor.BLUE + "409 Conflict");
+
+                //TODO Set 409 conflict in logs
             }
             else if(!Hardcore24.map.containsKey(player.getUniqueId())){
 
@@ -66,9 +74,23 @@ public class PlayerDeath implements Listener {
                 }
                 player.getEnderChest().clear();
 
+                player.setPlayerListName(ChatColor.BLUE + "24hrs " + "§9⌚§9" + net.md_5.bungee.api.ChatColor.RESET + ": " + player.getName());
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+                if(player.getKiller() != null) {
+                    string = ChatColor.BLUE + "#####################################\n#Player Death Date & Time: " + ChatColor.GREEN + LocalDateTime.now().format(formatter) + ChatColor.BLUE + "\n#Player Death Message: " + ChatColor.LIGHT_PURPLE + e.getDeathMessage() + ChatColor.BLUE + "\n#Player 'Killer': " + ChatColor.GREEN + player.getKiller() + ChatColor.BLUE + "\n#####################################";
+                    PlayerLog.put(player.getUniqueId(), string);
+                }
+                else {
+                    string = ChatColor.BLUE + "#####################################\n#Player Death Date & Time: " + ChatColor.GREEN + LocalDateTime.now().format(formatter) + ChatColor.BLUE + "\n#Player Death Message: " + ChatColor.LIGHT_PURPLE + e.getDeathMessage() + ChatColor.BLUE + "\n#####################################";
+                    PlayerLog.put(player.getUniqueId(), string);
+                }
+
 
             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
-                Hardcore24.map.remove(player.getUniqueId(), true);
+                if(Hardcore24.map.containsKey(player.getUniqueId())) {
+                    Hardcore24.map.remove(player.getUniqueId(), true);
+                }
 
             }, 1728000L);
 

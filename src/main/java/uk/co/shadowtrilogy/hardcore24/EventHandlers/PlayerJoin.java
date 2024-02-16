@@ -25,25 +25,31 @@ public class PlayerJoin implements Listener {
     public void Event(PlayerJoinEvent ev) throws IOException {
 
 
-        String string = "permissions.players." + ev.getPlayer().getUniqueId();
+        if(Hardcore24.map.containsKey(ev.getPlayer().getUniqueId())){
+            ev.getPlayer().setPlayerListName(ChatColor.BLUE + "24hrs " + "§9⌚§9" + net.md_5.bungee.api.ChatColor.RESET + ": " + ev.getPlayer().getName());
 
-            if (Hardcore24.configuration.get(string).equals("hardcore.commands")) {{
-                PermissionAttachment permissionAttachment = ev.getPlayer().addAttachment(Hardcore24.plugin);
-                permissionAttachment.setPermission("hardcore.commands", true);
-            }
-
+        }
+        else{
+            ev.getPlayer().setPlayerListName(ev.getPlayer().getName());
         }
 
 
+        String string = "permissions.players." + ev.getPlayer().getUniqueId();
+
+        try {
+            if (!Hardcore24.configuration.contains(string)) {
 
 
+            } else if (Hardcore24.configuration.get(string).equals("hardcore.commands")) {
+                PermissionAttachment permissionAttachment = ev.getPlayer().addAttachment(Hardcore24.plugin);
+                permissionAttachment.setPermission("hardcore.commands", true);
+            }
+        }
+        catch (NullPointerException e){
+            ev.getPlayer().sendMessage(ChatColor.GOLD + "Null Pointer Exception caught: " + ChatColor.MAGIC + "400");
+        }
 
-
-
-
-
-
-            //Make sure the "banned" players stay "banned"
+        //Make sure the "banned" players stay "banned"
             FileConfiguration fileConfiguration = Hardcore24.plugin.getConfig();
 
 
@@ -63,14 +69,15 @@ public class PlayerJoin implements Listener {
 
           //  if (ev.getPlayer().getWorld().equals(world_hardcore) || ev.getPlayer().getWorld().equals(world_end) || ev.getPlayer().getWorld().equals(world_nether)) {
                 Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
-                    if (ev.getPlayer().getWorld().equals(world_hardcore) || ev.getPlayer().getWorld().equals(world_end) || ev.getPlayer().getWorld().equals(world_nether)) {
+                    if (Hardcore24.map.containsKey(ev.getPlayer().getUniqueId()) && ev.getPlayer().getWorld().equals(world_hardcore) || Hardcore24.map.containsKey(ev.getPlayer().getUniqueId()) && ev.getPlayer().getWorld().equals(world_end) || Hardcore24.map.containsKey(ev.getPlayer().getUniqueId()) && ev.getPlayer().getWorld().equals(world_nether)) {
                         ev.getPlayer().teleport(new Location(world, x, y, z));
                         ev.getPlayer().sendMessage(ChatColor.RED + "You died in " + world_hardcore.getName() + ", don't worry you can join again tomorrow.");
                     }
                 }, 20L);
 
+
                 Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
-                    if (ev.getPlayer().getWorld().equals(world_hardcore) || ev.getPlayer().getWorld().equals(world_end) || ev.getPlayer().getWorld().equals(world_nether)) {
+                    if (Hardcore24.map.containsKey(ev.getPlayer().getUniqueId()) && ev.getPlayer().getWorld().equals(world_hardcore) || Hardcore24.map.containsKey(ev.getPlayer().getUniqueId()) && ev.getPlayer().getWorld().equals(world_end) || Hardcore24.map.containsKey(ev.getPlayer().getUniqueId()) && ev.getPlayer().getWorld().equals(world_nether)) {
                         ev.getPlayer().kickPlayer(ChatColor.BLUE + "Error 403\nForbidden");
                     }
                 }, 240L);

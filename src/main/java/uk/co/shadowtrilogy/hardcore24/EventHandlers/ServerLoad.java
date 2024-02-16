@@ -63,6 +63,8 @@ public class ServerLoad implements Listener {
                 ev.getPlayer().sendMessage(ChatColor.YELLOW + "You died in " + world_hardcore.getName() + ", don't worry you can join again tomorrow.");}
             }, 60L);
 
+
+
             //Something is going seriously wrong if we reach this
             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
                 if(ev.getPlayer().getWorld().equals(world_hardcore) || ev.getPlayer().getWorld().equals(world_end) || ev.getPlayer().getWorld().equals(world_nether))

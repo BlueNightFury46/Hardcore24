@@ -1,5 +1,5 @@
 name: Hardcore24
-version: '1.0'
+version: '2.21'
 main: uk.co.shadowtrilogy.hardcore24.Hardcore24
 api-version: '1.20'
 load: STARTUP
@@ -9,4 +9,4 @@ website: shadowtrilogy.co.uk
 commands:
   hardcore:
     description: Your description
-    usage: /<command> [add|remove|permissions-add/remove] <player-name>
+    usage: /<command> [add|remove] <player-name>
