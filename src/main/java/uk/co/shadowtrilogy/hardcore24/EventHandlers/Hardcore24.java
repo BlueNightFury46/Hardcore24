@@ -1,4 +1,4 @@
-package uk.co.shadowtrilogy.hardcore24;
+package uk.co.shadowtrilogy.hardcore24.EventHandlers;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
