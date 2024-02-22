@@ -52,8 +52,7 @@ public class ServerLoad implements Listener {
             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
                 if(ev.getPlayer().getWorld().equals(world_hardcore) || ev.getPlayer().getWorld().equals(world_end) || ev.getPlayer().getWorld().equals(world_nether))
                 { ev.getPlayer().teleport(new Location(world, x, y, z));
-                ev.getPlayer().sendMessage(ChatColor.GREEN + "You died in " + world_hardcore.getName() + ", don't worry you can join again tomorrow.");
-                }
+                ev.getPlayer().sendMessage(ChatColor.GREEN + "You died in " + world_hardcore.getName() + ", don't worry you can join again tomorrow.");}
             }, 40L);
 
 
@@ -61,8 +60,7 @@ public class ServerLoad implements Listener {
             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
                 if(ev.getPlayer().getWorld().equals(world_hardcore) || ev.getPlayer().getWorld().equals(world_end) || ev.getPlayer().getWorld().equals(world_nether)){
                 ev.getPlayer().teleport(new Location(world, x, y, z));
-                ev.getPlayer().sendMessage(ChatColor.YELLOW + "You died in " + world_hardcore.getName() + ", don't worry you can join again tomorrow.");
-                }
+                ev.getPlayer().sendMessage(ChatColor.YELLOW + "You died in " + world_hardcore.getName() + ", don't worry you can join again tomorrow.");}
             }, 60L);
 
 
