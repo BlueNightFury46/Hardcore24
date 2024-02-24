@@ -33,7 +33,6 @@ public class PlayerDeath implements Listener {
     public static HashMap<UUID, String> PlayerLogg = new HashMap<>();
     public static Map PlayerLog = PlayerLogg;
     String string;
-    public static final long time = Hardcore24.plugin.getConfig().getLong("hardcore-config.death-ban-time") * 60 * 60 * 20;
 
 
 
@@ -49,6 +48,11 @@ public class PlayerDeath implements Listener {
         double x = fileConfiguration.getDouble("respawn-location.x");
         double y = fileConfiguration.getDouble("respawn-location.y");
         double z = fileConfiguration.getDouble("respawn-location.z");
+
+
+            double d = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
+            long time = (long) d * 60 * 60 * 20;
+
 
         //if variables
         World world_nether = Bukkit.getWorld(fileConfiguration.get("hardcore-world.hardcore-nether").toString());

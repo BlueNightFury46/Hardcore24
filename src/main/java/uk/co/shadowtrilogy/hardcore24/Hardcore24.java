@@ -75,7 +75,12 @@ public final class Hardcore24 extends JavaPlugin {
 
     public void fileGeneration() throws IOException, InvalidConfigurationException, FileNotFoundException {
         file = new File(getDataFolder(), "permissions.yml");
-        if(!file.exists()){
+        try {
+            if (!file.exists()) {
+                file.getParentFile().mkdirs();
+                saveResource("permissions.yml", false);
+            }
+        }catch (NullPointerException exception){
             file.getParentFile().mkdirs();
             saveResource("permissions.yml", false);
         }
