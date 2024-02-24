@@ -55,9 +55,9 @@ public class PlayerDeath implements Listener {
 
 
         //if variables
-        World world_nether = Bukkit.getWorld(fileConfiguration.get("hardcore-world.hardcore-nether").toString());
-        World world_hardcore = Bukkit.getWorld(fileConfiguration.get("hardcore-world.hardcore-normal").toString());
-        World world_end = Bukkit.getWorld(fileConfiguration.get("hardcore-world.hardcore-end").toString());
+        World world_nether = Bukkit.getWorld(fileConfiguration.getString("hardcore-world.hardcore-nether"));
+        World world_hardcore = Bukkit.getWorld(fileConfiguration.getString("hardcore-world.hardcore-normal"));
+        World world_end = Bukkit.getWorld(fileConfiguration.getString("hardcore-world.hardcore-end"));
 
 
         Player player = e.getPlayer();

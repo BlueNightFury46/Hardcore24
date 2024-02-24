@@ -23,6 +23,7 @@ public final class Hardcore24 extends JavaPlugin {
     public static FileConfiguration configuration;
 
     public static File file;
+    public static Boolean playOnce;
 
     public static Hardcore24 plugin;
     public static HashMap<UUID, Boolean> map2 = new HashMap<>();
@@ -41,6 +42,7 @@ public final class Hardcore24 extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ServerLoad(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerDeath(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerRespawn(), this);
+        Bukkit.getPluginManager().registerEvents(new MoreMobs(), this);
 
         plugin = this;
         getCommand("hardcore").setExecutor(new hardcore());

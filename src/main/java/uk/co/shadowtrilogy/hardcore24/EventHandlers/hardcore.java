@@ -141,7 +141,14 @@ public class hardcore implements CommandExecutor {
 
 
 
-                            } else if (args[0].toLowerCase().contains("log")) {
+
+                            }else if (args[0].toLowerCase().contains("phase")){
+                                //TODO Remove this section
+                                player.sendMessage(player.getWorld().getFullTime() / 24000L % 8 + "");
+
+                                return true;
+                            }
+                            else if (args[0].toLowerCase().contains("log")) {
                                 for (@NotNull OfflinePlayer p : Bukkit.getOfflinePlayers()) {
                                     if (args[1].contains(p.getName())) {
                                         if (PlayerDeath.PlayerLog.containsKey(p.getUniqueId())) {

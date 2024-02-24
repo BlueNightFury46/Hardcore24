@@ -24,6 +24,9 @@ public class hardcoreAutoComplete implements TabCompleter {
                         list.add("remove");
                         list.add("add");
                         list.add("log");
+                        //TODO Keep this section ^
+                        list.add("phase");
+                        //TODO Remove this section ^
                         if (commandSender.isOp()) {
                             list.add("permissions-add");
                             list.add("permissions-remove");
