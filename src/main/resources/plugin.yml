@@ -8,5 +8,9 @@ description: a 24 hour (default) hardcore death timeout plugin
 website: shadowtrilogy.co.uk
 commands:
   hardcore:
-    description: Your description
-    usage: /<command> [add|remove] <player-name>
+    description: The hardcore24 general purpose command
+    usage: /<command> <action> <player-name>
+permissions:
+  hardcore.commands:
+   description: Allows players to use the /Hardcore command
+
