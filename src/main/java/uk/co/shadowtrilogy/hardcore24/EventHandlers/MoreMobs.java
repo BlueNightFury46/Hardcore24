@@ -29,7 +29,7 @@ public class MoreMobs implements Listener {
        if(bool == true) {
            if (world_hardcore.getFullTime() < 23000 && world_hardcore.getFullTime() > 13000) {
                long phase = world_hardcore.getFullTime() / 24000;
-               if (phase == 8) {
+               if (phase == 0) {
 
                        world_hardcore.playSound(event.getLocation(), Sound.ENTITY_WITHER_SPAWN, 1.2f, 1.0f);
 
