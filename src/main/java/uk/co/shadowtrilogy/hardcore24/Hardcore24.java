@@ -23,7 +23,7 @@ public final class Hardcore24 extends JavaPlugin {
     public static FileConfiguration configuration;
 
     public static File file;
-    public static Boolean playOnce;
+    public static Boolean playOnce = true;
 
     public static Hardcore24 plugin;
     public static HashMap<UUID, Boolean> map2 = new HashMap<>();

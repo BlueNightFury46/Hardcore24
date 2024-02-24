@@ -2,10 +2,7 @@ package uk.co.shadowtrilogy.hardcore24.EventHandlers;
 
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -20,37 +17,69 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+
 public class MoreMobs implements Listener {
 
+
+
+    public static final ItemStack diamond = new ItemStack(Material.DIAMOND_HELMET);
+    public static final ItemStack iron1 = new ItemStack(Material.IRON_CHESTPLATE);
+    public static final ItemStack iron2 = new ItemStack(Material.IRON_LEGGINGS);
+    public static final ItemStack iron3 = new ItemStack(Material.IRON_BOOTS);
+
+
+    public static final ItemStack bloodMoon1 = new ItemStack(Material.NETHERITE_HELMET);
+    public static final ItemStack bloodMoon2 = new ItemStack(Material.NETHERITE_HELMET);
+    public static final ItemStack bloodMoon3 = new ItemStack(Material.NETHERITE_HELMET);
+    public static final ItemStack bloodMoon4 = new ItemStack(Material.NETHERITE_HELMET);
+    public boolean bloodmoon = false;
+
     @EventHandler
-    public void event(EntitySpawnEvent event){
+    public void events(EntitySpawnEvent event){
        Boolean bool = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.harder-mobs");
+        Boolean Moon = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.do-blood-moon");
         World world_hardcore = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal").toString());
-       if(bool == true) {
-           if (world_hardcore.getFullTime() < 23000 && world_hardcore.getFullTime() > 13000) {
+
+
+           if (world_hardcore.getFullTime() < 23000 && world_hardcore.getFullTime() > 13000 && bool == true) {
                long phase = world_hardcore.getFullTime() / 24000;
                if (phase == 0) {
 
-                       world_hardcore.playSound(event.getLocation(), Sound.ENTITY_WITHER_SPAWN, 1.2f, 1.0f);
+
+                   if(Hardcore24.playOnce == true) {
+                       for(Player player : Bukkit.getOnlinePlayers()){
+                           player.sendMessage(ChatColor.DARK_RED + "As the full moon rises the countless monsters band together,\nyou encounter mobs with stronger gear...");
+                           world_hardcore.playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 1.2f, 1.0f);
+
+                           if(Moon == true) {
+                               int i = ThreadLocalRandom.current().nextInt(0, 4);
+                               if (i == 3) {
+                                   bloodmoon = true;
+                               }
+                           }
+                       }
+                       Hardcore24.playOnce = false;
+                   }
 
                    for (LivingEntity entity : world_hardcore.getLivingEntities()) {
                        if (entity.getType().equals(EntityType.SKELETON) || entity.getType().equals(EntityType.ZOMBIE))
-                           entity.getEquipment().getHelmet().setType(Material.DIAMOND_HELMET);
-                       entity.getEquipment().getHelmet().addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 4);
-                       entity.getEquipment().setHelmetDropChance(0.1f);
 
-                       entity.getEquipment().getChestplate().setType(Material.IRON_CHESTPLATE);
-                       entity.getEquipment().getChestplate().addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+                           if(bloodmoon == true){
+                               entity.getEquipment().setHelmet(diamond);
+                               entity.getEquipment().setChestplate(iron1);
+                               entity.getEquipment().setLeggings(iron2);
+                               entity.getEquipment().setBoots(iron3);
+                           } else {
+                               entity.getEquipment().setHelmet(diamond);
+                               entity.getEquipment().setChestplate(iron1);
+                               entity.getEquipment().setLeggings(iron2);
+                               entity.getEquipment().setBoots(iron3);
+                           }
 
-                       entity.getEquipment().getLeggings().setType(Material.IRON_LEGGINGS);
-                       entity.getEquipment().getLeggings().addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
 
-                       entity.getEquipment().getBoots().setType(Material.IRON_BOOTS);
-                       entity.getEquipment().getBoots().addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
                    }
                }
 
-           }
 
        }
     }
