@@ -33,11 +33,13 @@ public class PlayerDeath implements Listener {
     public static HashMap<UUID, String> PlayerLogg = new HashMap<>();
     public static Map PlayerLog = PlayerLogg;
     String string;
+    public static final long time = Hardcore24.plugin.getConfig().getLong("hardcore-config.death-ban-time") * 60 * 60 * 20;
 
 
 
     @EventHandler
     public void Event(PlayerDeathEvent e){
+
 
 
         FileConfiguration fileConfiguration = Hardcore24.plugin.getConfig();
@@ -92,7 +94,7 @@ public class PlayerDeath implements Listener {
                     Hardcore24.map.remove(player.getUniqueId(), true);
                 }
 
-            }, 1728000L);
+            }, time);
 
 
             try{

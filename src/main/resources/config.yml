@@ -10,4 +10,8 @@ hardcore-world:
   hardcore-nether: hardcore_nether
   hardcore-end: hardcore_end
 # Configure the hardcore worlds
-#
+# Note: If you don't have a nether and end world then rename them to a world that doesn't exist
+hardcore-config:
+  harder-mobs: false
+  death-ban-time: 24.0
+  # ^ above is the time you want to ban the player for in hours ^
