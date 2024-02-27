@@ -35,10 +35,16 @@ public class ArmourInit {
         i2.setDisplayName("{Hardcore24:Exclusive}DoNotObtainOrModify?.25");
         i3.setDisplayName("{Hardcore24:Exclusive}DoNotObtainOrModify?.26");
 
+        d.setUnbreakable(true);
+        i1.setUnbreakable(true);
+        i2.setUnbreakable(true);
+        i3.setUnbreakable(true);
+
         diamond.setItemMeta(d);
         iron1.setItemMeta(i1);
         iron2.setItemMeta(i2);
         iron3.setItemMeta(i3);
+
 
 
     }

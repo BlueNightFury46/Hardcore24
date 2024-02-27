@@ -24,6 +24,7 @@ public final class Hardcore24 extends JavaPlugin {
 
     public static File file;
     public static Boolean playOnce = true;
+    public static Boolean day = true;
 
     public static Hardcore24 plugin;
     public static HashMap<UUID, Boolean> map2 = new HashMap<>();
