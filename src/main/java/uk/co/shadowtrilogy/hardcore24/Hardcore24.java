@@ -28,8 +28,6 @@ public final class Hardcore24 extends JavaPlugin {
     public static Hardcore24 plugin;
     public static HashMap<UUID, Boolean> map2 = new HashMap<>();
     public static Map map = map2;
-    Boolean bool = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.harder-mobs");
-    Boolean Moon = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.do-blood-moon");
 
     @Override
     public void onEnable() {
@@ -39,19 +37,26 @@ public final class Hardcore24 extends JavaPlugin {
 
 
 
+
+
+
+
         //Instantiates the whole plugin
+        plugin = this;
+        Boolean bool = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.harder-mobs");
+        Boolean Moon = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.do-blood-moon");
+
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
         Bukkit.getPluginManager().registerEvents(new ServerLoad(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerDeath(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerRespawn(), this);
+
         if(bool == true || Moon == true) {
             Bukkit.getPluginManager().registerEvents(new MoreMobs(), this);
         }
 
-        //initiates the mob armour
-        ArmourInit.init();
+        //Registers commands
 
-        plugin = this;
         getCommand("hardcore").setExecutor(new hardcore());
         getCommand("hardcore").setTabCompleter(new hardcoreAutoComplete());
 
@@ -60,6 +65,8 @@ public final class Hardcore24 extends JavaPlugin {
         plugin.saveDefaultConfig();
         //Saves the config
 
+        ArmourInit.init();
+        //initiates the mob armour
 
 
 

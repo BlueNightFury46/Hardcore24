@@ -18,12 +18,6 @@ public class ArmourInit {
 
     public static void init(){
 
-
-
-        public static final ItemStack bloodMoon1 = new ItemStack(Material.NETHERITE_HELMET);
-        public static final ItemStack bloodMoon2 = new ItemStack(Material.NETHERITE_HELMET);
-        public static final ItemStack bloodMoon3 = new ItemStack(Material.NETHERITE_HELMET);
-        public static final ItemStack bloodMoon4 = new ItemStack(Material.NETHERITE_HELMET);
     }
 
 

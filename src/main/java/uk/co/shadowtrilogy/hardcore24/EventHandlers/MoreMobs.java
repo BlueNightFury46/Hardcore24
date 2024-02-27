@@ -36,6 +36,7 @@ public class MoreMobs implements Listener {
 
 
                    if(Hardcore24.playOnce == true) {
+
                        for(Player player : Bukkit.getOnlinePlayers()){
                            player.sendMessage(ChatColor.DARK_RED + "As the full moon rises the countless monsters band together,\nyou encounter mobs with stronger gear...");
                            world_hardcore.playSound(player.getLocation(), Sound.ENTITY_WITHER_SPAWN, 1.2f, 1.0f);
@@ -54,15 +55,39 @@ public class MoreMobs implements Listener {
                        if (entity.getType().equals(EntityType.SKELETON) || entity.getType().equals(EntityType.ZOMBIE))
 
                            if(bloodmoon == true){
-                               entity.getEquipment().setHelmet(ArmourInit.diamond);
-                               entity.getEquipment().setChestplate(ArmourInit.iron1);
-                               entity.getEquipment().setLeggings(ArmourInit.iron2);
-                               entity.getEquipment().setBoots(ArmourInit.iron3);
-                           } else {
-                               entity.getEquipment().setHelmet(ArmourInit.diamond);
-                               entity.getEquipment().setChestplate(ArmourInit.iron1);
-                               entity.getEquipment().setLeggings(ArmourInit.iron2);
-                               entity.getEquipment().setBoots(ArmourInit.iron3);
+                               //Checks if entity already has a helmet and if not sets the helmet to diamond
+                               if(entity.getEquipment().getHelmet()==null) {
+                                   entity.getEquipment().setHelmet(ArmourInit.diamond);
+                               }
+                               //Checks if entity already has a chestplate and if not sets the chestplate to iron
+                               if(entity.getEquipment().getChestplate()==null) {
+                                   entity.getEquipment().setChestplate(ArmourInit.iron1);
+                               }
+                               //Checks if entity already has leggings and if not sets the leggings to iron
+                               if(entity.getEquipment().getLeggings()==null) {
+                                   entity.getEquipment().setLeggings(ArmourInit.iron2);
+                               }
+                               //Checks if entity already has boots and if not sets the boots to iron
+                               if(entity.getEquipment().getBoots()==null) {
+                                   entity.getEquipment().setBoots(ArmourInit.iron3);
+                               }
+                           } else if (bool){
+                               //Checks if entity already has a helmet and if not sets the helmet to diamond
+                               if(entity.getEquipment().getHelmet()==null) {
+                                   entity.getEquipment().setHelmet(ArmourInit.diamond);
+                               }
+                               //Checks if entity already has a chestplate and if not sets the chestplate to iron
+                               if(entity.getEquipment().getChestplate()==null) {
+                                   entity.getEquipment().setChestplate(ArmourInit.iron1);
+                               }
+                               //Checks if entity already has leggings and if not sets the leggings to iron
+                               if(entity.getEquipment().getLeggings()==null) {
+                                   entity.getEquipment().setLeggings(ArmourInit.iron2);
+                               }
+                               //Checks if entity already has boots and if not sets the boots to iron
+                               if(entity.getEquipment().getBoots()==null) {
+                                   entity.getEquipment().setBoots(ArmourInit.iron3);
+                               }
                            }
 
 
