@@ -21,17 +21,6 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MoreMobs implements Listener {
 
 
-
-    public static final ItemStack diamond = new ItemStack(Material.DIAMOND_HELMET);
-    public static final ItemStack iron1 = new ItemStack(Material.IRON_CHESTPLATE);
-    public static final ItemStack iron2 = new ItemStack(Material.IRON_LEGGINGS);
-    public static final ItemStack iron3 = new ItemStack(Material.IRON_BOOTS);
-
-
-    public static final ItemStack bloodMoon1 = new ItemStack(Material.NETHERITE_HELMET);
-    public static final ItemStack bloodMoon2 = new ItemStack(Material.NETHERITE_HELMET);
-    public static final ItemStack bloodMoon3 = new ItemStack(Material.NETHERITE_HELMET);
-    public static final ItemStack bloodMoon4 = new ItemStack(Material.NETHERITE_HELMET);
     public boolean bloodmoon = false;
 
     @EventHandler
@@ -65,15 +54,15 @@ public class MoreMobs implements Listener {
                        if (entity.getType().equals(EntityType.SKELETON) || entity.getType().equals(EntityType.ZOMBIE))
 
                            if(bloodmoon == true){
-                               entity.getEquipment().setHelmet(diamond);
-                               entity.getEquipment().setChestplate(iron1);
-                               entity.getEquipment().setLeggings(iron2);
-                               entity.getEquipment().setBoots(iron3);
+                               entity.getEquipment().setHelmet(ArmourInit.diamond);
+                               entity.getEquipment().setChestplate(ArmourInit.iron1);
+                               entity.getEquipment().setLeggings(ArmourInit.iron2);
+                               entity.getEquipment().setBoots(ArmourInit.iron3);
                            } else {
-                               entity.getEquipment().setHelmet(diamond);
-                               entity.getEquipment().setChestplate(iron1);
-                               entity.getEquipment().setLeggings(iron2);
-                               entity.getEquipment().setBoots(iron3);
+                               entity.getEquipment().setHelmet(ArmourInit.diamond);
+                               entity.getEquipment().setChestplate(ArmourInit.iron1);
+                               entity.getEquipment().setLeggings(ArmourInit.iron2);
+                               entity.getEquipment().setBoots(ArmourInit.iron3);
                            }
 
 

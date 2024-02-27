@@ -14,12 +14,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.EnchantingInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.permissions.PermissionAttachment;
-import org.bukkit.util.ChatPaginator;
 import uk.co.shadowtrilogy.hardcore24.Hardcore24;
-
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -36,28 +31,35 @@ public class PlayerDeath implements Listener {
 
 
 
+
     @EventHandler
     public void Event(PlayerDeathEvent e){
 
+        double d = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
+        long time = (long) d * 60 * 60 * 20;
 
 
         FileConfiguration fileConfiguration = Hardcore24.plugin.getConfig();
-
-        //corrector variables
         World world = Bukkit.getWorld(fileConfiguration.get("respawn-location.world").toString());
         double x = fileConfiguration.getDouble("respawn-location.x");
         double y = fileConfiguration.getDouble("respawn-location.y");
         double z = fileConfiguration.getDouble("respawn-location.z");
 
-
-            double d = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
-            long time = (long) d * 60 * 60 * 20;
-
-
-        //if variables
         World world_nether = Bukkit.getWorld(fileConfiguration.getString("hardcore-world.hardcore-nether"));
         World world_hardcore = Bukkit.getWorld(fileConfiguration.getString("hardcore-world.hardcore-normal"));
         World world_end = Bukkit.getWorld(fileConfiguration.getString("hardcore-world.hardcore-end"));
+
+
+
+
+        //corrector variables
+
+
+
+       // System.out.println(time);
+
+
+        //if variables
 
 
         Player player = e.getPlayer();
