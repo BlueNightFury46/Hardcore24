@@ -24,7 +24,6 @@ public class hardcoreAutoComplete implements TabCompleter {
                         list.add("remove");
                         list.add("add");
                         list.add("log");
-                        list.add("leaderboard-add");
                         if (commandSender.isOp()) {
                             list.add("permissions-add");
                             list.add("permissions-remove");
@@ -32,27 +31,14 @@ public class hardcoreAutoComplete implements TabCompleter {
 
                         return list;
                     }
-                } else if (args.length == 2) {
-
-
-                    if (commandSender.hasPermission("hardcore.commands") || commandSender.isOp()) {
-                        return null;
-                    } else {
-                        List<String> list = new ArrayList<>();
-                        list.add("");
-                        return list;
-                    }
-
-
-                } else {
-                    List<String> list = new ArrayList<>();
-                    list.add("");
-                    return list;
-                }
+                } else
+                    return null;
 
             }
+
 
         }
         return null;
     }
-}
+    }
+

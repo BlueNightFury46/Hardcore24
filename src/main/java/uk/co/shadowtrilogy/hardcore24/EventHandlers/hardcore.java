@@ -10,6 +10,7 @@ import org.bukkit.entity.LeashHitch;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.permissions.PermissionAttachment;
+import org.bukkit.util.Transformation;
 import org.jetbrains.annotations.NotNull;
 import uk.co.shadowtrilogy.hardcore24.Hardcore24;
 
@@ -81,114 +82,91 @@ public class hardcore implements CommandExecutor {
                                     return false;
                                 }
 
-                            } else if (args[0].toLowerCase().contains("lead") && player.isOp() && args[0].toLowerCase().contains("add") && player.isOp()) {
-                                if (args.length >= 8) {
-                                    Hardcore24.config.load(Hardcore24.Leaderboard);
-                                    Hardcore24.config.set("leaderboards." + args[1] + ".world", args[2]);
-                                    Hardcore24.config.set("leaderboards." + args[1] + ".x", args[3]);
-                                    Hardcore24.config.set("leaderboards." + args[1] + ".y", args[4]);
-                                    Hardcore24.config.set("leaderboards." + args[1] + ".z", args[5]);
-                                    Hardcore24.config.set("leaderboards." + args[1] + ".width", args[6]);
-                                    Hardcore24.config.set("leaderboards." + args[1] + ".height", args[7]);
-                                    Hardcore24.config.set("leaderboards." + args[1] + ".viewRange", args[8]);
-                                    Hardcore24.config.save(Hardcore24.Leaderboard);
+                            } else if (args[0].toLowerCase().contains("perm") && player.isOp()) {
 
-                                    World world = Bukkit.getWorld(Hardcore24.config.getString("leaderboards." + args[1] + ".world"));
-                                    Location location = new Location(world, Hardcore24.config.getDouble("leaderboards." + args[1] + ".x"), Hardcore24.config.getDouble("leaderboards." + args[1] + ".y"),  Hardcore24.config.getDouble("leaderboards." + args[1] + ".z"));
-                                    TextDisplay display = world.spawn(location, TextDisplay.class);
-                                    Hardcore24.config.load(Hardcore24.Leaderboard);
-                                    Hardcore24.config.set("leaderboards." + args[1] + ".entityID", display.getEntityId());
-                                    Hardcore24.config.save(Hardcore24.Leaderboard);
-                                    display.setText("HI");
+
+                                //permission one
+
+
+                                for (Player p2 : Bukkit.getOnlinePlayers()) {
+                                    if (args[1].contains(p2.getName())) {
+
+                                        if (args[0].toLowerCase().contains("remove")) {
+
+                                            PermissionAttachment permissionAttachment = p2.addAttachment(Hardcore24.plugin);
+
+                                            permissionAttachment.unsetPermission("hardcore.commands");
+
+                                            map4.remove(p2.getUniqueId(), permissionAttachment);
+
+                                            String string = "permissions.players." + p2.getPlayer().getUniqueId();
+
+                                            Hardcore24.configuration.load(Hardcore24.file);
+                                            Hardcore24.configuration.set(string, "hardcore.disabled.commands");
+                                            Hardcore24.configuration.save(Hardcore24.file);
+
+
+                                            p2.removeAttachment(permissionAttachment);
+
+                                            player.sendMessage(ChatColor.BLUE + "removed permission hardcore.commands from " + p2.getName());
+
+                                            p2.kickPlayer(ChatColor.LIGHT_PURPLE + "Permissions reset by " + player.getName() + "\nfor assistance show this screen to a moderator or owner\n" + ChatColor.BLUE + "423 Locked");
+
+                                            return true;
+                                        } else if (args[0].toLowerCase().contains("add")) {
+                                            PermissionAttachment permissionAttachment = p2.addAttachment(Hardcore24.plugin);
+
+
+                                            String string = "permissions.players." + p2.getPlayer().getUniqueId();
+
+                                            permissionAttachment.setPermission("hardcore.commands", true);
+
+                                            map4.put(p2.getUniqueId(), permissionAttachment);
+
+
+                                            Hardcore24.configuration.load(Hardcore24.file);
+                                            Hardcore24.configuration.set(string, "hardcore.commands");
+                                            Hardcore24.configuration.save(Hardcore24.file);
+
+
+                                            player.sendMessage(ChatColor.BLUE + "added permission hardcore.commands from " + p2.getName());
+                                            return true;
+                                        }
+
+
+                                    }
                                 }
 
 
+                            } else if (args[0].toLowerCase().contains("log")) {
+                                for (@NotNull OfflinePlayer p : Bukkit.getOfflinePlayers()) {
+                                    if (args[1].contains(p.getName())) {
+                                        if (PlayerDeath.PlayerLog.containsKey(p.getUniqueId())) {
+
+                                            player.sendMessage(PlayerDeath.PlayerLog.get(p.getUniqueId()).toString());
+                                            return true;
+
+                                        } else {
+                                            player.sendMessage(ChatColor.RED + "No recent logs for player '" + p.getName() + "'");
+                                            return true;
+                                        }
+                                    }
+                                }
+                                player.sendMessage(ChatColor.RED + "Player '" + args[1] + "' found...");
                                 return true;
-                            }
-                        } else if (args[0].toLowerCase().contains("lead") && player.isOp() && args[0].toLowerCase().contains("rem") && player.isOp()) {
 
-
-                            return true;
-                        } else if (args[0].toLowerCase().contains("perm") && player.isOp()) {
-
-
-                            //permission one
-
-
-                            for (Player p2 : Bukkit.getOnlinePlayers()) {
-                                if (args[1].contains(p2.getName())) {
-
-                                    if (args[0].toLowerCase().contains("remove")) {
-
-                                        PermissionAttachment permissionAttachment = p2.addAttachment(Hardcore24.plugin);
-
-                                        permissionAttachment.unsetPermission("hardcore.commands");
-
-                                        map4.remove(p2.getUniqueId(), permissionAttachment);
-
-                                        String string = "permissions.players." + p2.getPlayer().getUniqueId();
-
-                                        Hardcore24.configuration.load(Hardcore24.file);
-                                        Hardcore24.configuration.set(string, "hardcore.disabled.commands");
-                                        Hardcore24.configuration.save(Hardcore24.file);
-
-
-                                        p2.removeAttachment(permissionAttachment);
-
-                                        player.sendMessage(ChatColor.BLUE + "removed permission hardcore.commands from " + p2.getName());
-
-                                        p2.kickPlayer(ChatColor.LIGHT_PURPLE + "Permissions reset by " + player.getName() + "\nfor assistance show this screen to a moderator or owner\n" + ChatColor.BLUE + "423 Locked");
-
-                                        return true;
-                                    } else if (args[0].toLowerCase().contains("add")) {
-                                        PermissionAttachment permissionAttachment = p2.addAttachment(Hardcore24.plugin);
-
-
-                                        String string = "permissions.players." + p2.getPlayer().getUniqueId();
-
-                                        permissionAttachment.setPermission("hardcore.commands", true);
-
-                                        map4.put(p2.getUniqueId(), permissionAttachment);
-
-
-                                        Hardcore24.configuration.load(Hardcore24.file);
-                                        Hardcore24.configuration.set(string, "hardcore.commands");
-                                        Hardcore24.configuration.save(Hardcore24.file);
-
-
-                                        player.sendMessage(ChatColor.BLUE + "added permission hardcore.commands from " + p2.getName());
-                                        return true;
-                                    }
-
-
-                                }
                             }
 
 
-                        } else if (args[0].toLowerCase().contains("log")) {
-                            for (@NotNull OfflinePlayer p : Bukkit.getOfflinePlayers()) {
-                                if (args[1].contains(p.getName())) {
-                                    if (PlayerDeath.PlayerLog.containsKey(p.getUniqueId())) {
-
-                                        player.sendMessage(PlayerDeath.PlayerLog.get(p.getUniqueId()).toString());
-                                        return true;
-
-                                    } else {
-                                        player.sendMessage(ChatColor.RED + "No recent logs for player '" + p.getName() + "'");
-                                        return true;
-                                    }
-                                }
-                            }
-                            player.sendMessage(ChatColor.RED + "Player '" + args[1] + "' found...");
-                            return true;
-
+                        } else {
+                            return false;
                         }
 
-
-                    } else {
-                        return false;
+                        player.sendMessage(ChatColor.RED + "You don't have permission to use that command");
                     }
 
+
+                    return true;
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 } catch (IOException e) {
@@ -199,15 +177,13 @@ public class hardcore implements CommandExecutor {
 
 
                 }
-                player.sendMessage(ChatColor.RED + "You don't have permission to use that command");
-            }
 
 
-            return true;
+            } else{
+                return false;}
+
         }
-        else{
-            return false;
-        }
+        return true;
     }
-}
+    }
 

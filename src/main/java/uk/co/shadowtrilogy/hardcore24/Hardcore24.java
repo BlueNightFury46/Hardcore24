@@ -1,11 +1,14 @@
 package uk.co.shadowtrilogy.hardcore24;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TextDisplay;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.java.JavaPlugin;
 import uk.co.shadowtrilogy.hardcore24.EventHandlers.*;
@@ -66,10 +69,14 @@ public final class Hardcore24 extends JavaPlugin {
         }
 
 
+
         //Registers commands
 
         getCommand("hardcore").setExecutor(new hardcore());
         getCommand("hardcore").setTabCompleter(new hardcoreAutoComplete());
+
+        getCommand("leaderboard").setExecutor(new Leaderboard());
+        getCommand("leaderboard").setTabCompleter(new leaderboardAU());
 
         //Generates a .players file to store the "banned" players uuids
 

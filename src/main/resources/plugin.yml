@@ -10,6 +10,8 @@ commands:
   hardcore:
     description: The hardcore24 general purpose command
     usage: /<command> <action> <player-name>
+  leaderboard:
+    usage: /<command> <leaderboard> <world> <x> <y> <z>
 permissions:
   hardcore.commands:
    description: Allows players to use the /Hardcore command
