@@ -21,10 +21,18 @@ import java.util.UUID;
 public final class Hardcore24 extends JavaPlugin {
 
     public static FileConfiguration configuration;
+    public static FileConfiguration config;
 
     public static File file;
+    public static File Leaderboard;
     public static Boolean playOnce = true;
-    public static Boolean day = true;
+    public static Boolean day = false;
+    public static double bDuration;
+    public static long d;
+    public static int phaseCounter = 0;
+
+    public static boolean bloodmoon = false;
+    public static boolean removeArmour = false;
 
     public static Hardcore24 plugin;
     public static HashMap<UUID, Boolean> map2 = new HashMap<>();
@@ -46,6 +54,7 @@ public final class Hardcore24 extends JavaPlugin {
         plugin = this;
         Boolean bool = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.harder-mobs");
         Boolean Moon = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.do-blood-moon");
+        d = (long) plugin.getConfig().getDouble("hardcore-config.blood-moon-duration") * 60 * 60 * 20;
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
         Bukkit.getPluginManager().registerEvents(new ServerLoad(), this);
@@ -55,6 +64,7 @@ public final class Hardcore24 extends JavaPlugin {
         if(bool == true || Moon == true) {
             Bukkit.getPluginManager().registerEvents(new MoreMobs(), this);
         }
+
 
         //Registers commands
 
@@ -68,11 +78,12 @@ public final class Hardcore24 extends JavaPlugin {
 
         ArmourInit.init();
         //initiates the mob armour
-
+        getLogger().info("Starting Hardcore24 by BlueNightFury46");
 
 
         try {
             fileGeneration();
+            LeaderBoardfileGeneration();
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (InvalidConfigurationException e) {
@@ -90,7 +101,7 @@ public final class Hardcore24 extends JavaPlugin {
 
 
     public FileConfiguration getConfiguration(){
-        return this.configuration;
+        return this.config;
     }
 
     public void fileGeneration() throws IOException, InvalidConfigurationException, FileNotFoundException {
@@ -110,15 +121,45 @@ public final class Hardcore24 extends JavaPlugin {
 
 
 
+    public void LeaderBoardfileGeneration() throws IOException, InvalidConfigurationException, FileNotFoundException {
+        Leaderboard = new File(getDataFolder(), "leaderboard.yml");
+        try {
+            if (!Leaderboard.exists()) {
+                Leaderboard.getParentFile().mkdirs();
+                saveResource("leaderboard.yml", false);
+            }
+        }catch (NullPointerException exception){
+            Leaderboard.getParentFile().mkdirs();
+            saveResource("leaderboard.yml", false);
+        }
+        config = new YamlConfiguration();
+        config.load(Leaderboard);
+    }
+
+
+
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
 
-        if (!file.exists()) {
-            file.getParentFile().mkdirs();
+        try {
+            if (!file.exists()) {
+                file.getParentFile().mkdirs();
+                saveResource("permissions.yml", false);
+            }
+        } catch (NullPointerException e) {
             saveResource("permissions.yml", false);
         }
+        try {
+            if (!Leaderboard.exists()) {
+                Leaderboard.getParentFile().mkdirs();
+                saveResource("leaderboard.yml", false);
+            }
+        } catch (NullPointerException e) {
+            saveResource("leaderboard.yml", false);
+        }
+
 
         if (Bukkit.getOfflinePlayers().length > 0) {
             try {
@@ -139,11 +180,15 @@ public final class Hardcore24 extends JavaPlugin {
 
 
             try {
-                configuration.save(file);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+                try {
+                    configuration.save(file);
+                    config.save(file);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } catch (NullPointerException e){
 
+            }
 
         }
     }

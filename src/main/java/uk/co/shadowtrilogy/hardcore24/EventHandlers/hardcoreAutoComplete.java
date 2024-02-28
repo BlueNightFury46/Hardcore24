@@ -16,17 +16,15 @@ public class hardcoreAutoComplete implements TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
 
-        if(command.getName().equalsIgnoreCase("hardcore")){
-            if(args.length >= 0){
-                if(args.length == 1){
+        if (command.getName().equalsIgnoreCase("hardcore")) {
+            if (args.length >= 0) {
+                if (args.length == 1) {
                     List<String> list = new ArrayList<>();
-                    if(commandSender.isOp() || commandSender.hasPermission("hardcore.commands")) {
+                    if (commandSender.isOp() || commandSender.hasPermission("hardcore.commands")) {
                         list.add("remove");
                         list.add("add");
                         list.add("log");
-                        //TODO Keep this section ^
-                        list.add("phase");
-                        //TODO Remove this section ^
+                        list.add("leaderboard-add");
                         if (commandSender.isOp()) {
                             list.add("permissions-add");
                             list.add("permissions-remove");
@@ -36,13 +34,25 @@ public class hardcoreAutoComplete implements TabCompleter {
                     }
                 } else if (args.length == 2) {
 
-                   return null;
 
-                    
+                    if (commandSender.hasPermission("hardcore.commands") || commandSender.isOp()) {
+                        return null;
+                    } else {
+                        List<String> list = new ArrayList<>();
+                        list.add("");
+                        return list;
+                    }
+
+
+                } else {
+                    List<String> list = new ArrayList<>();
+                    list.add("");
+                    return list;
                 }
 
             }
+
         }
-   return null;
+        return null;
     }
 }

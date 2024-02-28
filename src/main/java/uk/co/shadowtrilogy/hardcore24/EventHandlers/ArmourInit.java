@@ -6,16 +6,16 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public class ArmourInit {
 
-    public static final ItemStack diamond = new ItemStack(Material.DIAMOND_HELMET);
-    public static final ItemStack iron1 = new ItemStack(Material.IRON_CHESTPLATE);
-    public static final ItemStack iron2 = new ItemStack(Material.IRON_LEGGINGS);
-    public static final ItemStack iron3 = new ItemStack(Material.IRON_BOOTS);
+    public static ItemStack diamond = new ItemStack(Material.DIAMOND_HELMET);
+    public static ItemStack iron1 = new ItemStack(Material.IRON_CHESTPLATE);
+    public static ItemStack iron2 = new ItemStack(Material.IRON_LEGGINGS);
+    public static ItemStack iron3 = new ItemStack(Material.IRON_BOOTS);
 
 
-    public static final ItemStack bloodMoon1 = new ItemStack(Material.NETHERITE_HELMET);
-    public static final ItemStack bloodMoon2 = new ItemStack(Material.NETHERITE_HELMET);
-    public static final ItemStack bloodMoon3 = new ItemStack(Material.NETHERITE_HELMET);
-    public static final ItemStack bloodMoon4 = new ItemStack(Material.NETHERITE_HELMET);
+    public static ItemStack bloodMoon1;
+    public static ItemStack bloodMoon2;
+    public static ItemStack bloodMoon3;
+    public static ItemStack bloodMoon4;
 
     public static final ItemStack none = new ItemStack(Material.AIR);
 
@@ -25,6 +25,15 @@ public class ArmourInit {
     }
 
     public static void HarderInit(){
+
+        bloodMoon1 = new ItemStack(Material.NETHERITE_HELMET);
+        bloodMoon2 = new ItemStack(Material.NETHERITE_CHESTPLATE);
+        bloodMoon3 = new ItemStack(Material.NETHERITE_LEGGINGS);
+        bloodMoon4 = new ItemStack(Material.NETHERITE_BOOTS);
+
+
+
+
         ItemMeta d = diamond.getItemMeta();
         ItemMeta i1 = iron1.getItemMeta();
         ItemMeta i2 = iron2.getItemMeta();
@@ -44,6 +53,29 @@ public class ArmourInit {
         iron1.setItemMeta(i1);
         iron2.setItemMeta(i2);
         iron3.setItemMeta(i3);
+
+
+
+
+        ItemMeta b1 = bloodMoon1.getItemMeta();
+        ItemMeta b2 = bloodMoon2.getItemMeta();
+        ItemMeta b3 = bloodMoon3.getItemMeta();
+        ItemMeta b4 = bloodMoon4.getItemMeta();
+
+        b1.setDisplayName("{Hardcore24:Exclusive}DoNotObtainOrModify?.27");
+        b2.setDisplayName("{Hardcore24:Exclusive}DoNotObtainOrModify?.28");
+        b3.setDisplayName("{Hardcore24:Exclusive}DoNotObtainOrModify?.29");
+        b4.setDisplayName("{Hardcore24:Exclusive}DoNotObtainOrModify?.30");
+
+        b1.setUnbreakable(true);
+        b2.setUnbreakable(true);
+        b3.setUnbreakable(true);
+        b4.setUnbreakable(true);
+
+        bloodMoon1.setItemMeta(b1);
+        bloodMoon2.setItemMeta(b2);
+        bloodMoon3.setItemMeta(b3);
+        bloodMoon4.setItemMeta(b4);
 
 
 
