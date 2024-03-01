@@ -31,7 +31,6 @@ public class PlayerDeath implements Listener {
     public static HashMap<UUID, String> PlayerLogg = new HashMap<>();
     public static Map PlayerLog = PlayerLogg;
     String string;
-    boolean leaderboard = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.leaderboard");
     boolean deathbanExclude = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.death-ban-exclude-ops");
 
 
@@ -90,18 +89,6 @@ public class PlayerDeath implements Listener {
                         }
 
 
-                        if (leaderboard == true) {
-                            Hardcore24.config.load(Hardcore24.Leaderboard);
-                            Hardcore24.config.set("leaderboards.players.deaths." + player.getUniqueId() + ".score", Hardcore24.config.getInt("leaderboards.players.deaths." + player.getUniqueId() + ".score") + 100);
-                            Hardcore24.config.set("leaderboards.players.deaths." + player.getUniqueId() + ".name", player.getName());
-                            Hardcore24.config.save(Hardcore24.Leaderboard);
-                            try {
-                            if (player.getKiller() != null) {
-                                Hardcore24.config.load(Hardcore24.Leaderboard);
-                                Hardcore24.config.set("leaderboards.players.kills." + player.getKiller().getUniqueId() + ".score", Hardcore24.config.getInt("leaderboards.players.kills" + player.getKiller().getUniqueId()) + 1);
-                                Hardcore24.config.set("leaderboards.players.kills." + player.getKiller().getUniqueId() + ".name", player.getKiller().getName());
-                                Hardcore24.config.save(Hardcore24.Leaderboard);
-                            }}catch (NullPointerException ex){}
 
 
                             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
@@ -128,4 +115,3 @@ public class PlayerDeath implements Listener {
 
         }
 
-    }

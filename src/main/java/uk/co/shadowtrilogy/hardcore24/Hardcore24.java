@@ -24,10 +24,8 @@ import java.util.UUID;
 public final class Hardcore24 extends JavaPlugin {
 
     public static FileConfiguration configuration;
-    public static FileConfiguration config;
 
     public static File file;
-    public static File Leaderboard;
     public static Boolean playOnce = true;
     public static Boolean day = false;
     public static double bDuration;
@@ -69,19 +67,12 @@ public final class Hardcore24 extends JavaPlugin {
         if(bool == true || Moon == true) {
             Bukkit.getPluginManager().registerEvents(new MoreMobs(), this);
         }
-     //   if(LeaderboardEnabled == true){
-            Bukkit.getPluginManager().registerEvents(new LeaderboardUpdate(), this);
-
-      //  }
 
 
         //Registers commands
 
         getCommand("hardcore").setExecutor(new hardcore());
         getCommand("hardcore").setTabCompleter(new hardcoreAutoComplete());
-
-        getCommand("leaderboard").setExecutor(new Leaderboard());
-        getCommand("leaderboard").setTabCompleter(new leaderboardAU());
 
         //Generates a .players file to store the "banned" players uuids
 
@@ -95,7 +86,6 @@ public final class Hardcore24 extends JavaPlugin {
 
         try {
             fileGeneration();
-            LeaderBoardfileGeneration();
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (InvalidConfigurationException e) {
@@ -111,10 +101,6 @@ public final class Hardcore24 extends JavaPlugin {
     }
 
 
-
-    public FileConfiguration getConfiguration(){
-        return this.config;
-    }
 
     public void fileGeneration() throws IOException, InvalidConfigurationException, FileNotFoundException {
         file = new File(getDataFolder(), "permissions.yml");
@@ -133,23 +119,6 @@ public final class Hardcore24 extends JavaPlugin {
 
 
 
-    public void LeaderBoardfileGeneration() throws IOException, InvalidConfigurationException, FileNotFoundException {
-        Leaderboard = new File(getDataFolder(), "leaderboard.yml");
-        try {
-            if (!Leaderboard.exists()) {
-                Leaderboard.getParentFile().mkdirs();
-                saveResource("leaderboard.yml", false);
-            }
-        }catch (NullPointerException exception){
-            Leaderboard.getParentFile().mkdirs();
-            saveResource("leaderboard.yml", false);
-        }
-        config = new YamlConfiguration();
-        config.load(Leaderboard);
-    }
-
-
-
 
     @Override
     public void onDisable() {
@@ -162,14 +131,6 @@ public final class Hardcore24 extends JavaPlugin {
             }
         } catch (NullPointerException e) {
             saveResource("permissions.yml", false);
-        }
-        try {
-            if (!Leaderboard.exists()) {
-                Leaderboard.getParentFile().mkdirs();
-                saveResource("leaderboard.yml", false);
-            }
-        } catch (NullPointerException e) {
-            saveResource("leaderboard.yml", false);
         }
 
 
@@ -194,7 +155,6 @@ public final class Hardcore24 extends JavaPlugin {
             try {
                 try {
                     configuration.save(file);
-                    config.save(file);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
