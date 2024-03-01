@@ -36,6 +36,7 @@ public final class Hardcore24 extends JavaPlugin {
 
     public static boolean bloodmoon = false;
     public static boolean removeArmour = false;
+    public static boolean LeaderboardEnabled;
 
     public static Hardcore24 plugin;
     public static HashMap<UUID, Boolean> map2 = new HashMap<>();
@@ -57,6 +58,7 @@ public final class Hardcore24 extends JavaPlugin {
         plugin = this;
         Boolean bool = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.harder-mobs");
         Boolean Moon = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.do-blood-moon");
+        LeaderboardEnabled = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.leaderboard");
         d = (long) plugin.getConfig().getDouble("hardcore-config.blood-moon-duration") * 60 * 60 * 20;
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
@@ -67,7 +69,10 @@ public final class Hardcore24 extends JavaPlugin {
         if(bool == true || Moon == true) {
             Bukkit.getPluginManager().registerEvents(new MoreMobs(), this);
         }
+     //   if(LeaderboardEnabled == true){
+            Bukkit.getPluginManager().registerEvents(new LeaderboardUpdate(), this);
 
+      //  }
 
 
         //Registers commands

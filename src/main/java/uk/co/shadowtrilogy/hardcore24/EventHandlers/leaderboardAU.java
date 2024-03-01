@@ -13,25 +13,29 @@ import java.util.List;
 public class leaderboardAU implements TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        if (command.getName().equalsIgnoreCase("hardcore")) {
+        if (command.getName().equalsIgnoreCase("leaderboard")) {
             if (args.length >= 0) {
                 Player player = (((Player) commandSender).getPlayer());
 
-                if(args.length == 0 && player.isOp()){
+                if(args.length == 1 && player.isOp()){
                     List<String> list = new ArrayList<>();
                     list.add(player.getWorld().getName());
                     return list;
-                } else if (args.length == 1 && player.isOp()) {
+                } else if (args.length == 2 && player.isOp()) {
                     List<String> list = new ArrayList<>();
                     list.add(String.valueOf(player.getX()));
                     return list;
-                }else if (args.length == 2 && player.isOp()) {
+                }else if (args.length == 3 && player.isOp()) {
                     List<String> list = new ArrayList<>();
                     list.add(String.valueOf(player.getY()));
                     return list;
-                }else if (args.length == 3 && player.isOp()) {
+                }else if (args.length == 4 && player.isOp()) {
                     List<String> list = new ArrayList<>();
                     list.add(String.valueOf(player.getZ()));
+                    return list;
+                } else if (args.length == 5 && player.isOp()) {
+                    List<String> list = new ArrayList<>();
+                    list.add("name");
                     return list;
                 } else {
                     List<String> list = new ArrayList<>();

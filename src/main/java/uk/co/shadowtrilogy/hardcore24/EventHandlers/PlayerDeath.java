@@ -31,10 +31,8 @@ public class PlayerDeath implements Listener {
     public static HashMap<UUID, String> PlayerLogg = new HashMap<>();
     public static Map PlayerLog = PlayerLogg;
     String string;
-    boolean leaderboard = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.leader-board");
+    boolean leaderboard = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.leaderboard");
     boolean deathbanExclude = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.death-ban-exclude-ops");
-
-
 
 
     @EventHandler
@@ -63,10 +61,9 @@ public class PlayerDeath implements Listener {
 
 
         Player player = e.getPlayer();
-        World PlayerWorld = player.getWorld();
         if (player.getWorld().equals(world_nether) || player.getWorld().equals(world_hardcore) || player.getWorld().equals(world_end)) {
-            if (deathbanExclude == true) {
-                if (!player.isOp()) {
+
+                if (player.isOp() != deathbanExclude) {
                     if (Hardcore24.map.containsKey(player.getUniqueId())) {
                         e.setCancelled(true);
                         player.sendMessage(ChatColor.BLUE + "409 Conflict");
@@ -95,100 +92,40 @@ public class PlayerDeath implements Listener {
 
                         if (leaderboard == true) {
                             Hardcore24.config.load(Hardcore24.Leaderboard);
-                            Hardcore24.config.set("leaderboards.players.deaths." + player.getUniqueId(), Hardcore24.config.getInt("leaderboards.players.deaths." + player.getUniqueId()) + 1);
+                            Hardcore24.config.set("leaderboards.players.deaths." + player.getUniqueId() + ".score", Hardcore24.config.getInt("leaderboards.players.deaths." + player.getUniqueId() + ".score") + 100);
+                            Hardcore24.config.set("leaderboards.players.deaths." + player.getUniqueId() + ".name", player.getName());
                             Hardcore24.config.save(Hardcore24.Leaderboard);
+                            try {
                             if (player.getKiller() != null) {
                                 Hardcore24.config.load(Hardcore24.Leaderboard);
-                                Hardcore24.config.set("leaderboards.players.kills." + player.getKiller().getUniqueId(), Hardcore24.config.getInt("leaderboards.players.kills" + player.getKiller().getUniqueId()) + 1);
+                                Hardcore24.config.set("leaderboards.players.kills." + player.getKiller().getUniqueId() + ".score", Hardcore24.config.getInt("leaderboards.players.kills" + player.getKiller().getUniqueId()) + 1);
+                                Hardcore24.config.set("leaderboards.players.kills." + player.getKiller().getUniqueId() + ".name", player.getKiller().getName());
                                 Hardcore24.config.save(Hardcore24.Leaderboard);
+                            }}catch (NullPointerException ex){}
+
+
+                            Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
+                                if (Hardcore24.map.containsKey(player.getUniqueId())) {
+                                    Hardcore24.map.remove(player.getUniqueId(), true);
+                                }
+
+                            }, time);
+
+
+                            try {
+                                if (!player.getBedSpawnLocation().getWorld().equals(world)) {
+                                    player.setBedSpawnLocation(new Location(world, x, y, z));
+                                }
+                            } catch (NullPointerException exception) {
+                                Hardcore24.plugin.getLogger().info(player.getName() + "'s bed spawn location is set to null");
                             }
-                            UpdateEntity();
+
                         }
-
-
-                        Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
-                            if (Hardcore24.map.containsKey(player.getUniqueId())) {
-                                Hardcore24.map.remove(player.getUniqueId(), true);
-                            }
-
-                        }, time);
-
-
-                        try {
-                            if (!player.getBedSpawnLocation().getWorld().equals(world)) {
-                                player.setBedSpawnLocation(new Location(world, x, y, z));
-                            }
-                        } catch (NullPointerException exception) {
-                            Hardcore24.plugin.getLogger().info(player.getName() + "'s bed spawn location is set to null");
-                        }
-
                     }
                 }
-            }else if (deathbanExclude == false){
-
-                if (Hardcore24.map.containsKey(player.getUniqueId())) {
-                    e.setCancelled(true);
-                    player.sendMessage(ChatColor.BLUE + "409 Conflict");
-
-                } else if (!Hardcore24.map.containsKey(player.getUniqueId())) {
-
-                    Hardcore24.map.put(player.getUniqueId(), true);
-
-                    for (ItemStack itemStack : player.getEnderChest().getContents()) {
-                        e.getDrops().add(itemStack);
-
-                    }
-                    player.getEnderChest().clear();
-
-                    player.setPlayerListName(ChatColor.BLUE + "24hrs " + "§9⌚§9" + net.md_5.bungee.api.ChatColor.RESET + ": " + player.getName());
-
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-                    if (player.getKiller() != null) {
-                        string = ChatColor.BLUE + "#####################################\n#Player Death Date & Time: " + ChatColor.GREEN + LocalDateTime.now().format(formatter) + ChatColor.BLUE + "\n#Player Death Message: " + ChatColor.LIGHT_PURPLE + e.getDeathMessage() + ChatColor.BLUE + "\n#Player 'Killer': " + ChatColor.GREEN + player.getKiller() + ChatColor.BLUE + "\n#####################################";
-                        PlayerLog.put(player.getUniqueId(), string);
-                    } else {
-                        string = ChatColor.BLUE + "#####################################\n#Player Death Date & Time: " + ChatColor.GREEN + LocalDateTime.now().format(formatter) + ChatColor.BLUE + "\n#Player Death Message: " + ChatColor.LIGHT_PURPLE + e.getDeathMessage() + ChatColor.BLUE + "\n#####################################";
-                        PlayerLog.put(player.getUniqueId(), string);
-                    }
-
-
-                    if (leaderboard == true) {
-                        Hardcore24.config.load(Hardcore24.Leaderboard);
-                        Hardcore24.config.set("leaderboards.players.deaths." + player.getUniqueId(), Hardcore24.config.getInt("leaderboards.players.deaths." + player.getUniqueId()) + 1);
-                        Hardcore24.config.save(Hardcore24.Leaderboard);
-                        if (player.getKiller() != null) {
-                            Hardcore24.config.load(Hardcore24.Leaderboard);
-                            Hardcore24.config.set("leaderboards.players.kills." + player.getKiller().getUniqueId(), Hardcore24.config.getInt("leaderboards.players.kills" + player.getKiller().getUniqueId()) + 1);
-                            Hardcore24.config.save(Hardcore24.Leaderboard);
-                        }
-                    }
-
-
-                    Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
-                        if (Hardcore24.map.containsKey(player.getUniqueId())) {
-                            Hardcore24.map.remove(player.getUniqueId(), true);
-                        }
-
-                    }, time);
-
-
-                    try {
-                        if (!player.getBedSpawnLocation().getWorld().equals(world)) {
-                            player.setBedSpawnLocation(new Location(world, x, y, z));
-                        }
-                    } catch (NullPointerException exception) {
-                        Hardcore24.plugin.getLogger().info(player.getName() + "'s bed spawn location is set to null");
-                    }
-
-                }
-                UpdateEntity();
-            }
             }
 
 
         }
 
-        public void UpdateEntity(){
-
-        }
     }

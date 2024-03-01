@@ -17,6 +17,6 @@ hardcore-config:
   blood-moon-duration: 2.0
   # in hrs (above)
   death-ban-time: 24.0
-  leader-board: false
+  leaderboard: false
   death-ban-exclude-ops: true
   # ^ above is the time you want to ban the player for in hours ^
