@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.permissions.PermissionAttachment;
@@ -26,15 +27,17 @@ public final class Hardcore24 extends JavaPlugin {
     public static FileConfiguration configuration;
 
     public static File file;
+    public static String Blood_Moon_Message;
     public static Boolean playOnce = true;
     public static Boolean day = false;
+    public static boolean MESSAGE_ONCE = true;
     public static double bDuration;
     public static long d;
     public static int phaseCounter = 0;
+    public static String LastBloodMoon = null;
 
     public static boolean bloodmoon = false;
     public static boolean removeArmour = false;
-    public static boolean LeaderboardEnabled;
 
     public static Hardcore24 plugin;
     public static HashMap<UUID, Boolean> map2 = new HashMap<>();
@@ -56,8 +59,8 @@ public final class Hardcore24 extends JavaPlugin {
         plugin = this;
         Boolean bool = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.harder-mobs");
         Boolean Moon = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.do-blood-moon");
-        LeaderboardEnabled = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.leaderboard");
         d = (long) plugin.getConfig().getDouble("hardcore-config.blood-moon-duration") * 60 * 60 * 20;
+        Blood_Moon_Message = plugin.getConfig().getString("hardcore-message-config.blood-moon-message");
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
         Bukkit.getPluginManager().registerEvents(new ServerLoad(), this);
@@ -95,7 +98,49 @@ public final class Hardcore24 extends JavaPlugin {
 
         //
         getLogger().info("Hardcore24 is active and should be working as usual");
-        
+
+
+
+        if(Moon == true) {
+            World world_hardcore = Bukkit.getWorld(plugin.getConfig().getString("hardcore-world.hardcore-normal"));
+
+            for (LivingEntity entity : world_hardcore.getLivingEntities()) {
+
+                try {
+                    if (entity.getEquipment().getHelmet().isSimilar(ArmourInit.bloodMoon1)) {
+                        entity.getEquipment().setHelmet(ArmourInit.none);
+                    }
+                } catch (NullPointerException e) {
+
+                }
+                try {
+                    if (entity.getEquipment().getChestplate().isSimilar(ArmourInit.bloodMoon2)) {
+                        entity.getEquipment().setChestplate(ArmourInit.none);
+                    }
+                } catch (NullPointerException e) {
+
+                }
+                try {
+                    if (entity.getEquipment().getLeggings().isSimilar(ArmourInit.bloodMoon3)) {
+                        entity.getEquipment().setLeggings(ArmourInit.none);
+                    }
+                } catch (NullPointerException e) {
+
+                }
+                try {
+                    if (entity.getEquipment().getBoots().isSimilar(ArmourInit.bloodMoon4)) {
+                        entity.getEquipment().setBoots(ArmourInit.none);
+                    }
+                } catch (NullPointerException e) {
+
+                }
+                if (MESSAGE_ONCE == true) {
+                    MESSAGE_ONCE = false;
+                    getLogger().info("Removing Blood Moon armour from mobs...");
+                }
+
+            }
+        }
 
 
     }

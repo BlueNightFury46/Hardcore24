@@ -150,23 +150,36 @@ public class hardcore implements CommandExecutor {
                                             player.sendMessage(ChatColor.RED + "No recent logs for player '" + p.getName() + "'");
                                             return true;
                                         }
+                                    } else if (args[1].toLowerCase().contains("blood") && args[1].toLowerCase().contains("moon")) {
+                                        if(Hardcore24.LastBloodMoon!=null) {
+                                            player.sendMessage(Hardcore24.LastBloodMoon);
+                                            return true;
+                                        } else {
+                                            player.sendMessage(ChatColor.RED + "There have been no recent Blood Moons...");
+                                            return true;
+                                        }
                                     }
-                                }
-                                player.sendMessage(ChatColor.RED + "Player '" + args[1] + "' found...");
-                                return true;
+                                    player.sendMessage(ChatColor.RED + "Player '" + args[1] + "' found...");
+                                    return true;
 
+                                }
+
+
+                            } else {
+                                return false;
                             }
 
-
-                        } else {
-                            return false;
+                            player.sendMessage(ChatColor.RED + "You don't have permission to use that command");
                         }
 
-                        player.sendMessage(ChatColor.RED + "You don't have permission to use that command");
+
+                        return true;
+
+
+                    } else {
+                        return false;
                     }
 
-
-                    return true;
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 } catch (IOException e) {
@@ -178,12 +191,10 @@ public class hardcore implements CommandExecutor {
 
                 }
 
-
-            } else{
-                return false;}
-
+                return true;
+            }
         }
         return true;
     }
-    }
+}
 

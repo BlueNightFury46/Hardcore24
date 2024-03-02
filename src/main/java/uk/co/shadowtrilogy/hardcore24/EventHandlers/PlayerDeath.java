@@ -62,7 +62,7 @@ public class PlayerDeath implements Listener {
         Player player = e.getPlayer();
         if (player.getWorld().equals(world_nether) || player.getWorld().equals(world_hardcore) || player.getWorld().equals(world_end)) {
 
-                if (player.isOp() != deathbanExclude) {
+                if (player.isOp() == deathbanExclude || player.isOp() == false) {
                     if (Hardcore24.map.containsKey(player.getUniqueId())) {
                         e.setCancelled(true);
                         player.sendMessage(ChatColor.BLUE + "409 Conflict");
