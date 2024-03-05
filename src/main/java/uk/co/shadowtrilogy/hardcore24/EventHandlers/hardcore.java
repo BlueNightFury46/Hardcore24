@@ -41,7 +41,7 @@ public class hardcore implements CommandExecutor {
         if (command.getName().equalsIgnoreCase("hardcore")) {
 
 
-            if (player.hasPermission("hardcore.commands")) {
+            if (player.hasPermission("hardcore.commands") || player.isOp() == true) {
                 try {
                     if (args.length > 0) {
 
@@ -82,7 +82,7 @@ public class hardcore implements CommandExecutor {
                                     return false;
                                 }
 
-                            } else if (args[0].toLowerCase().contains("perm") && player.isOp()) {
+                            } else if (args[0].toLowerCase().contains("perm") && player.isOp() == true) {
 
 
                                 //permission one
