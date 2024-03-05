@@ -67,7 +67,7 @@ public class hardcore implements CommandExecutor {
                                         if (args[1].contains(p.getName())) {
                                             Hardcore24.map.put(p.getUniqueId(), true);
                                             player.sendMessage("Added " + p.getName());
-                                            player.sendMessage(ChatColor.DARK_RED + "Warning! ⚠️ players added to the list will not be removed from the list after 24hrs, you will have to remove them later manually");
+
                                             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
                                                 if (Hardcore24.map.containsKey(player.getUniqueId())) {
                                                     Hardcore24.map.remove(player.getUniqueId(), true);
