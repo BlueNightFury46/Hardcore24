@@ -66,8 +66,7 @@ public class hardcore implements CommandExecutor {
                                     for (Player p : Bukkit.getOnlinePlayers()) {
                                         if (args[1].contains(p.getName())) {
                                             Hardcore24.map.put(p.getUniqueId(), true);
-                                            player.sendMessage("Added " + p.getName());
-
+                                            player.sendMessage("Added " + p.getName() + " to the temporarily banned players list");
                                             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
                                                 if (Hardcore24.map.containsKey(player.getUniqueId())) {
                                                     Hardcore24.map.remove(player.getUniqueId(), true);
