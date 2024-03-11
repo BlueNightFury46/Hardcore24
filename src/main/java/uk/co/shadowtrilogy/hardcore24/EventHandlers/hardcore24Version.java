@@ -47,7 +47,7 @@ public class hardcore24Version implements CommandExecutor {
                 if (player.isOp() == true) {
 
                     player.sendMessage(ChatColor.BLUE + "Hardcore24 is currently running on version " + Hardcore24.plugin.getDescription().getVersion());
-                    commandSender.sendMessage(ChatColor.RED + "Player " + player.getName() + " attempted to run command /hardcore24-version\n");
+                    Hardcore24.plugin.getLogger().info(ChatColor.RED + "Player " + player.getName() + " attempted to run command /hardcore24-version\n");
 
 
 
