@@ -27,9 +27,6 @@ public class MoreMobs implements Listener {
 
     public static String title = Hardcore24.plugin.getConfig().getString("hardcore-message-config.blood-moon-title-message");
     public static String subtitle = Hardcore24.plugin.getConfig().getString("hardcore-message-config.blood-moon-subtitle-message");
-    World world_nether = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
-    World world_hardcore = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
-    World world_end = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
 
 
 
@@ -38,9 +35,14 @@ public class MoreMobs implements Listener {
         Boolean bool = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.harder-mobs");
         Boolean Moon = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.do-blood-moon");
         //World world_hardcore = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal").toString());
+        World world_nether = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
+        World world_hardcore = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
+        World world_end = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
 
 
         if (world_hardcore.getFullTime() < 23000 && world_hardcore.getFullTime() > 13000) {
+
+
 
             if(Hardcore24.phaseCounter == 3){
                 Hardcore24.removeArmour = true;

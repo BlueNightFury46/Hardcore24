@@ -1,5 +1,5 @@
 name: Hardcore24
-version: '2.42'
+version: '2.44'
 main: uk.co.shadowtrilogy.hardcore24.Hardcore24
 api-version: '1.20'
 load: STARTUP
@@ -10,6 +10,13 @@ commands:
   hardcore:
     description: The hardcore24 general purpose command
     usage: /<command> <action> <player-name>
+  hardcore24-version:
+    description: Displays the current hardcore24 version
+    usage: /<hardcore24-version>
+    aliases:
+      - version
+      - hardcore-version
+      - 24-version
 permissions:
   hardcore.commands:
    description: Allows players to use the /Hardcore command

@@ -150,7 +150,7 @@ public class hardcore implements CommandExecutor {
                                             return true;
                                         }
                                     } else if (args[1].toLowerCase().contains("blood") && args[1].toLowerCase().contains("moon")) {
-                                        if(Hardcore24.LastBloodMoon!=null) {
+                                        if (Hardcore24.LastBloodMoon != null) {
                                             player.sendMessage(Hardcore24.LastBloodMoon);
                                             return true;
                                         } else {
@@ -167,13 +167,8 @@ public class hardcore implements CommandExecutor {
                             } else {
                                 return false;
                             }
-
-                            player.sendMessage(ChatColor.RED + "You don't have permission to use that command");
                         }
-
-
-                        return true;
-
+                        return false;
 
                     } else {
                         return false;
@@ -192,6 +187,8 @@ public class hardcore implements CommandExecutor {
 
                 return true;
             }
+            player.sendMessage(ChatColor.RED + "You don't have permission to use that command");
+            return true;
         }
         return true;
     }

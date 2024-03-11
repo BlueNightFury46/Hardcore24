@@ -77,6 +77,8 @@ public final class Hardcore24 extends JavaPlugin {
         getCommand("hardcore").setExecutor(new hardcore());
         getCommand("hardcore").setTabCompleter(new hardcoreAutoComplete());
 
+        getCommand("hardcore24-version").setExecutor(new hardcore24Version());
+
         //Generates a .players file to store the "banned" players uuids
 
         plugin.saveDefaultConfig();
@@ -100,8 +102,11 @@ public final class Hardcore24 extends JavaPlugin {
         getLogger().info("Hardcore24 is active and should be working as usual");
 
 
-
         if(Moon == true) {
+
+            getLogger().info("Preparing for Blood Moon Mobs Armour Removal ");
+            Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
+
             World world_hardcore = Bukkit.getWorld(plugin.getConfig().getString("hardcore-world.hardcore-normal"));
 
             for (LivingEntity entity : world_hardcore.getLivingEntities()) {
@@ -140,6 +145,8 @@ public final class Hardcore24 extends JavaPlugin {
                 }
 
             }
+            }, 250L);
+            getLogger().info("Cleared all blood moon armour from mobs!");
         }
 
 

@@ -28,6 +28,7 @@ public class hardcoreAutoComplete implements TabCompleter {
                         if (commandSender.isOp()) {
                             list.add("permissions-add");
                             list.add("permissions-remove");
+                            list.add("version");
                         }
 
                         return list;
