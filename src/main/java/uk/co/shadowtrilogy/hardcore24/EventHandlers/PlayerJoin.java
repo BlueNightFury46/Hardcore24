@@ -33,22 +33,6 @@ public class PlayerJoin implements Listener {
             ev.getPlayer().setPlayerListName(ev.getPlayer().getName());
         }
 
-
-        String string = "permissions.players." + ev.getPlayer().getUniqueId();
-
-        try {
-            if (!Hardcore24.configuration.contains(string)) {
-
-
-            } else if (Hardcore24.configuration.get(string).equals("hardcore.commands")) {
-                PermissionAttachment permissionAttachment = ev.getPlayer().addAttachment(Hardcore24.plugin);
-                permissionAttachment.setPermission("hardcore.commands", true);
-            }
-        }
-        catch (NullPointerException e){
-            ev.getPlayer().sendMessage(ChatColor.GOLD + "Null Pointer Exception caught: " + ChatColor.MAGIC + "400");
-        }
-
         //Make sure the "banned" players stay "banned"
             FileConfiguration fileConfiguration = Hardcore24.plugin.getConfig();
 

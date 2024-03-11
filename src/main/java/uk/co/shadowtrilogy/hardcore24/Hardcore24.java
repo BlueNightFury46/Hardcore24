@@ -23,10 +23,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public final class Hardcore24 extends JavaPlugin {
-
-    public static FileConfiguration configuration;
-
-    public static File file;
     public static String Blood_Moon_Message;
     public static Boolean playOnce = true;
     public static Boolean day = false;
@@ -77,7 +73,7 @@ public final class Hardcore24 extends JavaPlugin {
         getCommand("hardcore").setExecutor(new hardcore());
         getCommand("hardcore").setTabCompleter(new hardcoreAutoComplete());
 
-        getCommand("hardcore24-version").setExecutor(new hardcore24Version());
+        getCommand("hardcore24-version").setExecutor(new hardcore());
 
         //Generates a .players file to store the "banned" players uuids
 
@@ -87,16 +83,6 @@ public final class Hardcore24 extends JavaPlugin {
         ArmourInit.init();
         //initiates the mob armour
         getLogger().info("Starting Hardcore24 by BlueNightFury46");
-
-
-        try {
-            fileGeneration();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidConfigurationException e) {
-            throw new RuntimeException(e);
-        }
-
 
         //
         getLogger().info("Hardcore24 is active and should be working as usual");
@@ -154,66 +140,11 @@ public final class Hardcore24 extends JavaPlugin {
 
 
 
-    public void fileGeneration() throws IOException, InvalidConfigurationException, FileNotFoundException {
-        file = new File(getDataFolder(), "permissions.yml");
-        try {
-            if (!file.exists()) {
-                file.getParentFile().mkdirs();
-                saveResource("permissions.yml", false);
-            }
-        }catch (NullPointerException exception){
-            file.getParentFile().mkdirs();
-            saveResource("permissions.yml", false);
-        }
-        configuration = new YamlConfiguration();
-        configuration.load(file);
-    }
-
-
 
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
 
-        try {
-            if (!file.exists()) {
-                file.getParentFile().mkdirs();
-                saveResource("permissions.yml", false);
-            }
-        } catch (NullPointerException e) {
-            saveResource("permissions.yml", false);
-        }
-
-
-        if (Bukkit.getOfflinePlayers().length > 0) {
-            try {
-                configuration.load(file);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (InvalidConfigurationException e) {
-                throw new RuntimeException(e);
-            }
-
-
-            for (OfflinePlayer p2 : Bukkit.getOfflinePlayers()) {
-                String s = "permissions.players." + p2.getUniqueId();
-                if (hardcore.permissionAttachmentHashMap.containsKey(p2.getUniqueId())) {
-                    configuration.set(s, "hardcore.commands");
-                }
-            }
-
-
-            try {
-                try {
-                    configuration.save(file);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            } catch (NullPointerException e){
-
-            }
-
         }
     }
-}

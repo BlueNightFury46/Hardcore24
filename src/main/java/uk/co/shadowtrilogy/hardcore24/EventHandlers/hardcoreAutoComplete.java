@@ -26,10 +26,6 @@ public class hardcoreAutoComplete implements TabCompleter {
                         list.add("add");
                         list.add("log");
                         list.add("ping");
-                        if (commandSender.isOp()) {
-                            list.add("permissions-add");
-                            list.add("permissions-remove");
-                        }
 
                         return list;
                     }
