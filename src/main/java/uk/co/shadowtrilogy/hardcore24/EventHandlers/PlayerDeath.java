@@ -31,17 +31,20 @@ public class PlayerDeath implements Listener {
     public static HashMap<UUID, String> PlayerLogg = new HashMap<>();
     public static Map PlayerLog = PlayerLogg;
     String string;
-    boolean deathbanExclude = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.death-ban-exclude-ops");
+
 
 
     @EventHandler
     public void Event(PlayerDeathEvent e) throws IOException, InvalidConfigurationException {
 
+        //Loads the death-ban-time from the config
+        boolean deathbanExclude = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.death-ban-exclude-ops");
         double d = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
 
         long time = (long) d * 60 * 60 * 20;
 
 
+        //Loads the respawn worlds from the config
         FileConfiguration fileConfiguration = Hardcore24.plugin.getConfig();
         World world = Bukkit.getWorld(fileConfiguration.get("respawn-location.world").toString());
         double x = fileConfiguration.getDouble("respawn-location.x");
@@ -56,13 +59,15 @@ public class PlayerDeath implements Listener {
         //corrector variables
 
 
-        //if variables
+        if (deathbanExclude == true) {
 
 
-        Player player = e.getPlayer();
-        if (player.getWorld().equals(world_nether) || player.getWorld().equals(world_hardcore) || player.getWorld().equals(world_end)) {
 
-                if (player.isOp() == deathbanExclude || player.isOp() == false) {
+            Player player = e.getPlayer();
+
+
+            if(player.isOp() == true) {
+                if (player.getWorld().equals(world_nether) || player.getWorld().equals(world_hardcore) || player.getWorld().equals(world_end)) {
                     if (Hardcore24.map.containsKey(player.getUniqueId())) {
                         e.setCancelled(true);
                         player.sendMessage(ChatColor.BLUE + "409 Conflict");
@@ -89,29 +94,85 @@ public class PlayerDeath implements Listener {
                         }
 
 
-
-
-                            Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
-                                if (Hardcore24.map.containsKey(player.getUniqueId())) {
-                                    Hardcore24.map.remove(player.getUniqueId(), true);
-                                }
-
-                            }, time);
-
-
-                            try {
-                                if (!player.getBedSpawnLocation().getWorld().equals(world)) {
-                                    player.setBedSpawnLocation(new Location(world, x, y, z));
-                                }
-                            } catch (NullPointerException exception) {
-                                Hardcore24.plugin.getLogger().info(player.getName() + "'s bed spawn location is set to null");
+                        Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
+                            if (Hardcore24.map.containsKey(player.getUniqueId())) {
+                                Hardcore24.map.remove(player.getUniqueId(), true);
                             }
 
+                        }, time);
+
+
+                        try {
+                            if (!player.getBedSpawnLocation().getWorld().equals(world)) {
+                                player.setBedSpawnLocation(new Location(world, x, y, z));
+                            }
+                        } catch (NullPointerException exception) {
+                            Hardcore24.plugin.getLogger().info(player.getName() + "'s bed spawn location is set to null");
                         }
+
                     }
+                }
+            }
+        } else if (deathbanExclude == false){
+
+
+
+            Player player = e.getPlayer();
+            if (player.getWorld().equals(world_nether) || player.getWorld().equals(world_hardcore) || player.getWorld().equals(world_end)) {
+
+                if (Hardcore24.map.containsKey(player.getUniqueId())) {
+                    e.setCancelled(true);
+                    player.sendMessage(ChatColor.BLUE + "409 Conflict");
+
+                } else if (!Hardcore24.map.containsKey(player.getUniqueId())) {
+
+                    Hardcore24.map.put(player.getUniqueId(), true);
+
+                    for (ItemStack itemStack : player.getEnderChest().getContents()) {
+                        e.getDrops().add(itemStack);
+
+                    }
+                    player.getEnderChest().clear();
+
+                    player.setPlayerListName(ChatColor.BLUE + "24hrs " + "§9⌚§9" + net.md_5.bungee.api.ChatColor.RESET + ": " + player.getName());
+
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+                    if (player.getKiller() != null) {
+                        string = ChatColor.BLUE + "#####################################\n#Player Death Date & Time: " + ChatColor.GREEN + LocalDateTime.now().format(formatter) + ChatColor.BLUE + "\n#Player Death Message: " + ChatColor.LIGHT_PURPLE + e.getDeathMessage() + ChatColor.BLUE + "\n#Player 'Killer': " + ChatColor.GREEN + player.getKiller() + ChatColor.BLUE + "\n#####################################";
+                        PlayerLog.put(player.getUniqueId(), string);
+                    } else {
+                        string = ChatColor.BLUE + "#####################################\n#Player Death Date & Time: " + ChatColor.GREEN + LocalDateTime.now().format(formatter) + ChatColor.BLUE + "\n#Player Death Message: " + ChatColor.LIGHT_PURPLE + e.getDeathMessage() + ChatColor.BLUE + "\n#####################################";
+                        PlayerLog.put(player.getUniqueId(), string);
+                    }
+
+
+
+
+                    Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
+                        if (Hardcore24.map.containsKey(player.getUniqueId())) {
+                            Hardcore24.map.remove(player.getUniqueId(), true);
+                        }
+
+                    }, time);
+
+
+                    try {
+                        if (!player.getBedSpawnLocation().getWorld().equals(world)) {
+                            player.setBedSpawnLocation(new Location(world, x, y, z));
+                        }
+                    } catch (NullPointerException exception) {
+                        Hardcore24.plugin.getLogger().info(player.getName() + "'s bed spawn location is set to null");
+                    }
+
                 }
             }
 
 
+
         }
+    } }
+
+
+
+
 
