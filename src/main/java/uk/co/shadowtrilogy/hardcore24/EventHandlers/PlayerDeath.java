@@ -66,8 +66,9 @@ public class PlayerDeath implements Listener {
             Player player = e.getPlayer();
 
 
-            if(player.isOp() == true) {
+            if(player.isOp() == false) {
                 if (player.getWorld().equals(world_nether) || player.getWorld().equals(world_hardcore) || player.getWorld().equals(world_end)) {
+
                     if (Hardcore24.map.containsKey(player.getUniqueId())) {
                         e.setCancelled(true);
                         player.sendMessage(ChatColor.BLUE + "409 Conflict");
@@ -94,6 +95,8 @@ public class PlayerDeath implements Listener {
                         }
 
 
+
+
                         Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
                             if (Hardcore24.map.containsKey(player.getUniqueId())) {
                                 Hardcore24.map.remove(player.getUniqueId(), true);
@@ -112,6 +115,7 @@ public class PlayerDeath implements Listener {
 
                     }
                 }
+
             }
         } else if (deathbanExclude == false){
 

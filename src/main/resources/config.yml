@@ -19,10 +19,7 @@ hardcore-config:
   death-ban-time: 24.0
   # ^ above is the time you want to ban the player for in hours ^
   death-ban-exclude-ops: true
-  # If true operators will be affected by the death ban
-  blood-moon-dmg-multiplier: 1.0
-  # a value of 1.0 means the player will take regular damage and a value of 2.0 will mean the player takes double damage
-  regular-damage-multiplier: 1.0
+  # If true operators will be excluded from the death ban
 hardcore-message-config:
   blood-moon-message: '§4As the blood moon rises the countless monsters band together, you encounter mobs with stronger gear...§4'
   blood-moon-title-message: '§cThe Blood Moon Rises Once Again!§c'
