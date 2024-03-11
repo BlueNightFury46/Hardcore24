@@ -1,6 +1,7 @@
 package uk.co.shadowtrilogy.hardcore24.EventHandlers;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -24,6 +25,7 @@ public class hardcoreAutoComplete implements TabCompleter {
                         list.add("remove");
                         list.add("add");
                         list.add("log");
+                        list.add("ping");
                         if (commandSender.isOp()) {
                             list.add("permissions-add");
                             list.add("permissions-remove");
@@ -31,14 +33,22 @@ public class hardcoreAutoComplete implements TabCompleter {
 
                         return list;
                     }
-                } else
-                    return null;
+                } else {
+                    List<String> list = new ArrayList<>();
+                    for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+
+                        list.add(player.getName());
+
+                    }
+                    list.add("Blood-Moon");
+                    return list;
+
+                }
+
 
             }
-
-
+            return null;
         }
         return null;
     }
-    }
-
+}

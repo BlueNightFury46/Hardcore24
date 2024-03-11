@@ -31,20 +31,20 @@ public class PlayerDeath implements Listener {
     public static HashMap<UUID, String> PlayerLogg = new HashMap<>();
     public static Map PlayerLog = PlayerLogg;
     String string;
-    boolean leaderboard = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.leader-board");
-    boolean deathbanExclude = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.death-ban-exclude-ops");
-
 
 
 
     @EventHandler
     public void Event(PlayerDeathEvent e) throws IOException, InvalidConfigurationException {
 
+        //Loads the death-ban-time from the config
+        boolean deathbanExclude = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.death-ban-exclude-ops");
         double d = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
 
         long time = (long) d * 60 * 60 * 20;
 
 
+        //Loads the respawn worlds from the config
         FileConfiguration fileConfiguration = Hardcore24.plugin.getConfig();
         World world = Bukkit.getWorld(fileConfiguration.get("respawn-location.world").toString());
         double x = fileConfiguration.getDouble("respawn-location.x");
@@ -59,14 +59,16 @@ public class PlayerDeath implements Listener {
         //corrector variables
 
 
-        //if variables
+        if (deathbanExclude == true) {
 
 
-        Player player = e.getPlayer();
-        World PlayerWorld = player.getWorld();
-        if (player.getWorld().equals(world_nether) || player.getWorld().equals(world_hardcore) || player.getWorld().equals(world_end)) {
-            if (deathbanExclude == true) {
-                if (!player.isOp()) {
+
+            Player player = e.getPlayer();
+
+
+            if(player.isOp() == false) {
+                if (player.getWorld().equals(world_nether) || player.getWorld().equals(world_hardcore) || player.getWorld().equals(world_end)) {
+
                     if (Hardcore24.map.containsKey(player.getUniqueId())) {
                         e.setCancelled(true);
                         player.sendMessage(ChatColor.BLUE + "409 Conflict");
@@ -93,17 +95,6 @@ public class PlayerDeath implements Listener {
                         }
 
 
-                        if (leaderboard == true) {
-                            Hardcore24.config.load(Hardcore24.Leaderboard);
-                            Hardcore24.config.set("leaderboards.players.deaths." + player.getUniqueId(), Hardcore24.config.getInt("leaderboards.players.deaths." + player.getUniqueId()) + 1);
-                            Hardcore24.config.save(Hardcore24.Leaderboard);
-                            if (player.getKiller() != null) {
-                                Hardcore24.config.load(Hardcore24.Leaderboard);
-                                Hardcore24.config.set("leaderboards.players.kills." + player.getKiller().getUniqueId(), Hardcore24.config.getInt("leaderboards.players.kills" + player.getKiller().getUniqueId()) + 1);
-                                Hardcore24.config.save(Hardcore24.Leaderboard);
-                            }
-                            UpdateEntity();
-                        }
 
 
                         Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
@@ -124,7 +115,14 @@ public class PlayerDeath implements Listener {
 
                     }
                 }
-            }else if (deathbanExclude == false){
+
+            }
+        } else if (deathbanExclude == false){
+
+
+
+            Player player = e.getPlayer();
+            if (player.getWorld().equals(world_nether) || player.getWorld().equals(world_hardcore) || player.getWorld().equals(world_end)) {
 
                 if (Hardcore24.map.containsKey(player.getUniqueId())) {
                     e.setCancelled(true);
@@ -152,16 +150,6 @@ public class PlayerDeath implements Listener {
                     }
 
 
-                    if (leaderboard == true) {
-                        Hardcore24.config.load(Hardcore24.Leaderboard);
-                        Hardcore24.config.set("leaderboards.players.deaths." + player.getUniqueId(), Hardcore24.config.getInt("leaderboards.players.deaths." + player.getUniqueId()) + 1);
-                        Hardcore24.config.save(Hardcore24.Leaderboard);
-                        if (player.getKiller() != null) {
-                            Hardcore24.config.load(Hardcore24.Leaderboard);
-                            Hardcore24.config.set("leaderboards.players.kills." + player.getKiller().getUniqueId(), Hardcore24.config.getInt("leaderboards.players.kills" + player.getKiller().getUniqueId()) + 1);
-                            Hardcore24.config.save(Hardcore24.Leaderboard);
-                        }
-                    }
 
 
                     Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
@@ -181,14 +169,14 @@ public class PlayerDeath implements Listener {
                     }
 
                 }
-                UpdateEntity();
-            }
             }
 
 
-        }
-
-        public void UpdateEntity(){
 
         }
-    }
+    } }
+
+
+
+
+

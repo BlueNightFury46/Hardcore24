@@ -17,6 +17,10 @@ hardcore-config:
   blood-moon-duration: 2.0
   # in hrs (above)
   death-ban-time: 24.0
-  leader-board: false
-  death-ban-exclude-ops: true
   # ^ above is the time you want to ban the player for in hours ^
+  death-ban-exclude-ops: true
+  # If true operators will be excluded from the death ban
+hardcore-message-config:
+  blood-moon-message: '§4As the blood moon rises the countless monsters band together, you encounter mobs with stronger gear...§4'
+  blood-moon-title-message: '§cThe Blood Moon Rises Once Again!§c'
+  blood-moon-subtitle-message: '§4Mobs you find will have stronger armour§4'

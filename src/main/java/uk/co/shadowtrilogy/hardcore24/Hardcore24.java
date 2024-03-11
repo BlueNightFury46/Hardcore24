@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.permissions.PermissionAttachment;
@@ -24,15 +25,16 @@ import java.util.UUID;
 public final class Hardcore24 extends JavaPlugin {
 
     public static FileConfiguration configuration;
-    public static FileConfiguration config;
 
     public static File file;
-    public static File Leaderboard;
+    public static String Blood_Moon_Message;
     public static Boolean playOnce = true;
     public static Boolean day = false;
+    public static boolean MESSAGE_ONCE = true;
     public static double bDuration;
     public static long d;
     public static int phaseCounter = 0;
+    public static String LastBloodMoon = null;
 
     public static boolean bloodmoon = false;
     public static boolean removeArmour = false;
@@ -58,6 +60,7 @@ public final class Hardcore24 extends JavaPlugin {
         Boolean bool = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.harder-mobs");
         Boolean Moon = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.do-blood-moon");
         d = (long) plugin.getConfig().getDouble("hardcore-config.blood-moon-duration") * 60 * 60 * 20;
+        Blood_Moon_Message = plugin.getConfig().getString("hardcore-message-config.blood-moon-message");
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
         Bukkit.getPluginManager().registerEvents(new ServerLoad(), this);
@@ -69,14 +72,12 @@ public final class Hardcore24 extends JavaPlugin {
         }
 
 
-
         //Registers commands
 
         getCommand("hardcore").setExecutor(new hardcore());
         getCommand("hardcore").setTabCompleter(new hardcoreAutoComplete());
 
-        getCommand("leaderboard").setExecutor(new Leaderboard());
-        getCommand("leaderboard").setTabCompleter(new leaderboardAU());
+        getCommand("hardcore24-version").setExecutor(new hardcore24Version());
 
         //Generates a .players file to store the "banned" players uuids
 
@@ -90,7 +91,6 @@ public final class Hardcore24 extends JavaPlugin {
 
         try {
             fileGeneration();
-            LeaderBoardfileGeneration();
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (InvalidConfigurationException e) {
@@ -100,16 +100,59 @@ public final class Hardcore24 extends JavaPlugin {
 
         //
         getLogger().info("Hardcore24 is active and should be working as usual");
-        
+
+
+        if(Moon == true) {
+
+            getLogger().info("Preparing for Blood Moon Mobs Armour Removal ");
+            Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
+
+            World world_hardcore = Bukkit.getWorld(plugin.getConfig().getString("hardcore-world.hardcore-normal"));
+
+            for (LivingEntity entity : world_hardcore.getLivingEntities()) {
+
+                try {
+                    if (entity.getEquipment().getHelmet().isSimilar(ArmourInit.bloodMoon1)) {
+                        entity.getEquipment().setHelmet(ArmourInit.none);
+                    }
+                } catch (NullPointerException e) {
+
+                }
+                try {
+                    if (entity.getEquipment().getChestplate().isSimilar(ArmourInit.bloodMoon2)) {
+                        entity.getEquipment().setChestplate(ArmourInit.none);
+                    }
+                } catch (NullPointerException e) {
+
+                }
+                try {
+                    if (entity.getEquipment().getLeggings().isSimilar(ArmourInit.bloodMoon3)) {
+                        entity.getEquipment().setLeggings(ArmourInit.none);
+                    }
+                } catch (NullPointerException e) {
+
+                }
+                try {
+                    if (entity.getEquipment().getBoots().isSimilar(ArmourInit.bloodMoon4)) {
+                        entity.getEquipment().setBoots(ArmourInit.none);
+                    }
+                } catch (NullPointerException e) {
+
+                }
+                if (MESSAGE_ONCE == true) {
+                    MESSAGE_ONCE = false;
+                    getLogger().info("Removing Blood Moon armour from mobs...");
+                }
+
+            }
+            }, 250L);
+            getLogger().info("Cleared all blood moon armour from mobs!");
+        }
 
 
     }
 
 
-
-    public FileConfiguration getConfiguration(){
-        return this.config;
-    }
 
     public void fileGeneration() throws IOException, InvalidConfigurationException, FileNotFoundException {
         file = new File(getDataFolder(), "permissions.yml");
@@ -128,23 +171,6 @@ public final class Hardcore24 extends JavaPlugin {
 
 
 
-    public void LeaderBoardfileGeneration() throws IOException, InvalidConfigurationException, FileNotFoundException {
-        Leaderboard = new File(getDataFolder(), "leaderboard.yml");
-        try {
-            if (!Leaderboard.exists()) {
-                Leaderboard.getParentFile().mkdirs();
-                saveResource("leaderboard.yml", false);
-            }
-        }catch (NullPointerException exception){
-            Leaderboard.getParentFile().mkdirs();
-            saveResource("leaderboard.yml", false);
-        }
-        config = new YamlConfiguration();
-        config.load(Leaderboard);
-    }
-
-
-
 
     @Override
     public void onDisable() {
@@ -157,14 +183,6 @@ public final class Hardcore24 extends JavaPlugin {
             }
         } catch (NullPointerException e) {
             saveResource("permissions.yml", false);
-        }
-        try {
-            if (!Leaderboard.exists()) {
-                Leaderboard.getParentFile().mkdirs();
-                saveResource("leaderboard.yml", false);
-            }
-        } catch (NullPointerException e) {
-            saveResource("leaderboard.yml", false);
         }
 
 
@@ -189,7 +207,6 @@ public final class Hardcore24 extends JavaPlugin {
             try {
                 try {
                     configuration.save(file);
-                    config.save(file);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

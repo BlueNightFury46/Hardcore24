@@ -41,7 +41,7 @@ public class hardcore implements CommandExecutor {
         if (command.getName().equalsIgnoreCase("hardcore")) {
 
 
-            if (player.hasPermission("hardcore.commands")) {
+            if (player.hasPermission("hardcore.commands") || player.isOp() == true) {
                 try {
                     if (args.length > 0) {
 
@@ -66,8 +66,7 @@ public class hardcore implements CommandExecutor {
                                     for (Player p : Bukkit.getOnlinePlayers()) {
                                         if (args[1].contains(p.getName())) {
                                             Hardcore24.map.put(p.getUniqueId(), true);
-                                            player.sendMessage("Added " + p.getName());
-                                            player.sendMessage(ChatColor.DARK_RED + "Warning! ⚠️ players added to the list will not be removed from the list after 24hrs, you will have to remove them later manually");
+                                            player.sendMessage("Added " + p.getName() + " to the temporarily banned players list");
                                             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
                                                 if (Hardcore24.map.containsKey(player.getUniqueId())) {
                                                     Hardcore24.map.remove(player.getUniqueId(), true);
@@ -82,7 +81,7 @@ public class hardcore implements CommandExecutor {
                                     return false;
                                 }
 
-                            } else if (args[0].toLowerCase().contains("perm") && player.isOp()) {
+                            } else if (args[0].toLowerCase().contains("perm") && player.isOp() == true) {
 
 
                                 //permission one
@@ -150,23 +149,44 @@ public class hardcore implements CommandExecutor {
                                             player.sendMessage(ChatColor.RED + "No recent logs for player '" + p.getName() + "'");
                                             return true;
                                         }
+                                    } else if (args[1].toLowerCase().contains("blood") && args[1].toLowerCase().contains("moon")) {
+                                        if (Hardcore24.LastBloodMoon != null) {
+                                            player.sendMessage(Hardcore24.LastBloodMoon);
+                                            return true;
+                                        } else {
+                                            player.sendMessage(ChatColor.RED + "There have been no recent Blood Moons...");
+                                            return true;
+                                        }
                                     }
+                                    player.sendMessage(ChatColor.RED + "Player '" + args[1] + "' found...");
+                                    return true;
+
                                 }
-                                player.sendMessage(ChatColor.RED + "Player '" + args[1] + "' found...");
+
+
+                            } else if (args[0].toLowerCase().contains("ping")) {
+                                for (Player p : Bukkit.getOnlinePlayers()) {
+                                    if (args[1].contains(p.getName())) {
+
+                                        player.sendMessage(ChatColor.BLUE + "The current ping of Player '" + p.getName() + "' is " + p.getPing() + "ms");
+                                        return true;
+                                    }
+
+                                }
+                                player.sendMessage(ChatColor.RED + "Player '" + args[1] + "' not found...");
                                 return true;
 
+
+                            }else {
+                                return false;
                             }
-
-
-                        } else {
-                            return false;
                         }
+                        return false;
 
-                        player.sendMessage(ChatColor.RED + "You don't have permission to use that command");
+                    } else {
+                        return false;
                     }
 
-
-                    return true;
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 } catch (IOException e) {
@@ -178,12 +198,12 @@ public class hardcore implements CommandExecutor {
 
                 }
 
-
-            } else{
-                return false;}
-
+                return true;
+            }
+            player.sendMessage(ChatColor.RED + "You don't have permission to use that command");
+            return true;
         }
         return true;
     }
-    }
+}
 
