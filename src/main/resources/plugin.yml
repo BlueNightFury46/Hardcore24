@@ -16,7 +16,6 @@ commands:
     aliases:
       - version
       - hardcore-version
-      - 24-version
 permissions:
   hardcore.commands:
    description: Allows players to use the /Hardcore command

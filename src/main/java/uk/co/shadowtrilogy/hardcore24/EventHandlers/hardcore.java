@@ -164,7 +164,20 @@ public class hardcore implements CommandExecutor {
                                 }
 
 
-                            } else {
+                            } else if (args[0].toLowerCase().contains("ping")) {
+                                for (Player p : Bukkit.getOnlinePlayers()) {
+                                    if (args[1].contains(p.getName())) {
+
+                                        player.sendMessage(ChatColor.BLUE + "The current ping of Player '" + p.getName() + "' is " + p.getPing() + "ms");
+                                        return true;
+                                    }
+
+                                }
+                                player.sendMessage(ChatColor.RED + "Player '" + args[1] + "' not found...");
+                                return true;
+
+
+                            }else {
                                 return false;
                             }
                         }
