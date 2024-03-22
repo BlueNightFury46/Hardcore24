@@ -73,7 +73,7 @@ public final class Hardcore24 extends JavaPlugin {
         getCommand("hardcore").setExecutor(new hardcore());
         getCommand("hardcore").setTabCompleter(new hardcoreAutoComplete());
 
-        getCommand("hardcore24-version").setExecutor(new hardcore());
+        getCommand("hardcore24-version").setExecutor(new hardcore24Version());
 
         //Generates a .players file to store the "banned" players uuids
 

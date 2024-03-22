@@ -31,7 +31,7 @@ public class hardcoreAutoComplete implements TabCompleter {
                     }
                 } else {
                     List<String> list = new ArrayList<>();
-                    for(OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+                    for(Player player : Bukkit.getOnlinePlayers()) {
 
                         list.add(player.getName());
 

@@ -82,8 +82,10 @@ public class PlayerDeath implements Listener {
 
                         }
                         player.getEnderChest().clear();
-
-                        player.setPlayerListName(ChatColor.BLUE + "24hrs " + "§9⌚§9" + net.md_5.bungee.api.ChatColor.RESET + ": " + player.getName());
+                        double d2 = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
+                        int i = (int) Math.round(d2);
+                        String iString = i + "";
+                        player.setPlayerListName(ChatColor.BLUE + iString + "hrs " + "§9⌚§9" + net.md_5.bungee.api.ChatColor.RESET + ": " + player.getName());
 
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
                         if (player.getKiller() != null) {
@@ -137,8 +139,11 @@ public class PlayerDeath implements Listener {
 
                     }
                     player.getEnderChest().clear();
+                    double d2 = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
+                    int i = (int) Math.round(d2);
+                    String iString = i + "";
 
-                    player.setPlayerListName(ChatColor.BLUE + "24hrs " + "§9⌚§9" + net.md_5.bungee.api.ChatColor.RESET + ": " + player.getName());
+                    player.setPlayerListName(ChatColor.BLUE + iString + "hrs " + "§9⌚§9" + net.md_5.bungee.api.ChatColor.RESET + ": " + player.getName());
 
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
                     if (player.getKiller() != null) {

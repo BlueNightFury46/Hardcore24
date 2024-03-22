@@ -26,7 +26,10 @@ public class PlayerJoin implements Listener {
 
 
         if(Hardcore24.map.containsKey(ev.getPlayer().getUniqueId())){
-            ev.getPlayer().setPlayerListName(ChatColor.BLUE + "24hrs " + "§9⌚§9" + net.md_5.bungee.api.ChatColor.RESET + ": " + ev.getPlayer().getName());
+            double d = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
+            int i = (int) Math.round(d);
+            String iString = i + "";
+            ev.getPlayer().setPlayerListName(ChatColor.BLUE + iString + "hrs " + "§9⌚§9" + net.md_5.bungee.api.ChatColor.RESET + ": " + ev.getPlayer().getName());
 
         }
         else{

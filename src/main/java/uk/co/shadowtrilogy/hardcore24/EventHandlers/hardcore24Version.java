@@ -44,14 +44,15 @@ public class hardcore24Version implements CommandExecutor {
             if (command.getName().equalsIgnoreCase("hardcore24-version")) {
 
 
-                if (player.isOp() == true) {
+                if (player.isOp() == true || player.hasPermission("hardcore.commands.version")) {
 
                     player.sendMessage(ChatColor.BLUE + "Hardcore24 is currently running on version " + Hardcore24.plugin.getDescription().getVersion());
-                    Hardcore24.plugin.getLogger().info(ChatColor.RED + "Player " + player.getName() + " attempted to run command /hardcore24-version\n");
-
-
+                    Hardcore24.plugin.getLogger().info(ChatColor.RED + "Player " + player.getName() + " attempted to run command /" + command.getName().toLowerCase());
+                    return true;
 
                 }
+                player.sendMessage("You don't have permission... Foolish player... Why try...");
+                return true;
             }
 
         }
