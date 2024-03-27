@@ -35,9 +35,13 @@ public final class Hardcore24 extends JavaPlugin {
     public static boolean bloodmoon = false;
     public static boolean removeArmour = false;
 
+    public static boolean ShulkerPlacement = false;
+
     public static Hardcore24 plugin;
     public static HashMap<UUID, Boolean> map2 = new HashMap<>();
     public static Map map = map2;
+
+    public static Map<UUID, String> DamagedPlayers = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -57,6 +61,10 @@ public final class Hardcore24 extends JavaPlugin {
         Boolean Moon = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.do-blood-moon");
         d = (long) plugin.getConfig().getDouble("hardcore-config.blood-moon-duration") * 60 * 60 * 20;
         Blood_Moon_Message = plugin.getConfig().getString("hardcore-message-config.blood-moon-message");
+        ShulkerPlacement = plugin.getConfig().getBoolean("hardcore-config.can't-place-shulker-during-damage");
+
+
+
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
         Bukkit.getPluginManager().registerEvents(new ServerLoad(), this);
@@ -65,6 +73,11 @@ public final class Hardcore24 extends JavaPlugin {
 
         if(bool == true || Moon == true) {
             Bukkit.getPluginManager().registerEvents(new MoreMobs(), this);
+        }
+        if(ShulkerPlacement == true){
+            Bukkit.getPluginManager().registerEvents(new PlayerDamage(), this);
+            Bukkit.getPluginManager().registerEvents(new PlayerPlace(), this);
+            Bukkit.getPluginManager().registerEvents(new InventoryOpenEvent(), this);
         }
 
 

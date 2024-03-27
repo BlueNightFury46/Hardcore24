@@ -1,5 +1,5 @@
 name: Hardcore24
-version: '2.47a'
+version: '2.48a'
 main: uk.co.shadowtrilogy.hardcore24.Hardcore24
 api-version: '1.20'
 load: STARTUP

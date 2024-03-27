@@ -17,6 +17,7 @@ hardcore-config:
   blood-moon-duration: 2.0
   # in hrs (above)
   death-ban-time: 24.0
+  can't-place-shulker-during-damage: false
   # ^ above is the time you want to ban the player for in hours ^
   death-ban-exclude-ops: true
   # If true operators will be excluded from the death ban
