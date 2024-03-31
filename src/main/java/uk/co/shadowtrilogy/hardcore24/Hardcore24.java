@@ -74,11 +74,6 @@ public final class Hardcore24 extends JavaPlugin {
         if(bool == true || Moon == true) {
             Bukkit.getPluginManager().registerEvents(new MoreMobs(), this);
         }
-        if(ShulkerPlacement == true){
-            Bukkit.getPluginManager().registerEvents(new PlayerDamage(), this);
-            Bukkit.getPluginManager().registerEvents(new PlayerPlace(), this);
-            Bukkit.getPluginManager().registerEvents(new InventoryOpenEvent(), this);
-        }
 
 
         //Registers commands
@@ -94,6 +89,13 @@ public final class Hardcore24 extends JavaPlugin {
         //Saves the config
 
         ArmourInit.init();
+
+        if(ShulkerPlacement == true){
+            Bukkit.getPluginManager().registerEvents(new PlayerDamage(), this);
+            Bukkit.getPluginManager().registerEvents(new PlayerPlace(), this);
+            Bukkit.getPluginManager().registerEvents(new InventoryOpenEvent(), this);
+        }
+
         //initiates the mob armour
         getLogger().info("Starting Hardcore24 by BlueNightFury46");
 
