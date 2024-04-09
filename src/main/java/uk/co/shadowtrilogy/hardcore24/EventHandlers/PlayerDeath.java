@@ -102,6 +102,7 @@ public class PlayerDeath implements Listener {
                         Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
                             if (Hardcore24.map.containsKey(player.getUniqueId())) {
                                 Hardcore24.map.remove(player.getUniqueId(), true);
+                                player.setPlayerListName(player.getName());
                             }
 
                         }, time);
@@ -160,6 +161,7 @@ public class PlayerDeath implements Listener {
                     Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
                         if (Hardcore24.map.containsKey(player.getUniqueId())) {
                             Hardcore24.map.remove(player.getUniqueId(), true);
+                            player.setPlayerListName(player.getName());
                         }
 
                     }, time);
