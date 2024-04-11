@@ -17,10 +17,8 @@ import uk.co.shadowtrilogy.hardcore24.EventHandlers.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public final class Hardcore24 extends JavaPlugin {
     public static String Blood_Moon_Message;
@@ -38,7 +36,7 @@ public final class Hardcore24 extends JavaPlugin {
     public static boolean ShulkerPlacement = false;
 
     public static Hardcore24 plugin;
-    public static HashMap<UUID, Boolean> map2 = new HashMap<>();
+    public static HashMap<UUID, LocalDateTime> map2 = new HashMap<>();
     public static Map map = map2;
 
     public static Map<UUID, String> DamagedPlayers = new HashMap<>();

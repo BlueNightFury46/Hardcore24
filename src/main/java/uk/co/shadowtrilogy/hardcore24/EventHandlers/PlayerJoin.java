@@ -12,6 +12,7 @@ import org.bukkit.permissions.PermissionAttachment;
 import uk.co.shadowtrilogy.hardcore24.Hardcore24;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class PlayerJoin implements Listener {
@@ -35,6 +36,7 @@ public class PlayerJoin implements Listener {
         else{
             ev.getPlayer().setPlayerListName(ev.getPlayer().getName());
         }
+
 
         //Make sure the "banned" players stay "banned"
             FileConfiguration fileConfiguration = Hardcore24.plugin.getConfig();

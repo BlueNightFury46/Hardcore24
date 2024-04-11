@@ -29,7 +29,7 @@ public class hardcoreAutoComplete implements TabCompleter {
 
                         return list;
                     }
-                } else {
+                } else if(args.length == 2){
                     List<String> list = new ArrayList<>();
                     for(Player player : Bukkit.getOnlinePlayers()) {
 
@@ -37,6 +37,38 @@ public class hardcoreAutoComplete implements TabCompleter {
 
                     }
                     list.add("Blood-Moon");
+                    return list;
+
+                } else if(args.length == 3){
+                    List<String> list = new ArrayList<>();
+                    list.add("1.0");
+                    list.add("2.0");
+                    list.add("3.0");
+                    list.add("4.0");
+                    list.add("5.0");
+                    list.add("6.0");
+                    list.add("7.0");
+                    list.add("8.0");
+                    list.add("9.0");
+                    list.add("10.0");
+                    list.add("11.0");
+                    list.add("12.0");
+                    list.add("13.0");
+                    list.add("14.0");
+                    list.add("15.0");
+                    list.add("16.0");
+                    list.add("17.0");
+                    list.add("18.0");
+                    list.add("19.0");
+                    list.add("20.0");
+                    list.add("21.0");
+                    list.add("22.0");
+                    list.add("23.0");
+                    list.add("24.0");
+
+
+
+
                     return list;
 
                 }

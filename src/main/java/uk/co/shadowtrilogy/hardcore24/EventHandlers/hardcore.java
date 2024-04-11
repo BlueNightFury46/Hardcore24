@@ -16,6 +16,7 @@ import uk.co.shadowtrilogy.hardcore24.Hardcore24;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -50,29 +51,58 @@ public class hardcore implements CommandExecutor {
                             if (args[0].toLowerCase().equals("remove")) {
 
                                 if (!args[1].isEmpty()) {
-                                    for (Player p : Bukkit.getOnlinePlayers()) {
-                                        if (args[1].contains(p.getName())) {
-                                            Hardcore24.map.remove(p.getUniqueId());
-                                            player.sendMessage("Removed " + p.getName());
-                                            return true;
+                                    if(args.length > 2) {
+                                        long time = Long.valueOf(args[2]) * 60 * 60 * 20;
+                                        OfflinePlayer p;
+                                        for (@NotNull OfflinePlayer pl : Bukkit.getOfflinePlayers()) {
+                                            if (args[1].equalsIgnoreCase(pl.getName())) {
+                                               p = pl;
+                                                Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
+                                                    if (Hardcore24.map.containsKey(p.getUniqueId())) {
+                                                        LocalDateTime DateTime = (LocalDateTime) Hardcore24.map.get(p.getUniqueId());
+                                                        Hardcore24.map.remove(p.getUniqueId(), DateTime);
+                                                        if(Bukkit.getOnlinePlayers().contains(p)){
+                                                            Player player1 = Bukkit.getPlayer(p.getUniqueId());
+                                                            player1.setPlayerListName(player1.getName());
+                                                        }
+                                                    }
+                                                }, time);
+                                                return true;
+                                            }
+                                        }
+
+                                    } else {
+
+                                        for (@NotNull OfflinePlayer p : Bukkit.getOfflinePlayers()) {
+                                            if (args[1].equalsIgnoreCase(p.getName())) {
+                                                Hardcore24.map.remove(p.getUniqueId());
+                                                player.sendMessage("Removed " + p.getName());
+                                                if(Bukkit.getOnlinePlayers().contains(p)){
+                                                    Player player1 = Bukkit.getPlayer(p.getUniqueId());
+                                                    player1.setPlayerListName(player1.getName());
+                                                }
+                                                return true;
+                                            }
                                         }
                                     }
-
                                 }
-
+                              return false;
                             } else if (args[0].toLowerCase().equals("add")) {
 
                                 if (!args[1].isEmpty()) {
-                                    for (Player p : Bukkit.getOnlinePlayers()) {
+                                    double d = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
+
+                                    long time = (long) d * 60 * 60 * 20;
+                                    for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
                                         if (args[1].contains(p.getName())) {
                                             Hardcore24.map.put(p.getUniqueId(), true);
                                             player.sendMessage("Added " + p.getName() + " to the temporarily banned players list");
                                             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
-                                                if (Hardcore24.map.containsKey(player.getUniqueId())) {
-                                                    Hardcore24.map.remove(player.getUniqueId(), true);
+                                                if (Hardcore24.map.containsKey(p.getUniqueId())) {
+                                                    Hardcore24.map.remove(p.getUniqueId(), true);
                                                 }
 
-                                            }, 1728000L);
+                                            }, time);
                                             return true;
                                         }
                                     }

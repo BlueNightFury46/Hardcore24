@@ -74,8 +74,8 @@ public class PlayerDeath implements Listener {
                         player.sendMessage(ChatColor.BLUE + "409 Conflict");
 
                     } else if (!Hardcore24.map.containsKey(player.getUniqueId())) {
-
-                        Hardcore24.map.put(player.getUniqueId(), true);
+                        LocalDateTime DateTime = LocalDateTime.now();
+                        Hardcore24.map.put(player.getUniqueId(), DateTime);
 
                         for (ItemStack itemStack : player.getEnderChest().getContents()) {
                             e.getDrops().add(itemStack);
@@ -101,7 +101,7 @@ public class PlayerDeath implements Listener {
 
                         Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
                             if (Hardcore24.map.containsKey(player.getUniqueId())) {
-                                Hardcore24.map.remove(player.getUniqueId(), true);
+                                Hardcore24.map.remove(player.getUniqueId(), DateTime);
                                 player.setPlayerListName(player.getName());
                             }
 
@@ -132,8 +132,8 @@ public class PlayerDeath implements Listener {
                     player.sendMessage(ChatColor.BLUE + "409 Conflict");
 
                 } else if (!Hardcore24.map.containsKey(player.getUniqueId())) {
-
-                    Hardcore24.map.put(player.getUniqueId(), true);
+                    LocalDateTime DateTime = LocalDateTime.now();
+                    Hardcore24.map.put(player.getUniqueId(), DateTime);
 
                     for (ItemStack itemStack : player.getEnderChest().getContents()) {
                         e.getDrops().add(itemStack);
@@ -160,7 +160,7 @@ public class PlayerDeath implements Listener {
 
                     Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
                         if (Hardcore24.map.containsKey(player.getUniqueId())) {
-                            Hardcore24.map.remove(player.getUniqueId(), true);
+                            Hardcore24.map.remove(player.getUniqueId(), DateTime);
                             player.setPlayerListName(player.getName());
                         }
 
