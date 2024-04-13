@@ -23,10 +23,6 @@ import java.util.UUID;
 
 public class hardcore implements CommandExecutor {
 
-    public static HashMap<UUID, PermissionAttachment> map4 = new HashMap<>();
-
-    public static Map permissionAttachmentHashMap = map4;
-
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
