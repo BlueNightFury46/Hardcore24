@@ -50,28 +50,18 @@ public class ServerLoad implements Listener {
                 ev.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 255));
             }
 
+            double d = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
+            LocalDateTime t = (LocalDateTime) Hardcore24.map.get(ev.getPlayer());
+            double hrs = t.getHour() + d;
+            double days = t.getDayOfMonth() + hrs / 24;
+
             //First Check
             if (ev.getPlayer().getWorld().equals(world_hardcore) || ev.getPlayer().getWorld().equals(world_end) || ev.getPlayer().getWorld().equals(world_nether)) {
             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
                 if(ev.getPlayer().getWorld().equals(world_hardcore) || ev.getPlayer().getWorld().equals(world_end) || ev.getPlayer().getWorld().equals(world_nether))
                 { ev.getPlayer().teleport(new Location(world, x, y, z));
-                    LocalDateTime dt = (LocalDateTime) Hardcore24.map.get(ev.getPlayer().getUniqueId());
-                    LocalDateTime nw = LocalDateTime.now();
-                    double days = dt.getDayOfMonth() - nw.getDayOfMonth();
 
-                    double hrs = dt.getHour() - nw.getHour();
-                    double min = dt.getMinute() - nw.getMinute();
-                    if(days > 1){
-                        ev.getPlayer().sendMessage(ChatColor.RED + "You died in " + world_hardcore.getName() + ", don't worry you can join again in " + days + "days!");
-                    }
-                    else if(days <= 1){
-                        ev.getPlayer().sendMessage(ChatColor.YELLOW + "You died in " + world_hardcore.getName() + ", don't worry you can join again in " + hrs + "hours!");
-
-                    } else if(hrs <= 1){
-                        ev.getPlayer().sendMessage(ChatColor.GREEN + "You died in " + world_hardcore.getName() + ", don't worry you can join again in " + min + "minutes!");
-                    }else {
-                        ev.getPlayer().sendMessage(ChatColor.AQUA + "You died in " + world_hardcore.getName() + ", don't worry you can join again soon!");
-                    }
+                    ev.getPlayer().sendMessage(ChatColor.GOLD + "You died in " + world_hardcore.getName() + "! Don't worry you can join again on the " + days + " of " + t.getMonth().name() + " at " + hrs);
              }
             }, 40L);
 
@@ -80,25 +70,7 @@ public class ServerLoad implements Listener {
             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
                 if(ev.getPlayer().getWorld().equals(world_hardcore) || ev.getPlayer().getWorld().equals(world_end) || ev.getPlayer().getWorld().equals(world_nether)){
                 ev.getPlayer().teleport(new Location(world, x, y, z));
-
-
-                        LocalDateTime dt = (LocalDateTime) Hardcore24.map.get(ev.getPlayer().getUniqueId());
-                        LocalDateTime nw = LocalDateTime.now();
-                        double days = dt.getDayOfMonth() - nw.getDayOfMonth();
-
-                        double hrs = dt.getHour() - nw.getHour();
-                        double min = dt.getMinute() - nw.getMinute();
-                        if(days > 1){
-                            ev.getPlayer().sendMessage(ChatColor.RED + "You died in " + world_hardcore.getName() + ", don't worry you can join again in " + days + "days!");
-                        }
-                        else if(days <= 1){
-                            ev.getPlayer().sendMessage(ChatColor.GOLD + "You died in " + world_hardcore.getName() + ", don't worry you can join again in " + hrs + "hours!");
-
-                        } else if(hrs <= 1){
-                            ev.getPlayer().sendMessage(ChatColor.BLUE + "You died in " + world_hardcore.getName() + ", don't worry you can join again in " + min + "minutes!");
-                        } else {
-                            ev.getPlayer().sendMessage(ChatColor.YELLOW + "You died in " + world_hardcore.getName() + ", don't worry you can join again soon!");
-                        }
+                    ev.getPlayer().sendMessage(ChatColor.BLUE + "You died in " + world_hardcore.getName() + "! Don't worry you can join again on the " + days + " of " + t.getMonth().name() + " at " + hrs);
 
 
 
