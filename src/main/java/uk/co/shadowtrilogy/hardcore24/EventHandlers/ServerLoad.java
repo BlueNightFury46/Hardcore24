@@ -71,7 +71,7 @@ public class ServerLoad implements Listener {
                     }
                     double hrs = time_hrs;
 
-                    ev.getPlayer().sendMessage(ChatColor.GOLD + "You died in " + world_hardcore.getName() + "! Don't worry you can join again on the " + Math.round(days) + " of " + t.getMonth().name().toLowerCase() + " at " + hrs);
+                    ev.getPlayer().sendMessage(ChatColor.GOLD + "You died in " + world_hardcore.getName() + "! Don't worry you can join again on the " + ((int) days) + "th of " + t.getMonth().name().toLowerCase() + " at " + hrs);
              }
             }, 40L);
 
@@ -89,8 +89,13 @@ public class ServerLoad implements Listener {
                             time_hrs -= 24;
                         }
                     }
+
+                    if(days > days + .5){
+                        System.out.println(days + .5);
+                    }
+
                     double hrs = time_hrs;
-                    ev.getPlayer().sendMessage(ChatColor.BLUE + "You died in " + world_hardcore.getName() + "! Don't worry you can join again on the " + Math.round(days) + " of " + t.getMonth().name().toLowerCase() + " at " + hrs);
+                    ev.getPlayer().sendMessage(ChatColor.BLUE + "You died in " + world_hardcore.getName() + "! Don't worry you can join again on the " + ((int) days) + "th of " + t.getMonth().name().toLowerCase() + " at " + hrs);
 
 
 
