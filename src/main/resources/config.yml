@@ -12,6 +12,7 @@ hardcore-world:
 # Configure the hardcore worlds
 # Note: If you don't have a nether and end world then rename them to a world that doesn't exist
 hardcore-config:
+  server-timezone: GMT
   harder-mobs: false
   do-blood-moon: false
   blood-moon-duration: 2.0

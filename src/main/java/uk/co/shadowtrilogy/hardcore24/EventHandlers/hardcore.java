@@ -89,13 +89,14 @@ public class hardcore implements CommandExecutor {
                                     double d = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
 
                                     long time = (long) d * 60 * 60 * 20;
+                                    LocalDateTime dateTime = LocalDateTime.now();
                                     for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
                                         if (args[1].contains(p.getName())) {
-                                            Hardcore24.map.put(p.getUniqueId(), true);
+                                            Hardcore24.map.put(p.getUniqueId(), dateTime);
                                             player.sendMessage("Added " + p.getName() + " to the temporarily banned players list");
                                             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
                                                 if (Hardcore24.map.containsKey(p.getUniqueId())) {
-                                                    Hardcore24.map.remove(p.getUniqueId(), true);
+                                                    Hardcore24.map.remove(p.getUniqueId(), dateTime);
                                                 }
 
                                             }, time);
