@@ -48,8 +48,9 @@ public class hardcore implements CommandExecutor {
 
                                 if (!args[1].isEmpty()) {
                                     if(args.length > 2) {
-                                        long time = Long.valueOf(args[2]) * 60 * 60 * 20;
+                                        long time = (long) (Double.valueOf(args[2]) * 60 * 60 * 20);
                                         OfflinePlayer p;
+                                        commandSender.sendMessage(ChatColor.BLUE + "Scheduled player \"" + ChatColor.LIGHT_PURPLE + args[1] + ChatColor.BLUE + "\" to be unbanned from hardcore in " + time / 60 / 60 / 20 + "hrs");
                                         for (@NotNull OfflinePlayer pl : Bukkit.getOfflinePlayers()) {
                                             if (args[1].equalsIgnoreCase(pl.getName())) {
                                                p = pl;
@@ -57,7 +58,7 @@ public class hardcore implements CommandExecutor {
                                                     if (Hardcore24.map.containsKey(p.getUniqueId())) {
                                                         LocalDateTime DateTime = (LocalDateTime) Hardcore24.map.get(p.getUniqueId());
                                                         Hardcore24.map.remove(p.getUniqueId(), DateTime);
-                                                        if(Bukkit.getOnlinePlayers().contains(p)){
+                                                        if(Bukkit.getOnlinePlayers().contains(p)) {
                                                             Player player1 = Bukkit.getPlayer(p.getUniqueId());
                                                             player1.setPlayerListName(player1.getName());
                                                         }

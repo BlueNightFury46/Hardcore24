@@ -73,7 +73,12 @@ public class ServerLoad implements Listener {
                     }
                     double hrs = time_hrs;
 
-                    ev.getPlayer().sendMessage(ChatColor.GOLD + "You died in " + world_hardcore.getName() + "! Don't worry you can join again on the " + ((int) days) + "th of " + t.getMonth().name().toLowerCase() + " at " + hrs + ":" + t.getMinute() + " " + timezone);
+                    if(t.getMinute() < 10){
+                        ev.getPlayer().sendMessage(ChatColor.GOLD + "You died in " + world_hardcore.getName() + "! Don't worry you can join again on the " + ((int) days) + "th of " + t.getMonth().name().toLowerCase() + " at " + ((int) hrs) + ":0" + t.getMinute() + " (" + timezone + ")");
+
+                    } else {
+                        ev.getPlayer().sendMessage(ChatColor.GOLD + "You died in " + world_hardcore.getName() + "! Don't worry you can join again on the " + ((int) days) + "th of " + t.getMonth().name().toLowerCase() + " at " + ((int) hrs) + ":" + t.getMinute() + " (" + timezone + ")");
+                    }
              }
             }, 40L);
 
@@ -97,7 +102,12 @@ public class ServerLoad implements Listener {
                     }
 
                     double hrs = time_hrs;
-                    ev.getPlayer().sendMessage(ChatColor.BLUE + "You died in " + world_hardcore.getName() + "! Don't worry you can join again on the " + ((int) days) + "th of " + t.getMonth().name().toLowerCase() + " at " + hrs + ":" + t.getMinute() + " " + timezone);
+                    if(t.getMinute() < 10){
+                        ev.getPlayer().sendMessage(ChatColor.BLUE + "You died in " + world_hardcore.getName() + "! Don't worry you can join again on the " + ((int) days) + "th of " + t.getMonth().name().toLowerCase() + " at " + ((int) hrs) + ":0" + t.getMinute() + " (" + timezone + ")");
+
+                    } else {
+                        ev.getPlayer().sendMessage(ChatColor.BLUE + "You died in " + world_hardcore.getName() + "! Don't worry you can join again on the " + ((int) days) + "th of " + t.getMonth().name().toLowerCase() + " at " + ((int) hrs) + ":" + t.getMinute() + " (" + timezone + ")");
+                    }
 
 
 
