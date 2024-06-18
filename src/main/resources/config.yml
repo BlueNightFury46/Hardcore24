@@ -2,17 +2,17 @@ respawn-location:
   x: 0.0
   y: 0.0
   z: 0.0
-  world: world
+  world: 'world'
 # The world they get sent to after respawning
 #
 hardcore-world:
-  hardcore-normal: hardcore
-  hardcore-nether: hardcore_nether
-  hardcore-end: hardcore_end
+  hardcore-normal: 'hardcore'
+  hardcore-nether: 'hardcore_nether'
+  hardcore-end: 'hardcore_end'
 # Configure the hardcore worlds
 # Note: If you don't have a nether and end world then rename them to a world that doesn't exist
 hardcore-config:
-  server-timezone: GMT
+  server-timezone: 'GMT'
   harder-mobs: false
   do-blood-moon: false
   blood-moon-duration: 2.0
