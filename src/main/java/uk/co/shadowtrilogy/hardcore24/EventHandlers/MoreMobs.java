@@ -8,7 +8,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
 import uk.co.shadowtrilogy.hardcore24.Hardcore24;
@@ -147,13 +146,13 @@ public class MoreMobs implements Listener {
                             //Checks if entity already has leggings and if not sets the leggings to Netherite
                             if (entity.getEquipment().getLeggings().getType().equals(Material.AIR) || entity.getEquipment().getLeggings().isSimilar(ArmourInit.iron2)) {
                                 entity.getEquipment().setLeggings(ArmourInit.bloodMoon3);
-                                entity.getEquipment().getLeggings().addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 4);
+                                entity.getEquipment().getLeggings().addEnchantment(Enchantment.PROTECTION, 4);
                                 entity.getEquipment().setLeggingsDropChance(0.0f);
                             }
                             //Checks if entity already has boots and if not sets the boots to Netherite
                             if (entity.getEquipment().getBoots().getType().equals(Material.AIR)) {
                                 entity.getEquipment().setBoots(ArmourInit.bloodMoon4);
-                                entity.getEquipment().getBoots().addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 4);
+                                entity.getEquipment().getBoots().addEnchantment(Enchantment.PROTECTION, 4);
                                 entity.getEquipment().setBootsDropChance(0.0f);
                             }
                         } else if (bool == true && Hardcore24.day == false) {
@@ -244,7 +243,7 @@ public class MoreMobs implements Listener {
     public static void EquipHelmet(LivingEntity entity){
         if (entity.getEquipment().getHelmet().getType().equals(Material.AIR) || entity.getEquipment().getLeggings().isSimilar(ArmourInit.diamond)) {
             entity.getEquipment().setHelmet(ArmourInit.bloodMoon1);
-            entity.getEquipment().getHelmet().addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 4);
+            entity.getEquipment().getHelmet().addEnchantment(Enchantment.PROTECTION, 4);
             entity.getEquipment().setHelmetDropChance(0.0f);
         }
 
@@ -253,7 +252,7 @@ public class MoreMobs implements Listener {
     public static void EquipChestplate(LivingEntity entity){
         if (entity.getEquipment().getChestplate().getType().equals(Material.AIR) || entity.getEquipment().getLeggings().isSimilar(ArmourInit.iron1)) {
             entity.getEquipment().setChestplate(ArmourInit.bloodMoon2);
-            entity.getEquipment().getChestplate().addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 4);
+            entity.getEquipment().getChestplate().addEnchantment(Enchantment.PROTECTION, 4);
             entity.getEquipment().setChestplateDropChance(0.0f);
         }
 
