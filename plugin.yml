@@ -1,0 +1,31 @@
+name: Hardcore24
+version: '0.62s'
+main: uk.co.shadowtrilogy.hardcore24.Hardcore24
+api-version: '1.21'
+load: STARTUP
+authors: [BlueNightFury46]
+description: a 24 hour (default) hardcore death timeout plugin!
+website: shadowtrilogy.co.uk
+softdepend:
+  - LuckPerms
+  - Multiverse-Core
+commands:
+  hardcore:
+    description: The hardcore24 general purpose command
+    usage: /<command> <action> <player-name>
+    permission: hardcore.commands
+    aliases:
+      - hardcore24
+  hardcore24-version:
+    description: Displays the current hardcore24 version
+    usage: /<hardcore24-version>
+    permission: hardcore.commands.version
+    aliases:
+      - version
+      - hardcore-version
+permissions:
+  hardcore.commands:
+   description: Allows players to use the /hardcore command
+  hardcore.commands.version:
+    description: Allows players to use the /hardcore-version command
+prefix: hardcore24

@@ -1,0 +1,30 @@
+respawn-location:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+  world: 'world'
+# The world they get sent to after respawning
+#
+hardcore-world:
+  hardcore-normal: 'hardcore'
+  hardcore-nether: 'hardcore_nether'
+  hardcore-end: 'hardcore_end'
+# Configure the hardcore worlds
+# Note: If you don't have a nether and end world then rename them to a world that doesn't exist
+hardcore-config:
+  server-timezone: 'GMT'
+  harder-mobs: false
+  do-blood-moon: false
+  blood-moon-duration: 2.0
+  # in hrs (above)
+  death-ban-time: 24.0
+  can't-place-shulker-during-damage: false
+  # ^ above is the time you want to ban the player for in hours ^
+  death-ban-exclude-ops: true
+  # If true operators will be excluded from the death ban
+hardcore-message-config:
+  blood-moon-message: '§4As the blood moon rises the countless monsters band together, you encounter mobs with stronger gear...§4'
+  blood-moon-title-message: '§cThe Blood Moon Rises Once Again!§c'
+  blood-moon-subtitle-message: '§4Mobs you find will have stronger armour§4'
+devopt:
+  kill-player-at: 0.25
