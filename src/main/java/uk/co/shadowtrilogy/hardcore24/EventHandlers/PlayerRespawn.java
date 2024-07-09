@@ -1,12 +1,15 @@
 package uk.co.shadowtrilogy.hardcore24.EventHandlers;
 
-import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import uk.co.shadowtrilogy.hardcore24.Hardcore24;
 
 
@@ -14,7 +17,12 @@ public class PlayerRespawn implements Listener {
 
 
     @EventHandler
-    public void Event(PlayerPostRespawnEvent e){
+    public void Event(EntityDamageEvent e){
+
+
+        
+        
+        Player _player = (Player) e.getEntity();
         FileConfiguration fileConfiguration = Hardcore24.plugin.getConfig();
 
         World world = Bukkit.getWorld(fileConfiguration.get("respawn-location.world").toString());
@@ -27,26 +35,26 @@ public class PlayerRespawn implements Listener {
         World world_end = Bukkit.getWorld(fileConfiguration.getString("hardcore-world.hardcore-end"));
 
 
-        if (e.getPlayer().getWorld().equals(world_hardcore) || e.getPlayer().getWorld().equals(world_end) || e.getPlayer().getWorld().equals(world_nether)) {
+        if (_player.getWorld().equals(world_hardcore) || _player.getWorld().equals(world_end) || _player.getWorld().equals(world_nether)) {
             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
-                if (e.getPlayer().getWorld().equals(world)) {
+                if (_player.getWorld().equals(world)) {
 
-                    e.getPlayer().teleport(new Location(world, x, y, z));
+                    _player.teleport(new Location(world, x, y, z));
                 }
             }, 2L);
 
-
+          //Second telport check, if player is in one of the 3 hardcore worlds and dead, teleport back
             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
-                if (Hardcore24.map.containsKey(e.getPlayer().getUniqueId()) && e.getPlayer().getWorld().equals(world_hardcore) || Hardcore24.map.containsKey(e.getPlayer().getUniqueId()) && e.getPlayer().getWorld().equals(world_end) || Hardcore24.map.containsKey(e.getPlayer().getUniqueId()) && e.getPlayer().getWorld().equals(world_nether)) {
+                if (Hardcore24.map.containsKey(_player.getUniqueId()) && _player.getWorld().equals(world_hardcore) || Hardcore24.map.containsKey(_player.getUniqueId()) && _player.getWorld().equals(world_end) || Hardcore24.map.containsKey(_player.getUniqueId()) && _player.getWorld().equals(world_nether)) {
 
-                    e.getPlayer().teleport(new Location(world, x, y, z));
+                    _player.teleport(new Location(world, x, y, z));
                 }
             }, 5L);
 
             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
-                if (Hardcore24.map.containsKey(e.getPlayer().getUniqueId()) && e.getPlayer().getWorld().equals(world_hardcore) || Hardcore24.map.containsKey(e.getPlayer().getUniqueId()) && e.getPlayer().getWorld().equals(world_end) || Hardcore24.map.containsKey(e.getPlayer().getUniqueId()) && e.getPlayer().getWorld().equals(world_nether)) {
+                if (Hardcore24.map.containsKey(_player.getUniqueId()) && _player.getWorld().equals(world_hardcore) || Hardcore24.map.containsKey(_player.getUniqueId()) && _player.getWorld().equals(world_end) || Hardcore24.map.containsKey(_player.getUniqueId()) && _player.getWorld().equals(world_nether)) {
 
-                    e.getPlayer().teleport(new Location(world, x, y, z));
+                    _player.teleport(new Location(world, x, y, z));
                 }
             }, 20L);
 
