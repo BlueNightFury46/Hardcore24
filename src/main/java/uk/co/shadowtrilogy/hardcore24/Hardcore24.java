@@ -30,8 +30,22 @@ public final class Hardcore24 extends JavaPlugin {
     public static int phaseCounter = 0;
     public static String LastBloodMoon = null;
 
+    public static World NETHER_WORLD;
+    public static World OVERWORLD;
+    public static World END_WORLD;
+
+    public static World RESPAWN_WORLD;
+    public static double RESPAWN_X;
+    public static double RESPAWN_Y;
+    public static double RESPAWN_Z;
+
+    public static double DEATH_BAN_TIME;
+
+    public static Boolean DEATHBAN_EXCLUDE_SETTING;
     public static boolean bloodmoon = false;
     public static boolean removeArmour = false;
+
+    public static double KILL_PLAYER_AT;
 
     public static boolean ShulkerPlacement = false;
 
@@ -50,9 +64,6 @@ public final class Hardcore24 extends JavaPlugin {
 
 
 
-
-
-
         //Instantiates the whole plugin
         plugin = this;
         Boolean bool = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.harder-mobs");
@@ -61,13 +72,26 @@ public final class Hardcore24 extends JavaPlugin {
         Blood_Moon_Message = plugin.getConfig().getString("hardcore-message-config.blood-moon-message");
         ShulkerPlacement = plugin.getConfig().getBoolean("hardcore-config.can't-place-shulker-during-damage");
 
+        //Config init
+        NETHER_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
+        OVERWORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
+        END_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
 
+        DEATH_BAN_TIME = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
 
+        DEATHBAN_EXCLUDE_SETTING = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.death-ban-exclude-ops");
+
+        RESPAWN_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().get("respawn-location.world").toString());
+        RESPAWN_X = Hardcore24.plugin.getConfig().getDouble("respawn-location.x");
+        RESPAWN_Y = Hardcore24.plugin.getConfig().getDouble("respawn-location.y");
+        RESPAWN_Z = Hardcore24.plugin.getConfig().getDouble("respawn-location.z");
+
+        KILL_PLAYER_AT = Hardcore24.plugin.getConfig().getDouble("devopt.kill-player-at");
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
         Bukkit.getPluginManager().registerEvents(new ServerLoad(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerDeath(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerRespawn(), this);
+       Bukkit.getPluginManager().registerEvents(new PlayerRespawn(), this);
 
         if(bool == true || Moon == true) {
             Bukkit.getPluginManager().registerEvents(new MoreMobs(), this);
