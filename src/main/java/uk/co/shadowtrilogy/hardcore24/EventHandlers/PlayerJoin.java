@@ -17,6 +17,19 @@ import java.util.Scanner;
 
 public class PlayerJoin implements Listener {
 
+    World world_hardcore = Hardcore24.OVERWORLD;
+    World world_end = Hardcore24.END_WORLD;
+
+    World world_nether = Hardcore24.NETHER_WORLD;
+
+    double x = Hardcore24.RESPAWN_X;
+    double y = Hardcore24.RESPAWN_Y;
+    double z = Hardcore24.RESPAWN_Z;
+    World world = Hardcore24.RESPAWN_WORLD;
+
+    double d = Hardcore24.DEATH_BAN_TIME;
+    boolean deathbanExclude = Hardcore24.DEATHBAN_EXCLUDE_SETTING;
+
 
     //public static HashMap<String, UUID> M;
     Scanner s;
@@ -38,18 +51,6 @@ public class PlayerJoin implements Listener {
 
 
         //Make sure the "banned" players stay "banned"
-        FileConfiguration fileConfiguration = Hardcore24.plugin.getConfig();
-
-
-        World world = Bukkit.getWorld(fileConfiguration.get("respawn-location.world").toString());
-
-        World world_nether = Bukkit.getWorld(fileConfiguration.get("hardcore-world.hardcore-nether").toString());
-        World world_hardcore = Bukkit.getWorld(fileConfiguration.get("hardcore-world.hardcore-normal").toString());
-        World world_end = Bukkit.getWorld(fileConfiguration.get("hardcore-world.hardcore-end").toString());
-
-        double x = fileConfiguration.getDouble("respawn-location.x");
-        double y = fileConfiguration.getDouble("respawn-location.y");
-        double z = fileConfiguration.getDouble("respawn-location.z");
 
 
        // if (ev.getPlayer().getWorld().equals(world_hardcore) || ev.getPlayer().getWorld().equals(world_end) || ev.getPlayer().getWorld().equals(world_nether)) {

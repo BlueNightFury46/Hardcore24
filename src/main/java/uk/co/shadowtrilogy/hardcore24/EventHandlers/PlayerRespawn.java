@@ -12,20 +12,19 @@ import uk.co.shadowtrilogy.hardcore24.Hardcore24;
 
 public class PlayerRespawn implements Listener {
 
+    World world_hardcore = Hardcore24.OVERWORLD;
+    World world_end = Hardcore24.END_WORLD;
+
+    World world_nether = Hardcore24.NETHER_WORLD;
+
+    double x = Hardcore24.RESPAWN_X;
+    double y = Hardcore24.RESPAWN_Y;
+    double z = Hardcore24.RESPAWN_Z;
+    World world = Hardcore24.RESPAWN_WORLD;
+
 
     @EventHandler
     public void Event(PlayerPostRespawnEvent e){
-        FileConfiguration fileConfiguration = Hardcore24.plugin.getConfig();
-
-        World world = Bukkit.getWorld(fileConfiguration.get("respawn-location.world").toString());
-        double x = fileConfiguration.getDouble("respawn-location.x");
-        double y = fileConfiguration.getDouble("respawn-location.y");
-        double z = fileConfiguration.getDouble("respawn-location.z");
-
-        World world_nether = Bukkit.getWorld(fileConfiguration.getString("hardcore-world.hardcore-nether"));
-        World world_hardcore = Bukkit.getWorld(fileConfiguration.getString("hardcore-world.hardcore-normal"));
-        World world_end = Bukkit.getWorld(fileConfiguration.getString("hardcore-world.hardcore-end"));
-
 
         if (e.getPlayer().getWorld().equals(world_hardcore) || e.getPlayer().getWorld().equals(world_end) || e.getPlayer().getWorld().equals(world_nether)) {
             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {

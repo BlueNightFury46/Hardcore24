@@ -32,32 +32,27 @@ public class PlayerDeath implements Listener {
     public static Map PlayerLog = PlayerLogg;
     String string;
 
+    World world_hardcore = Hardcore24.OVERWORLD;
+    World world_end = Hardcore24.END_WORLD;
+
+    World world_nether = Hardcore24.NETHER_WORLD;
+
+    double x = Hardcore24.RESPAWN_X;
+    double y = Hardcore24.RESPAWN_Y;
+    double z = Hardcore24.RESPAWN_Z;
+    World world = Hardcore24.RESPAWN_WORLD;
+
+    double d = Hardcore24.DEATH_BAN_TIME;
+    boolean deathbanExclude = Hardcore24.DEATHBAN_EXCLUDE_SETTING;
+
 
 
     @EventHandler
     public void Event(PlayerDeathEvent e) throws IOException, InvalidConfigurationException {
 
         //Loads the death-ban-time from the config
-        boolean deathbanExclude = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.death-ban-exclude-ops");
-        double d = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
 
         long time = (long) d * 60 * 60 * 20;
-
-
-        //Loads the respawn worlds from the config
-        FileConfiguration fileConfiguration = Hardcore24.plugin.getConfig();
-        World world = Bukkit.getWorld(fileConfiguration.get("respawn-location.world").toString());
-        double x = fileConfiguration.getDouble("respawn-location.x");
-        double y = fileConfiguration.getDouble("respawn-location.y");
-        double z = fileConfiguration.getDouble("respawn-location.z");
-
-        World world_nether = Bukkit.getWorld(fileConfiguration.getString("hardcore-world.hardcore-nether"));
-        World world_hardcore = Bukkit.getWorld(fileConfiguration.getString("hardcore-world.hardcore-normal"));
-        World world_end = Bukkit.getWorld(fileConfiguration.getString("hardcore-world.hardcore-end"));
-
-
-        //corrector variables
-
 
         if (deathbanExclude == true) {
 

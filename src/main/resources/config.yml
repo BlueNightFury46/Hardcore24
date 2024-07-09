@@ -18,6 +18,8 @@ hardcore-config:
   blood-moon-duration: 2.0
   # in hrs (above)
   death-ban-time: 24.0
+  # Decides whether or not Hardcore24 can enable immediate respawn
+  allow-instant-respawn: true
   can't-place-shulker-during-damage: false
   # ^ above is the time you want to ban the player for in hours ^
   death-ban-exclude-ops: true

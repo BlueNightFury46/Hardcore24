@@ -17,7 +17,18 @@ import java.time.LocalDateTime;
 
 public class ServerLoad implements Listener {
 
+    World world_hardcore = Hardcore24.OVERWORLD;
+    World world_end = Hardcore24.END_WORLD;
 
+    World world_nether = Hardcore24.NETHER_WORLD;
+
+    double x = Hardcore24.RESPAWN_X;
+    double y = Hardcore24.RESPAWN_Y;
+    double z = Hardcore24.RESPAWN_Z;
+    World world = Hardcore24.RESPAWN_WORLD;
+
+    double d = Hardcore24.DEATH_BAN_TIME;
+    boolean deathbanExclude = Hardcore24.DEATHBAN_EXCLUDE_SETTING;
 
     @EventHandler
     public void Event(PlayerChangedWorldEvent ev) throws FileNotFoundException, InterruptedException {
@@ -32,26 +43,13 @@ public class ServerLoad implements Listener {
             //
 
             //corrector variables
-            World world = Bukkit.getWorld(fileConfiguration.get("respawn-location.world").toString());
 
-            double x = fileConfiguration.getDouble("respawn-location.x");
-            double y = fileConfiguration.getDouble("respawn-location.y");
-            double z = fileConfiguration.getDouble("respawn-location.z");
-
-            double d = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
             LocalDateTime t = (LocalDateTime) Hardcore24.map.get(ev.getPlayer().getUniqueId());
             double dhrs = t.getHour() + d;
 
             double days = t.getDayOfMonth() + dhrs / 24;
 
             String timezone = Hardcore24.plugin.getConfig().getString("hardcore-config.server-timezone");
-
-
-            //if variables
-            World world_nether = Bukkit.getWorld(fileConfiguration.get("hardcore-world.hardcore-nether") + "");
-            World world_hardcore = Bukkit.getWorld(fileConfiguration.get("hardcore-world.hardcore-normal") + "");
-            World world_end = Bukkit.getWorld(fileConfiguration.get("hardcore-world.hardcore-end").toString());
-
 
             if (ev.getPlayer().getWorld().equals(world_hardcore) || ev.getPlayer().getWorld().equals(world_end) || ev.getPlayer().getWorld().equals(world_nether)) {
                 ev.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 255));
