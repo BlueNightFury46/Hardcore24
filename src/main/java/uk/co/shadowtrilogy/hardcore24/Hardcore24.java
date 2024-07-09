@@ -63,7 +63,13 @@ public final class Hardcore24 extends JavaPlugin {
         DEATH_BAN_TIME = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
 
         DEATHBAN_EXCLUDE_SETTING = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.death-ban-exclude-ops");
-
+        if(Bukkit.getWorld(Hardcore24.plugin.getConfig().get("respawn-location.world").toString()) == null){
+            getLogger().info(ChatColor.RED + "FATAL ERROR! WORLD \"" + RESPAWN_WORLD.getName() + "\" DOES NOT EXIST...");
+            for(Player player : Bukkit.getOnlinePlayers()){
+                player.sendMessage(ChatColor.RED + "FATAL ERROR! WORLD \"" + RESPAWN_WORLD.getName() + "\" DOES NOT EXIST...");
+            }
+            onDisable();
+        }
         RESPAWN_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().get("respawn-location.world").toString());
         RESPAWN_X = Hardcore24.plugin.getConfig().getDouble("respawn-location.x");
         RESPAWN_Y = Hardcore24.plugin.getConfig().getDouble("respawn-location.y");
