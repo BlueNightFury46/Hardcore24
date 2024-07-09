@@ -26,3 +26,5 @@ hardcore-message-config:
   blood-moon-message: '§4As the blood moon rises the countless monsters band together, you encounter mobs with stronger gear...§4'
   blood-moon-title-message: '§cThe Blood Moon Rises Once Again!§c'
   blood-moon-subtitle-message: '§4Mobs you find will have stronger armour§4'
+devopt:
+  kill-player-at: 0.25
