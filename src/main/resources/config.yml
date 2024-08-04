@@ -15,13 +15,15 @@ hardcore-config:
   server-timezone: 'GMT'
   harder-mobs: false
   do-blood-moon: false
+  # ^ Enables the optional Blood-Moon feature. The Blood Moon spawns full Netherite mobs every couple full Moons for a specified time.
   blood-moon-duration: 2.0
   # in hrs (above)
   death-ban-time: 24.0
-  # Decides whether or not Hardcore24 can enable immediate respawn
+  # in hours, above ^
   allow-instant-respawn: true
+  # Recommended, turns on instant respawn for the hardcore worlds, which skips the respawn screen.
   can't-place-shulker-during-damage: false
-  # ^ above is the time you want to ban the player for in hours ^
+  # Warning! The above feature is experimental and may cause issues
   death-ban-exclude-ops: true
   # If true operators will be excluded from the death ban
 hardcore-message-config:

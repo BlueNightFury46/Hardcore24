@@ -54,11 +54,11 @@ public class MoreMobs implements Listener {
 
 
                 if (Hardcore24.playOnce == true) {
-                    int i = ThreadLocalRandom.current().nextInt(0, 4);
+                    int i = ThreadLocalRandom.current().nextInt(0, 3);
 
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (Moon == true) {
-                            if (i == 2) {
+                            if (i == 1) {
 
                                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
