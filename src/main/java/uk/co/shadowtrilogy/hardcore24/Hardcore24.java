@@ -53,7 +53,7 @@ public final class Hardcore24 extends JavaPlugin {
         // Plugin startup logic
         //this.saveDefaultConfig();
 
-
+        plugin = this;
 
 
         NETHER_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
@@ -79,7 +79,6 @@ public final class Hardcore24 extends JavaPlugin {
 
 
         //Instantiates the whole plugin
-        plugin = this;
         Boolean bool = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.harder-mobs");
         Boolean Moon = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.do-blood-moon");
         d = (long) plugin.getConfig().getDouble("hardcore-config.blood-moon-duration") * 60 * 60 * 20;
