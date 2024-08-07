@@ -9,7 +9,7 @@ website: shadowtrilogy.co.uk
 softdepend:
   - LuckPerms
 depend:
-  - Multiverse-core
+  - Multiverse-Core
 commands:
   hardcore:
     description: The hardcore24 general purpose command
