@@ -51,7 +51,7 @@ public final class Hardcore24 extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        //this.saveDefaultConfig();
+        this.saveDefaultConfig();
 
         plugin = this;
 
@@ -107,8 +107,6 @@ public final class Hardcore24 extends JavaPlugin {
 
         //Generates a .players file to store the "banned" players uuids
 
-        plugin.saveDefaultConfig();
-        //Saves the config
 
         ArmourInit.init();
 
@@ -123,11 +121,14 @@ public final class Hardcore24 extends JavaPlugin {
 
         //
         getLogger().info("Hardcore24 is active and should be working as usual");
-
-        if(!Bukkit.getWorlds().contains(RESPAWN_WORLD)){
-            getLogger().info(ChatColor.RED + "FATAL ERROR! WORLD \"" + RESPAWN_WORLD.getName() + "\" DOES NOT EXIST...");
-            onDisable();
-        }
+try {
+    if (!Bukkit.getWorlds().contains(RESPAWN_WORLD)) {
+        getLogger().info(ChatColor.RED + "FATAL ERROR! WORLD \"" + RESPAWN_WORLD.getName() + "\" DOES NOT EXIST...");
+        onDisable();
+    }
+} catch(NullPointerException e){
+    this.getLogger().info("FATAL ERROR! THE RESPAWN WORLD IN THE CONFIG DOES NOT EXIST! TRY CHANGING IT AND RESTARTING THE SERVER!\n\n NOTE: IT MAY BE CASE SENSITIVE");
+}
 
         if(FORCE_PERMISSION_OVERRIDE){
             if(!OVERWORLD.getGameRuleValue(GameRule.DO_IMMEDIATE_RESPAWN)){
