@@ -55,6 +55,8 @@ public final class Hardcore24 extends JavaPlugin {
 
         plugin = this;
 
+        try{
+
 
         NETHER_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
         OVERWORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
@@ -63,11 +65,17 @@ public final class Hardcore24 extends JavaPlugin {
         DEATH_BAN_TIME = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
 
         DEATHBAN_EXCLUDE_SETTING = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.death-ban-exclude-ops");
-        if(Bukkit.getWorld(Hardcore24.plugin.getConfig().get("respawn-location.world").toString()) == null){
-            getLogger().info(ChatColor.RED + "FATAL ERROR! WORLD \"" + RESPAWN_WORLD.getName() + "\" DOES NOT EXIST...");
-            for(Player player : Bukkit.getOnlinePlayers()){
-                player.sendMessage(ChatColor.RED + "FATAL ERROR! WORLD \"" + RESPAWN_WORLD.getName() + "\" DOES NOT EXIST...");
-            }
+
+
+            if (Bukkit.getWorld(Hardcore24.plugin.getConfig().get("respawn-location.world").toString()) == null) {
+                getLogger().info(ChatColor.RED + "FATAL ERROR! WORLD \"" + RESPAWN_WORLD.getName() + "\" DOES NOT EXIST...");
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    player.sendMessage(ChatColor.RED + "FATAL ERROR! WORLD \"" + RESPAWN_WORLD.getName() + "\" DOES NOT EXIST...");
+                }
+                onDisable();
+
+            } } catch(NullPointerException e){
+            getLogger().info("FATAL ERROR! RESPAWN WORLD IS NULL");
             onDisable();
         }
         RESPAWN_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().get("respawn-location.world").toString());
@@ -122,6 +130,11 @@ public final class Hardcore24 extends JavaPlugin {
         //
         getLogger().info("Hardcore24 is active and should be working as usual");
 try {
+
+    if(RESPAWN_WORLD==null){
+        onDisable();
+    }
+
     if (!Bukkit.getWorlds().contains(RESPAWN_WORLD)) {
         getLogger().info(ChatColor.RED + "FATAL ERROR! WORLD \"" + RESPAWN_WORLD.getName() + "\" DOES NOT EXIST...");
         onDisable();
