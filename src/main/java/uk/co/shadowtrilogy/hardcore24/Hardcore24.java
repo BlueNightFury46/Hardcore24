@@ -74,11 +74,13 @@ public final class Hardcore24 extends JavaPlugin {
                 }
                 onDisable();
 
-            } } catch(NullPointerException e){
+
+                RESPAWN_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().get("respawn-location.world").toString());
+
+            }  } catch(NullPointerException e){
             getLogger().info("FATAL ERROR! RESPAWN WORLD IS NULL");
             onDisable();
         }
-        RESPAWN_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().get("respawn-location.world").toString());
         RESPAWN_X = Hardcore24.plugin.getConfig().getDouble("respawn-location.x");
         RESPAWN_Y = Hardcore24.plugin.getConfig().getDouble("respawn-location.y");
         RESPAWN_Z = Hardcore24.plugin.getConfig().getDouble("respawn-location.z");
