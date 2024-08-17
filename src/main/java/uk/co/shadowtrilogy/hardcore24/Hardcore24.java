@@ -75,6 +75,7 @@ public final class Hardcore24 extends JavaPlugin {
                 onDisable();
 
 
+
                 RESPAWN_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().get("respawn-location.world").toString());
 
             }  } catch(NullPointerException e){
