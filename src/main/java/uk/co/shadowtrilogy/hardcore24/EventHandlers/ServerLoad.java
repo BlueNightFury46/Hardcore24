@@ -1,5 +1,6 @@
 package uk.co.shadowtrilogy.hardcore24.EventHandlers;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,10 +18,11 @@ import java.time.LocalDateTime;
 
 public class ServerLoad implements Listener {
 
-    World world_hardcore = Hardcore24.OVERWORLD;
-    World world_end = Hardcore24.END_WORLD;
+        World world_hardcore = Hardcore24.OVERWORLD;
+        World world_end = Hardcore24.END_WORLD;
 
-    World world_nether = Hardcore24.NETHER_WORLD;
+        World world_nether = Hardcore24.NETHER_WORLD;
+
 
     double x = Hardcore24.RESPAWN_X;
     double y = Hardcore24.RESPAWN_Y;
@@ -33,6 +35,36 @@ public class ServerLoad implements Listener {
     @EventHandler
     public void Event(PlayerChangedWorldEvent ev) throws FileNotFoundException, InterruptedException {
 
+
+        try{
+            if(world == null){
+                world = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("respawn-location.world"));
+            }
+
+            if(world_hardcore == null){
+                world_hardcore = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
+            }
+
+            if(world_end == null){
+                world_end = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
+            }
+
+            if(world_nether == null){
+                world_nether = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
+            }
+
+
+
+        } catch (NullPointerException e){
+            try{
+            world = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("respawn-location.world"));
+            world_hardcore = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("respawn-location.world"));
+                world_end = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
+                world_nether = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
+            } catch (NullPointerException ee){
+                Hardcore24.plugin.getLogger().info(" WORLD NOT FOUND! PLEASE VERIFY THAT THE CONFIG IS CORRECT, MAY BE CASE-SENSITIVE");
+            }
+        }
 
 
 

@@ -22,7 +22,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MoreMobs implements Listener {
 
 
-
+    World world_nether;
+    World world_hardcore;
+    World world_end;
 
     public static String title = Hardcore24.plugin.getConfig().getString("hardcore-message-config.blood-moon-title-message");
     public static String subtitle = Hardcore24.plugin.getConfig().getString("hardcore-message-config.blood-moon-subtitle-message");
@@ -31,12 +33,42 @@ public class MoreMobs implements Listener {
 
     @EventHandler
     public void events(EntitySpawnEvent event) {
+
+
+
+
         Boolean bool = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.harder-mobs");
         Boolean Moon = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.do-blood-moon");
         //World world_hardcore = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal").toString());
-        World world_nether = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
-        World world_hardcore = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
-        World world_end = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
+        world_nether = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
+        world_hardcore = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
+        world_end = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
+
+        try{
+            if(world_hardcore == null){
+                world_hardcore = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
+            }
+
+            if(world_end == null){
+                world_end = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
+            }
+
+            if(world_nether == null){
+                world_nether = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
+            }
+
+
+
+        } catch (NullPointerException el){
+            try{
+                world_hardcore = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
+                world_end = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
+                world_nether = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
+            } catch (NullPointerException ee){
+                Hardcore24.plugin.getLogger().info(" WORLD NOT FOUND! PLEASE VERIFY THAT THE CONFIG IS CORRECT, MAY BE CASE-SENSITIVE");
+            }
+        }
+
 
 
         if (world_hardcore.getFullTime() < 23000 && world_hardcore.getFullTime() > 13000) {

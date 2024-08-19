@@ -39,6 +39,37 @@ public class PlayerJoin implements Listener {
     public void Event(PlayerJoinEvent ev) throws IOException {
 
 
+        try{
+            if(world == null){
+                world = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("respawn-location.world"));
+            }
+
+            if(world_hardcore == null){
+                world_hardcore = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
+            }
+
+            if(world_end == null){
+                world_end = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
+            }
+
+            if(world_nether == null){
+                world_nether = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
+            }
+
+
+
+        } catch (NullPointerException e){
+            try{
+                world = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("respawn-location.world"));
+                world_hardcore = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("respawn-location.world"));
+                world_end = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
+                world_nether = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
+            } catch (NullPointerException ee){
+                Hardcore24.plugin.getLogger().info(" WORLD NOT FOUND! PLEASE VERIFY THAT THE CONFIG IS CORRECT, MAY BE CASE-SENSITIVE");
+            }
+        }
+
+
         if (Hardcore24.map.containsKey(ev.getPlayer().getUniqueId())) {
             double d = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
             int i = (int) Math.round(d);

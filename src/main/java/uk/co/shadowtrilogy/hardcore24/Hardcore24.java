@@ -55,36 +55,6 @@ public final class Hardcore24 extends JavaPlugin {
 
         plugin = this;
 
-        try{
-
-
-        NETHER_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
-        OVERWORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
-        END_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
-
-        DEATH_BAN_TIME = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
-
-        DEATHBAN_EXCLUDE_SETTING = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.death-ban-exclude-ops");
-
-
-            if (Bukkit.getWorld(Hardcore24.plugin.getConfig().get("respawn-location.world").toString()) == null) {
-                getLogger().info(ChatColor.RED + "FATAL ERROR! WORLD \"" + RESPAWN_WORLD.getName() + "\" DOES NOT EXIST...");
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    player.sendMessage(ChatColor.RED + "FATAL ERROR! WORLD \"" + RESPAWN_WORLD.getName() + "\" DOES NOT EXIST...");
-                }
-                onDisable();
-
-
-
-                RESPAWN_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().get("respawn-location.world").toString());
-
-            }  } catch(NullPointerException e){
-            getLogger().info("FATAL ERROR! RESPAWN WORLD IS NULL");
-            onDisable();
-        }
-        RESPAWN_X = Hardcore24.plugin.getConfig().getDouble("respawn-location.x");
-        RESPAWN_Y = Hardcore24.plugin.getConfig().getDouble("respawn-location.y");
-        RESPAWN_Z = Hardcore24.plugin.getConfig().getDouble("respawn-location.z");
 
         boolean FORCE_PERMISSION_OVERRIDE = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.allow-instant-respawn");
 
@@ -97,6 +67,27 @@ public final class Hardcore24 extends JavaPlugin {
         ShulkerPlacement = plugin.getConfig().getBoolean("hardcore-config.can't-place-shulker-during-damage");
 
 
+        try {
+
+
+            NETHER_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
+            OVERWORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
+            END_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
+
+            DEATH_BAN_TIME = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
+
+            DEATHBAN_EXCLUDE_SETTING = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.death-ban-exclude-ops");
+
+
+            RESPAWN_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().get("respawn-location.world").toString());
+
+        } catch (NullPointerException e) {
+            getLogger().info("FATAL ERROR! RESPAWN WORLD IS NULL");
+            onDisable();
+        }
+        RESPAWN_X = Hardcore24.plugin.getConfig().getDouble("respawn-location.x");
+        RESPAWN_Y = Hardcore24.plugin.getConfig().getDouble("respawn-location.y");
+        RESPAWN_Z = Hardcore24.plugin.getConfig().getDouble("respawn-location.z");
 
 
         Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
@@ -104,7 +95,7 @@ public final class Hardcore24 extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerDeath(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerRespawn(), this);
 
-        if(bool == true || Moon == true) {
+        if (bool == true || Moon == true) {
             Bukkit.getPluginManager().registerEvents(new MoreMobs(), this);
         }
 
@@ -121,7 +112,7 @@ public final class Hardcore24 extends JavaPlugin {
 
         ArmourInit.init();
 
-        if(ShulkerPlacement == true){
+        if (ShulkerPlacement == true) {
             Bukkit.getPluginManager().registerEvents(new PlayerDamage(), this);
             Bukkit.getPluginManager().registerEvents(new PlayerPlace(), this);
             Bukkit.getPluginManager().registerEvents(new InventoryOpenEvent(), this);
@@ -132,48 +123,7 @@ public final class Hardcore24 extends JavaPlugin {
 
         //
         getLogger().info("Hardcore24 is active and should be working as usual");
-try {
 
-    if(RESPAWN_WORLD==null){
-        onDisable();
-    }
-
-    if (!Bukkit.getWorlds().contains(RESPAWN_WORLD)) {
-        getLogger().info(ChatColor.RED + "FATAL ERROR! WORLD \"" + RESPAWN_WORLD.getName() + "\" DOES NOT EXIST...");
-        onDisable();
-    }
-} catch(NullPointerException e){
-    this.getLogger().info("FATAL ERROR! THE RESPAWN WORLD IN THE CONFIG DOES NOT EXIST! TRY CHANGING IT AND RESTARTING THE SERVER!\n\n NOTE: IT MAY BE CASE SENSITIVE");
-}
-
-        if(FORCE_PERMISSION_OVERRIDE){
-            if(!OVERWORLD.getGameRuleValue(GameRule.DO_IMMEDIATE_RESPAWN)){
-                getLogger().info(ChatColor.RED + "Set immediate respawn to true for world \"" + OVERWORLD.getName() + "\"\n!");
-                for(Player player : Bukkit.getOnlinePlayers()){
-                    player.sendMessage(ChatColor.RED + "Set immediate respawn to true for world \"" + OVERWORLD.getName() + "\"\n!");
-
-                }
-                OVERWORLD.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
-            }
-
-            if(!NETHER_WORLD.getGameRuleValue(GameRule.DO_IMMEDIATE_RESPAWN)){
-                getLogger().info(ChatColor.RED + "Set immediate respawn to true for world \"" + NETHER_WORLD.getName() + "\"\n!");
-                for(Player player : Bukkit.getOnlinePlayers()){
-                    player.sendMessage(ChatColor.RED + "Set immediate respawn to true for world \"" + NETHER_WORLD.getName() + "\"\n!");
-
-                }
-                NETHER_WORLD.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
-            }
-
-            if(!END_WORLD.getGameRuleValue(GameRule.DO_IMMEDIATE_RESPAWN)){
-                getLogger().info(ChatColor.RED + "Set immediate respawn to true for world \"" + END_WORLD.getName() + "\"\n!");
-                for(Player player : Bukkit.getOnlinePlayers()){
-                    player.sendMessage(ChatColor.RED + "Set immediate respawn to true for world \"" + END_WORLD.getName() + "\"\n!");
-
-                }
-                END_WORLD.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
-            }
-        }
 
 
         if(Moon == true) {
@@ -223,6 +173,74 @@ try {
             getLogger().info("Cleared all blood moon armour from mobs!");
         }
 
+        Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
+
+            try {
+
+
+                NETHER_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
+                OVERWORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
+                END_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
+
+                DEATH_BAN_TIME = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
+
+                DEATHBAN_EXCLUDE_SETTING = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.death-ban-exclude-ops");
+
+
+                RESPAWN_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().get("respawn-location.world").toString());
+
+            } catch (NullPointerException e) {
+                getLogger().info("FATAL ERROR! RESPAWN WORLD IS NULL");
+                onDisable();
+            }
+
+
+
+            try {
+
+                if (RESPAWN_WORLD == null) {
+                    onDisable();
+                }
+
+                if (!Bukkit.getWorlds().contains(RESPAWN_WORLD)) {
+                    getLogger().info(ChatColor.RED + "FATAL ERROR! WORLD \"" + RESPAWN_WORLD.getName() + "\" DOES NOT EXIST...");
+                    onDisable();
+                }
+
+
+                if (FORCE_PERMISSION_OVERRIDE) {
+                    if (!OVERWORLD.getGameRuleValue(GameRule.DO_IMMEDIATE_RESPAWN)) {
+                        getLogger().info(ChatColor.RED + "Set immediate respawn to true for world \"" + OVERWORLD.getName() + "\"\n!");
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            player.sendMessage(ChatColor.RED + "Set immediate respawn to true for world \"" + OVERWORLD.getName() + "\"\n!");
+
+                        }
+                        OVERWORLD.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
+                    }
+
+                    if (!NETHER_WORLD.getGameRuleValue(GameRule.DO_IMMEDIATE_RESPAWN)) {
+                        getLogger().info(ChatColor.RED + "Set immediate respawn to true for world \"" + NETHER_WORLD.getName() + "\"\n!");
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            player.sendMessage(ChatColor.RED + "Set immediate respawn to true for world \"" + NETHER_WORLD.getName() + "\"\n!");
+
+                        }
+                        NETHER_WORLD.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
+                    }
+
+                    if (!END_WORLD.getGameRuleValue(GameRule.DO_IMMEDIATE_RESPAWN)) {
+                        getLogger().info(ChatColor.RED + "Set immediate respawn to true for world \"" + END_WORLD.getName() + "\"\n!");
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            player.sendMessage(ChatColor.RED + "Set immediate respawn to true for world \"" + END_WORLD.getName() + "\"\n!");
+
+                        }
+                        END_WORLD.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
+                    }
+                }
+
+            } catch (NullPointerException e) {
+                this.getLogger().info("FATAL ERROR! THE RESPAWN WORLD IN THE CONFIG DOES NOT EXIST! TRY CHANGING IT AND RESTARTING THE SERVER!\n\n NOTE: IT MAY BE CASE SENSITIVE");
+            }
+        }, 250L);
 
     }
 

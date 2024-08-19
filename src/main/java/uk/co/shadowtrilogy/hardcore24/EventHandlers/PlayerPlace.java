@@ -12,6 +12,8 @@ public class PlayerPlace implements Listener {
     @EventHandler
     public void Event(BlockPlaceEvent event){
 
+
+
         //Checks if ShulkerPlacement is true
         if(Hardcore24.ShulkerPlacement == true){
             Player player = event.getPlayer();

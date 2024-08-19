@@ -50,6 +50,38 @@ public class PlayerDeath implements Listener {
     @EventHandler
     public void Event(PlayerDeathEvent e) throws IOException, InvalidConfigurationException {
 
+
+        try{
+            if(world == null){
+                world = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("respawn-location.world"));
+            }
+
+            if(world_hardcore == null){
+                world_hardcore = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
+            }
+
+            if(world_end == null){
+                world_end = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
+            }
+
+            if(world_nether == null){
+                world_nether = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
+            }
+
+
+
+        } catch (NullPointerException el){
+            Hardcore24.plugin.getLogger().info("Caught NullPointerException! (You can safely ignore this message)");
+            try{
+                world = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("respawn-location.world"));
+                world_hardcore = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("respawn-location.world"));
+                world_end = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
+                world_nether = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
+            } catch (NullPointerException ee){
+                Hardcore24.plugin.getLogger().info(" WORLD NOT FOUND! PLEASE VERIFY THAT THE CONFIG IS CORRECT, MAY BE CASE-SENSITIVE");
+            }
+        }
+
         //Loads the death-ban-time from the config
 
         long time = (long) d * 60 * 60 * 20;
