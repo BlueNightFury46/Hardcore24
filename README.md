@@ -7,3 +7,4 @@ multiverse compatible Hardcore plugin with tons of config options!
 >Downloads:
 > <br> [Via PaperMC](https://hangar.papermc.io/BlueNightFury46/Hardcore24)
 > <br> [Via Github releases](https://github.com/BlueNightFury46/Hardcore24/releases)
+> <br> [Via Modrinth](https://modrinth.com/plugin/hardcore24)
