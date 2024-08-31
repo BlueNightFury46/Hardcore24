@@ -27,6 +27,9 @@ public class hardcore implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (!(commandSender instanceof Player)) {
+
+            if(commandSender.isOp()){
+
             try {
                 if (args.length > 0) {
 
@@ -156,6 +159,10 @@ public class hardcore implements CommandExecutor {
 
 
         }
+        //End of if commandSender is an instance-of player statement
+        }
+
+
 
 
         Player player = (((Player) commandSender).getPlayer());

@@ -12,7 +12,7 @@ softdepend:
 commands:
   hardcore:
     description: The hardcore24 general purpose command
-    usage: /<command> <action> <player-name>
+    usage: /hardcore add|remove|log|ping <player-name>
     permission: hardcore.commands
     aliases:
       - hardcore24
