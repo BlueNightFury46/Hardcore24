@@ -159,6 +159,8 @@ public class hardcore implements CommandExecutor {
 
 
         }
+
+            return true;
         //End of if commandSender is an instance-of player statement
         }
 
