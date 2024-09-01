@@ -43,6 +43,8 @@ public final class Hardcore24 extends JavaPlugin {
     public static boolean DEATHBAN_EXCLUDE_SETTING;
     public static World RESPAWN_WORLD;
     public static double RESPAWN_X;
+
+    boolean FORCE_PERMISSION_OVERRIDE;
     public static double RESPAWN_Y;
     public static double RESPAWN_Z;
 
@@ -56,7 +58,7 @@ public final class Hardcore24 extends JavaPlugin {
         plugin = this;
 
 
-        boolean FORCE_PERMISSION_OVERRIDE = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.allow-instant-respawn");
+
 
 
         //Instantiates the whole plugin
@@ -69,7 +71,7 @@ public final class Hardcore24 extends JavaPlugin {
 
         try {
 
-
+            FORCE_PERMISSION_OVERRIDE = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.allow-instant-respawn");
             NETHER_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
             OVERWORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
             END_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
@@ -82,8 +84,7 @@ public final class Hardcore24 extends JavaPlugin {
             RESPAWN_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().get("respawn-location.world").toString());
 
         } catch (NullPointerException e) {
-            getLogger().info("FATAL ERROR! RESPAWN WORLD IS NULL");
-            onDisable();
+
         }
         RESPAWN_X = Hardcore24.plugin.getConfig().getDouble("respawn-location.x");
         RESPAWN_Y = Hardcore24.plugin.getConfig().getDouble("respawn-location.y");
@@ -177,7 +178,7 @@ public final class Hardcore24 extends JavaPlugin {
 
             try {
 
-
+                FORCE_PERMISSION_OVERRIDE = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.allow-instant-respawn");
                 NETHER_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
                 OVERWORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
                 END_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
@@ -238,7 +239,7 @@ public final class Hardcore24 extends JavaPlugin {
                 }
 
             } catch (NullPointerException e) {
-                this.getLogger().info("FATAL ERROR! THE RESPAWN WORLD IN THE CONFIG DOES NOT EXIST! TRY CHANGING IT AND RESTARTING THE SERVER!\n\n NOTE: IT MAY BE CASE SENSITIVE");
+                this.getLogger().info("ERROR! ONE OF THE WORLDS IN THE CONFIG DOES NOT EXIST! TRY CHANGING IT AND RESTARTING THE SERVER!\n\n NOTE: IT MAY BE CASE SENSITIVE");
             }
         }, 250L);
 
