@@ -77,21 +77,34 @@ public class hardcore implements CommandExecutor {
                             return false;
                         } else if (args[0].toLowerCase().equals("add")) {
 
+                            //Checkk if the third argument is empty
                             if (!args[1].isEmpty()) {
+                                //ban player for 24hrs
+
+                                //Retrieve ban time from config
                                 double d = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
 
+                                //Convert to minecraft ticks
                                 long time = (long) d * 60 * 60 * 20;
+                                //Get current time
                                 LocalDateTime dateTime = LocalDateTime.now();
+                                //Check if player exists
                                 for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
                                     if (args[1].contains(p.getName())) {
+                                        //if the player is found use it
+                                        //ban player
                                         Hardcore24.map.put(p.getUniqueId(), dateTime);
+                                        //say the player is banned
                                         commandSender.sendMessage("Added " + p.getName() + " to the temporarily banned players list");
+                                        //remove the player in 24hrs
                                         Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
+                                            //Avoid an exception were we remove something that doesn't exist
                                             if (Hardcore24.map.containsKey(p.getUniqueId())) {
                                                 Hardcore24.map.remove(p.getUniqueId(), dateTime);
                                             }
 
                                         }, time);
+                                        //End program
                                         return true;
                                     }
                                 }

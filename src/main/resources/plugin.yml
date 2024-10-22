@@ -5,7 +5,7 @@ api-version: '1.21'
 load: STARTUP
 authors: [BlueNightFury46]
 description: a 24 hour (default) hardcore death timeout plugin!
-website: shadowtrilogy.co.uk
+website: bluenightfury46.dev
 softdepend:
   - LuckPerms
   - - Multiverse-Core
