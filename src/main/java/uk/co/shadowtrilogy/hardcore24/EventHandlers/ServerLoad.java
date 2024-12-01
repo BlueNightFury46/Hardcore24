@@ -70,8 +70,8 @@ public class ServerLoad implements Listener {
 
         if(Hardcore24.map.containsKey(ev.getPlayer().getUniqueId())) {
             //Make sure the "banned" players stay "banned"
-            FileConfiguration fileConfiguration = Hardcore24.plugin.getConfig();
-
+          //  FileConfiguration fileConfiguration = Hardcore24.plugin.getConfig();
+         //The above line of code was still in this plugin until version 1.11c???? How and why?
             //
 
             //corrector variables
@@ -81,12 +81,15 @@ public class ServerLoad implements Listener {
 
             double days = t.getDayOfMonth() + dhrs / 24;
 
+            //Well this isn't optimized at all, but I'm not changing it
             String timezone = Hardcore24.plugin.getConfig().getString("hardcore-config.server-timezone");
 
             if (ev.getPlayer().getWorld().equals(world_hardcore) || ev.getPlayer().getWorld().equals(world_end) || ev.getPlayer().getWorld().equals(world_nether)) {
                 ev.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 80, 255));
             }
 
+
+            //Gosh the below code is messy... The only thing worse than this is IPV4
 
             //First Check
             if (ev.getPlayer().getWorld().equals(world_hardcore) || ev.getPlayer().getWorld().equals(world_end) || ev.getPlayer().getWorld().equals(world_nether)) {
@@ -119,6 +122,7 @@ public class ServerLoad implements Listener {
                 ev.getPlayer().teleport(new Location(world, x, y, z));
 
                     double time_hrs = t.getHour() + d;
+                    //Why isn't this pre-calculated? You know what, I don't want to know...
                     while(time_hrs >= 24){
                         if(time_hrs >= 48){
                             time_hrs -= 48;
@@ -127,9 +131,7 @@ public class ServerLoad implements Listener {
                         }
                     }
 
-                    if(days > days + .5){
-                        System.out.println(days + .5);
-                    }
+
 
                     double hrs = time_hrs;
                     if(t.getMinute() < 10){

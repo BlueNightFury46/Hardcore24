@@ -12,7 +12,7 @@ public class PlayerPlace implements Listener {
     @EventHandler
     public void Event(BlockPlaceEvent event){
 
-
+    //This file seems oddly short...
 
         //Checks if ShulkerPlacement is true
         if(Hardcore24.ShulkerPlacement == true){

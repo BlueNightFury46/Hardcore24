@@ -32,39 +32,39 @@ public class PlayerJoin implements Listener {
 
 
     //public static HashMap<String, UUID> M;
-    Scanner s;
+    //  Scanner s;
+    //Why did I forget to comment out the silly scanner???
 
 
     @EventHandler
     public void Event(PlayerJoinEvent ev) throws IOException {
 
 
-        try{
-            if(world == null){
+        try {
+            if (world == null) {
                 world = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("respawn-location.world"));
             }
 
-            if(world_hardcore == null){
+            if (world_hardcore == null) {
                 world_hardcore = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
             }
 
-            if(world_end == null){
+            if (world_end == null) {
                 world_end = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
             }
 
-            if(world_nether == null){
+            if (world_nether == null) {
                 world_nether = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
             }
 
 
-
-        } catch (NullPointerException e){
-            try{
+        } catch (NullPointerException e) {
+            try {
                 world = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("respawn-location.world"));
                 world_hardcore = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("respawn-location.world"));
                 world_end = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
                 world_nether = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
-            } catch (NullPointerException ee){
+            } catch (NullPointerException ee) {
                 Hardcore24.plugin.getLogger().info(" WORLD NOT FOUND! PLEASE VERIFY THAT THE CONFIG IS CORRECT, MAY BE CASE-SENSITIVE");
             }
         }
@@ -83,8 +83,8 @@ public class PlayerJoin implements Listener {
 
         //Make sure the "banned" players stay "banned"
 
-
-       // if (ev.getPlayer().getWorld().equals(world_hardcore) || ev.getPlayer().getWorld().equals(world_end) || ev.getPlayer().getWorld().equals(world_nether)) {
+//Why the hell was this bit below commented???
+        if (ev.getPlayer().getWorld().equals(world_hardcore) || ev.getPlayer().getWorld().equals(world_end) || ev.getPlayer().getWorld().equals(world_nether)) {
             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
                 if (Hardcore24.map.containsKey(ev.getPlayer().getUniqueId()) && ev.getPlayer().getWorld().equals(world_hardcore) || Hardcore24.map.containsKey(ev.getPlayer().getUniqueId()) && ev.getPlayer().getWorld().equals(world_end) || Hardcore24.map.containsKey(ev.getPlayer().getUniqueId()) && ev.getPlayer().getWorld().equals(world_nether)) {
                     ev.getPlayer().teleport(new Location(world, x, y, z));
@@ -100,5 +100,6 @@ public class PlayerJoin implements Listener {
             }, 240L);
         }
     }
+}
 
 

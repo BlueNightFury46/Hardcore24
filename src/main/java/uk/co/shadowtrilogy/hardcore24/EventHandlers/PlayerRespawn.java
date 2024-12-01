@@ -13,6 +13,8 @@ import uk.co.shadowtrilogy.hardcore24.Hardcore24;
 
 public class PlayerRespawn implements Listener {
 
+    //We meet again, the code that broke this plugin once, hey, at least it performs better than "Hello world" in Python now
+
     World world_hardcore = Hardcore24.OVERWORLD;
     World world_end = Hardcore24.END_WORLD;
 
@@ -29,6 +31,7 @@ public class PlayerRespawn implements Listener {
 
 
 
+        //Is my only trick 9 different try-catch statements? Wow...
         try{
             if(world == null){
                 world = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("respawn-location.world"));
@@ -60,6 +63,7 @@ public class PlayerRespawn implements Listener {
             }
         }
 
+        //Why did I hard-code all of this???
         if (e.getPlayer().getWorld().equals(world_hardcore) || e.getPlayer().getWorld().equals(world_end) || e.getPlayer().getWorld().equals(world_nether)) {
             Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
                 if (e.getPlayer().getWorld().equals(world)) {
