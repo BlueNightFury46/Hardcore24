@@ -1,6 +1,6 @@
 respawn-location:
   x: 0.0
-  y: 0.0
+  y: 75.0
   z: 0.0
   world: 'world'
 # The world they get sent to after respawning
@@ -24,7 +24,7 @@ hardcore-config:
   # Recommended, turns on instant respawn for the hardcore worlds, which skips the respawn screen.
   can't-place-shulker-during-damage: false
   # Warning! The above feature is experimental and may cause issues
-  death-ban-exclude-ops: true
+  death-ban-exclude-ops: false
   # If true operators will be excluded from the death ban
 hardcore-message-config:
   blood-moon-message: '§4As the blood moon rises the countless monsters band together, you encounter mobs with stronger gear...§4'

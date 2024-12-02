@@ -86,7 +86,7 @@ public class MoreMobs implements Listener {
 
 
                 if (Hardcore24.playOnce == true) {
-                    int i = ThreadLocalRandom.current().nextInt(0, 3);
+                    int i = ThreadLocalRandom.current().nextInt(1, 3);
 
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (Moon == true) {

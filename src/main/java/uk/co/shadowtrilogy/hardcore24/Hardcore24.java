@@ -192,7 +192,7 @@ public final class Hardcore24 extends JavaPlugin {
 
             } catch (NullPointerException e) {
                 getLogger().info("FATAL ERROR! RESPAWN WORLD IS NULL");
-                onDisable();
+
             }
 
 
@@ -200,12 +200,13 @@ public final class Hardcore24 extends JavaPlugin {
             try {
 
                 if (RESPAWN_WORLD == null) {
-                    onDisable();
+                    getLogger().info(ChatColor.RED + "FATAL ERROR! WORLD \"" + RESPAWN_WORLD.getName() + "\" DOES NOT EXIST...");
+
                 }
 
                 if (!Bukkit.getWorlds().contains(RESPAWN_WORLD)) {
                     getLogger().info(ChatColor.RED + "FATAL ERROR! WORLD \"" + RESPAWN_WORLD.getName() + "\" DOES NOT EXIST...");
-                    onDisable();
+
                 }
 
 

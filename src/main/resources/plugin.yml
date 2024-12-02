@@ -1,5 +1,5 @@
 name: Hardcore24
-version: '1.11a'
+version: '1.12a'
 main: uk.co.shadowtrilogy.hardcore24.Hardcore24
 api-version: '1.21'
 load: STARTUP
@@ -18,7 +18,7 @@ commands:
       - hardcore24
   hardcore24-version:
     description: Displays the current hardcore24 version
-    usage: /<hardcore24-version>
+    usage: /hardcore24-version
     permission: hardcore.commands.version
     aliases:
       - version
