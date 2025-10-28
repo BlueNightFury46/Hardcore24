@@ -1,249 +1,145 @@
 package uk.co.shadowtrilogy.hardcore24;
 
-import org.bukkit.*;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.TextDisplay;
-import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.plugin.java.JavaPlugin;
-import uk.co.shadowtrilogy.hardcore24.EventHandlers.*;
+import org.jetbrains.annotations.NotNull;
+import uk.co.shadowtrilogy.hardcore24.commands.players.playerManager;
+import uk.co.shadowtrilogy.hardcore24.commands.players.playerManagerTabComplete;
+import uk.co.shadowtrilogy.hardcore24.commands.reload.reload;
+import uk.co.shadowtrilogy.hardcore24.commands.worlds.worldGroups;
+import uk.co.shadowtrilogy.hardcore24.commands.worlds.worldGroupsTabCompleter;
+import uk.co.shadowtrilogy.hardcore24.events.PlayerDeathManager;
+import uk.co.shadowtrilogy.hardcore24.events.PlayerTransportManager;
+import uk.co.shadowtrilogy.hardcore24.json.groups.Group_dataJSON;
+import uk.co.shadowtrilogy.hardcore24.json.groups.groupdata;
+import uk.co.shadowtrilogy.hardcore24.json.groups.groupdataContainer;
+import uk.co.shadowtrilogy.hardcore24.json.player_data.Player_dataJSON;
+import uk.co.shadowtrilogy.hardcore24.json.player_data.playerdataContainer;
+import uk.co.shadowtrilogy.hardcore24.json.world_group.World_groupJSON;
+import uk.co.shadowtrilogy.hardcore24.json.world_group.worldgroupdataContainer;
+
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public final class Hardcore24 extends JavaPlugin {
-    public static String Blood_Moon_Message;
-    public static Boolean playOnce = true;
-    public static Boolean day = false;
-    public static boolean MESSAGE_ONCE = true;
-    public static double bDuration;
-    public static long d;
-    public static int phaseCounter = 0;
-    public static String LastBloodMoon = null;
 
-    public static boolean bloodmoon = false;
-    public static boolean removeArmour = false;
+    @NotNull public static HashMap<UUID, PlayerDeathData> deadPlayers = new HashMap<>();
 
-    public static boolean ShulkerPlacement = false;
+    @NotNull public static HashMap<String, String> worlds = new HashMap<>();
+    @NotNull public static Set<groupdata> groups = new HashSet<groupdata>();
+
+
+    final String deadPlayers_filename = "players.json";
+    final String worlds_filename = "worlds.json";
+    final String groups_filename = "groups.json";
+
+
 
     public static Hardcore24 plugin;
-    public static HashMap<UUID, LocalDateTime> map2 = new HashMap<>();
-    public static Map map = map2;
 
-   public static World NETHER_WORLD;
-    public static World OVERWORLD;
-    public static World END_WORLD;
-    public static double DEATH_BAN_TIME;
-    public static boolean DEATHBAN_EXCLUDE_SETTING;
-    public static World RESPAWN_WORLD;
-    public static double RESPAWN_X;
+    @NotNull public static boolean DROP_ENDERCHEST = true;
+    @NotNull public static boolean WARNINGS = true;
+    //Hours
+    @NotNull public static long DEATHBAN_TIME_HRS = 24;
+    @NotNull public static long DEATHBAN_TIME_DAYS = 0;
 
-    boolean FORCE_PERMISSION_OVERRIDE;
-    public static double RESPAWN_Y;
-    public static double RESPAWN_Z;
+    @NotNull public static long DEATHBAN_TIME_MINS = 0;
 
-    public static Map<UUID, String> DamagedPlayers = new HashMap<>();
+
+
 
     @Override
     public void onEnable() {
         // Plugin startup logic
         this.saveDefaultConfig();
 
+
         plugin = this;
 
+        loadConfig();
+
+
+
+        getServer().getPluginManager().registerEvents(new PlayerDeathManager(), this);
+        getServer().getPluginManager().registerEvents(new PlayerTransportManager(), this);
+
+
+        getCommand("group").setExecutor(new worldGroups());
+        getCommand("group").setTabCompleter(new worldGroupsTabCompleter());
+
+        getCommand("player").setExecutor(new playerManager());
+        getCommand("player").setTabCompleter(new playerManagerTabComplete());
+
+        getCommand("reload").setExecutor(new reload());
 
 
 
 
-        //Instantiates the whole plugin
-        Boolean bool = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.harder-mobs");
-        Boolean Moon = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.do-blood-moon");
-        d = (long) plugin.getConfig().getDouble("hardcore-config.blood-moon-duration") * 60 * 60 * 20;
-        Blood_Moon_Message = plugin.getConfig().getString("hardcore-message-config.blood-moon-message");
-        ShulkerPlacement = plugin.getConfig().getBoolean("hardcore-config.can't-place-shulker-during-damage");
+    }
 
 
-        try {
-
-            FORCE_PERMISSION_OVERRIDE = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.allow-instant-respawn");
-            NETHER_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
-            OVERWORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
-            END_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
-
-            DEATH_BAN_TIME = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
-
-            DEATHBAN_EXCLUDE_SETTING = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.death-ban-exclude-ops");
-
-
-            RESPAWN_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().get("respawn-location.world").toString());
-
-        } catch (NullPointerException e) {
-
-        }
-        RESPAWN_X = Hardcore24.plugin.getConfig().getDouble("respawn-location.x");
-        RESPAWN_Y = Hardcore24.plugin.getConfig().getDouble("respawn-location.y");
-        RESPAWN_Z = Hardcore24.plugin.getConfig().getDouble("respawn-location.z");
-
-
-        Bukkit.getPluginManager().registerEvents(new PlayerJoin(), this);
-        Bukkit.getPluginManager().registerEvents(new ServerLoad(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerDeath(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerRespawn(), this);
-
-        if (bool == true || Moon == true) {
-            Bukkit.getPluginManager().registerEvents(new MoreMobs(), this);
-        }
-
-
-        //Registers commands
-
-        getCommand("hardcore").setExecutor(new hardcore());
-        getCommand("hardcore").setTabCompleter(new hardcoreAutoComplete());
-
-        getCommand("hardcore24-version").setExecutor(new hardcore24Version());
-
-        //Generates a .players file to store the "banned" players uuids
-
-
-        ArmourInit.init();
-
-        if (ShulkerPlacement == true) {
-            Bukkit.getPluginManager().registerEvents(new PlayerDamage(), this);
-            Bukkit.getPluginManager().registerEvents(new PlayerPlace(), this);
-            Bukkit.getPluginManager().registerEvents(new InventoryOpenEvent(), this);
-        }
-
-        //initiates the mob armour
-        getLogger().info("Starting Hardcore24 by BlueNightFury46");
-
-        //
-        getLogger().info("Hardcore24 is active and should be working as usual");
+    public void loadConfig(){
 
 
 
-        if(Moon == true) {
+        File death_data  = new File(getDataFolder(), deadPlayers_filename);
+       deadPlayers = Player_dataJSON.jsonInit(death_data, deadPlayers).players;
 
-            getLogger().info("Preparing for Blood Moon Mobs Armour Removal ");
-            Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
+        File world_data  = new File(getDataFolder(), worlds_filename);
+        worlds = World_groupJSON.jsonInit(world_data, worlds).world_groups;
 
-            World world_hardcore = Bukkit.getWorld(plugin.getConfig().getString("hardcore-world.hardcore-normal"));
-
-            for (LivingEntity entity : world_hardcore.getLivingEntities()) {
-
-                try {
-                    if (entity.getEquipment().getHelmet().isSimilar(ArmourInit.bloodMoon1)) {
-                        entity.getEquipment().setHelmet(ArmourInit.none);
-                    }
-                } catch (NullPointerException e) {
-
-                }
-                try {
-                    if (entity.getEquipment().getChestplate().isSimilar(ArmourInit.bloodMoon2)) {
-                        entity.getEquipment().setChestplate(ArmourInit.none);
-                    }
-                } catch (NullPointerException e) {
-
-                }
-                try {
-                    if (entity.getEquipment().getLeggings().isSimilar(ArmourInit.bloodMoon3)) {
-                        entity.getEquipment().setLeggings(ArmourInit.none);
-                    }
-                } catch (NullPointerException e) {
-
-                }
-                try {
-                    if (entity.getEquipment().getBoots().isSimilar(ArmourInit.bloodMoon4)) {
-                        entity.getEquipment().setBoots(ArmourInit.none);
-                    }
-                } catch (NullPointerException e) {
-
-                }
-                if (MESSAGE_ONCE == true) {
-                    MESSAGE_ONCE = false;
-                    getLogger().info("Removing Blood Moon armour from mobs...");
-                }
-
-            }
-            }, 250L);
-            getLogger().info("Cleared all blood moon armour from mobs!");
-        }
-
-        Bukkit.getScheduler().runTaskLater(Hardcore24.plugin, () -> {
-
-            try {
-
-                FORCE_PERMISSION_OVERRIDE = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.allow-instant-respawn");
-                NETHER_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-nether"));
-                OVERWORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-normal"));
-                END_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().getString("hardcore-world.hardcore-end"));
-
-                DEATH_BAN_TIME = Hardcore24.plugin.getConfig().getDouble("hardcore-config.death-ban-time");
-
-                DEATHBAN_EXCLUDE_SETTING = Hardcore24.plugin.getConfig().getBoolean("hardcore-config.death-ban-exclude-ops");
+        File group_data  = new File(getDataFolder(), groups_filename);
+        groups = Group_dataJSON.jsonInit(group_data, groups).groups;
 
 
-                RESPAWN_WORLD = Bukkit.getWorld(Hardcore24.plugin.getConfig().get("respawn-location.world").toString());
+        DROP_ENDERCHEST = getConfig().getBoolean("drop-enderchest-on-death");
+        DEATHBAN_TIME_DAYS = getConfig().getInt("deathban-time.days");
+        DEATHBAN_TIME_HRS = getConfig().getInt("deathban-time.hours");
+        DEATHBAN_TIME_MINS = getConfig().getInt("deathban-time.minutes");
 
-            } catch (NullPointerException e) {
-                getLogger().info("FATAL ERROR! RESPAWN WORLD IS NULL");
+    }
 
-            }
-
-
-
-            try {
-
-                if (RESPAWN_WORLD == null) {
-                    getLogger().info(ChatColor.RED + "FATAL ERROR! WORLD \"" + RESPAWN_WORLD.getName() + "\" DOES NOT EXIST...");
-
-                }
-
-                if (!Bukkit.getWorlds().contains(RESPAWN_WORLD)) {
-                    getLogger().info(ChatColor.RED + "FATAL ERROR! WORLD \"" + RESPAWN_WORLD.getName() + "\" DOES NOT EXIST...");
-
-                }
+    public static void reloadPlugin(){
 
 
-                if (FORCE_PERMISSION_OVERRIDE) {
-                    if (!OVERWORLD.getGameRuleValue(GameRule.DO_IMMEDIATE_RESPAWN)) {
-                        getLogger().info(ChatColor.RED + "Set immediate respawn to true for world \"" + OVERWORLD.getName() + "\"\n!");
-                        for (Player player : Bukkit.getOnlinePlayers()) {
-                            player.sendMessage(ChatColor.RED + "Set immediate respawn to true for world \"" + OVERWORLD.getName() + "\"\n!");
+        final String deadPlayers_filename = "players.json";
+        final String worlds_filename = "worlds.json";
+        final String groups_filename = "groups.json";
 
-                        }
-                        OVERWORLD.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
-                    }
 
-                    if (!NETHER_WORLD.getGameRuleValue(GameRule.DO_IMMEDIATE_RESPAWN)) {
-                        getLogger().info(ChatColor.RED + "Set immediate respawn to true for world \"" + NETHER_WORLD.getName() + "\"\n!");
-                        for (Player player : Bukkit.getOnlinePlayers()) {
-                            player.sendMessage(ChatColor.RED + "Set immediate respawn to true for world \"" + NETHER_WORLD.getName() + "\"\n!");
+        File death_data  = new File(Hardcore24.plugin.getDataFolder(), deadPlayers_filename);
+        playerdataContainer players_container = new playerdataContainer(deadPlayers);
+        Player_dataJSON.jsonSave(players_container, death_data);
 
-                        }
-                        NETHER_WORLD.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
-                    }
+        //worlds.json shutdown logic
+        File world_data  = new File(Hardcore24.plugin.getDataFolder(), worlds_filename);
+        worldgroupdataContainer worlds_container = new worldgroupdataContainer(worlds);
+        World_groupJSON.jsonSave(worlds_container, world_data);
 
-                    if (!END_WORLD.getGameRuleValue(GameRule.DO_IMMEDIATE_RESPAWN)) {
-                        getLogger().info(ChatColor.RED + "Set immediate respawn to true for world \"" + END_WORLD.getName() + "\"\n!");
-                        for (Player player : Bukkit.getOnlinePlayers()) {
-                            player.sendMessage(ChatColor.RED + "Set immediate respawn to true for world \"" + END_WORLD.getName() + "\"\n!");
+        //groups.json shutdown logic
+        File group_data  = new File(Hardcore24.plugin.getDataFolder(), groups_filename);
+        groupdataContainer groups_container = new groupdataContainer(groups);
+        Group_dataJSON.jsonSave(groups_container, group_data);
 
-                        }
-                        END_WORLD.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
-                    }
-                }
+        Hardcore24.plugin.saveDefaultConfig();
 
-            } catch (NullPointerException e) {
-                this.getLogger().info("ERROR! ONE OF THE WORLDS IN THE CONFIG DOES NOT EXIST! TRY CHANGING IT AND RESTARTING THE SERVER!\n\n NOTE: IT MAY BE CASE SENSITIVE");
-            }
-        }, 250L);
 
+        Hardcore24.plugin.reloadConfig();
+
+        deadPlayers = Player_dataJSON.jsonInit(death_data, deadPlayers).players;
+
+        worlds = World_groupJSON.jsonInit(world_data, worlds).world_groups;
+
+        groups = Group_dataJSON.jsonInit(group_data, groups).groups;
+
+
+        DROP_ENDERCHEST = Hardcore24.plugin.getConfig().getBoolean("drop-enderchest-on-death");
+        DEATHBAN_TIME_DAYS = Hardcore24.plugin.getConfig().getInt("deathban-time.days");
+        DEATHBAN_TIME_HRS = Hardcore24.plugin.getConfig().getInt("deathban-time.hours");
+        DEATHBAN_TIME_MINS = Hardcore24.plugin.getConfig().getInt("deathban-time.minutes");
     }
 
 
@@ -253,6 +149,22 @@ public final class Hardcore24 extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+
+        //players.json shutdown logic
+        File death_data  = new File(getDataFolder(), deadPlayers_filename);
+        playerdataContainer players_container = new playerdataContainer(deadPlayers);
+        Player_dataJSON.jsonSave(players_container, death_data);
+
+        //worlds.json shutdown logic
+        File world_data  = new File(getDataFolder(), worlds_filename);
+        worldgroupdataContainer worlds_container = new worldgroupdataContainer(worlds);
+        World_groupJSON.jsonSave(worlds_container, world_data);
+
+        //groups.json shutdown logic
+        File group_data  = new File(getDataFolder(), groups_filename);
+        groupdataContainer groups_container = new groupdataContainer(groups);
+        Group_dataJSON.jsonSave(groups_container, group_data);
+
 
         getLogger().info("Disabling Hardcore24!");
 

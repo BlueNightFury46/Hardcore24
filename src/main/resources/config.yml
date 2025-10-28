@@ -1,32 +1,21 @@
-respawn-location:
-  x: 0.0
-  y: 75.0
-  z: 0.0
-  world: 'world'
-# The world they get sent to after respawning
-#
-hardcore-world:
-  hardcore-normal: 'hardcore'
-  hardcore-nether: 'hardcore_nether'
-  hardcore-end: 'hardcore_end'
-# Configure the hardcore worlds
-# Note: If you don't have a nether and end world then rename them to a world that doesn't exist
-hardcore-config:
-  server-timezone: 'GMT'
-  harder-mobs: false
-  do-blood-moon: false
-  # ^ Enables the optional Blood-Moon feature. The Blood Moon spawns full Netherite mobs every couple full Moons for a specified time.
-  blood-moon-duration: 2.0
-  # in hrs (above)
-  death-ban-time: 24.0
-  # in hours, above ^
-  allow-instant-respawn: true
-  # Recommended, turns on instant respawn for the hardcore worlds, which skips the respawn screen.
-  can't-place-shulker-during-damage: false
-  # Warning! The above feature is experimental and may cause issues
-  death-ban-exclude-ops: false
-  # If true operators will be excluded from the death ban
-hardcore-message-config:
-  blood-moon-message: '§4As the blood moon rises the countless monsters band together, you encounter mobs with stronger gear...§4'
-  blood-moon-title-message: '§cThe Blood Moon Rises Once Again!§c'
-  blood-moon-subtitle-message: '§4Mobs you find will have stronger armour§4'
+deathban-time:
+  days: 0
+  hours: 24
+  minutes: 0
+drop-enderchest-on-death: true
+
+# Hardcore24 requires some further configuration to work, which *can* be done using the json files, but I very, very, very strongly recommend using the commands below to do this instead...
+###                            EXAMPLE SETUP:                                 ###
+#        /group CREATE_GROUP demo_group                                         #
+#        Here we create a group called demo_group                               #
+#                                                                               #
+#        /group SET_RESPAWN                                                     #
+#        Next we run this command, while at the respawn location we want        #
+#                                                                               #
+#        /group SET_WORLD world demo_group                                      #
+#        Here we add the world "world" to our group                             #
+#                                                                               #
+#        /group SET_WORLD lobby demo_group                                      #
+#        Here we also add the world "lobby" to our group                        #
+#                                                                               #
+###                                                                           ###

@@ -1,31 +1,32 @@
 name: Hardcore24
-version: '1.12a'
+version: '2.0'
 main: uk.co.shadowtrilogy.hardcore24.Hardcore24
 api-version: '1.21'
 load: STARTUP
 authors: [BlueNightFury46]
 description: a 24 hour (default) hardcore death timeout plugin!
 website: bluenightfury46.dev
+commands:
+  group:
+    description: manages the hardcore world groups
+  player:
+    description: allows you to manage the players (ban/unban/list/etc)
+  reload:
+    description: reloads the plugin
+
 softdepend:
   - LuckPerms
-  - - Multiverse-Core
-commands:
-  hardcore:
-    description: The hardcore24 general purpose command
-    usage: /hardcore add|remove|log|ping <player-name>
-    permission: hardcore.commands
-    aliases:
-      - hardcore24
-  hardcore24-version:
-    description: Displays the current hardcore24 version
-    usage: /hardcore24-version
-    permission: hardcore.commands.version
-    aliases:
-      - version
-      - hardcore-version
+  - Multiverse-Core
+  - BloodMoon
 permissions:
-  hardcore.commands:
-   description: Allows players to use the /hardcore command
-  hardcore.commands.version:
-    description: Allows players to use the /hardcore-version command
+  hardcore.immortal:
+    description: Allows the player to be immune from the hardcore deathban in all worlds
+    default: false
+  hardcore.manage.groups:
+    description: Allows the player to use the /group command
+  hardcore.manage.players:
+    description: Allows the player to use the /player command
+  hardcore.manage.reload:
+    description: Allows the player to use the /reload command
+
 prefix: hardcore24
