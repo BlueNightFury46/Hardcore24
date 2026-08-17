@@ -8,10 +8,13 @@ import uk.co.shadowtrilogy.hardcore24.commands.reload.reload;
 import uk.co.shadowtrilogy.hardcore24.commands.worlds.worldGroups;
 import uk.co.shadowtrilogy.hardcore24.commands.worlds.worldGroupsTabCompleter;
 import uk.co.shadowtrilogy.hardcore24.events.PlayerDeathManager;
+import uk.co.shadowtrilogy.hardcore24.events.PlayerNotificationManager;
 import uk.co.shadowtrilogy.hardcore24.events.PlayerTransportManager;
 import uk.co.shadowtrilogy.hardcore24.json.groups.Group_dataJSON;
 import uk.co.shadowtrilogy.hardcore24.json.groups.groupdata;
 import uk.co.shadowtrilogy.hardcore24.json.groups.groupdataContainer;
+import uk.co.shadowtrilogy.hardcore24.json.notifications.Player_notificationJSON;
+import uk.co.shadowtrilogy.hardcore24.json.notifications.playernotificationContainer;
 import uk.co.shadowtrilogy.hardcore24.json.player_data.Player_dataJSON;
 import uk.co.shadowtrilogy.hardcore24.json.player_data.playerdataContainer;
 import uk.co.shadowtrilogy.hardcore24.json.world_group.World_groupJSON;
@@ -19,6 +22,7 @@ import uk.co.shadowtrilogy.hardcore24.json.world_group.worldgroupdataContainer;
 
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,12 +31,15 @@ import java.util.UUID;
 public final class Hardcore24 extends JavaPlugin {
 
     @NotNull public static HashMap<UUID, PlayerDeathData> deadPlayers = new HashMap<>();
+    @NotNull public static HashMap<UUID, String> pendingPlayerNotifications = new HashMap<>();
+    @NotNull public static HashMap<UUID, LocalDateTime> activeEjectionDeadlines = new HashMap<>();
 
     @NotNull public static HashMap<String, String> worlds = new HashMap<>();
     @NotNull public static Set<groupdata> groups = new HashSet<groupdata>();
 
 
     final String deadPlayers_filename = "players.json";
+    final String pendingNotifications_filename = "pending_notifications.json";
     final String worlds_filename = "worlds.json";
     final String groups_filename = "groups.json";
 
@@ -64,6 +71,7 @@ public final class Hardcore24 extends JavaPlugin {
 
 
         getServer().getPluginManager().registerEvents(new PlayerDeathManager(), this);
+        getServer().getPluginManager().registerEvents(new PlayerNotificationManager(), this);
         getServer().getPluginManager().registerEvents(new PlayerTransportManager(), this);
 
 
@@ -88,6 +96,9 @@ public final class Hardcore24 extends JavaPlugin {
         File death_data  = new File(getDataFolder(), deadPlayers_filename);
        deadPlayers = Player_dataJSON.jsonInit(death_data, deadPlayers).players;
 
+        File notification_data = new File(getDataFolder(), pendingNotifications_filename);
+        pendingPlayerNotifications = Player_notificationJSON.jsonInit(notification_data, pendingPlayerNotifications).notifications;
+
         File world_data  = new File(getDataFolder(), worlds_filename);
         worlds = World_groupJSON.jsonInit(world_data, worlds).world_groups;
 
@@ -106,6 +117,7 @@ public final class Hardcore24 extends JavaPlugin {
 
 
         final String deadPlayers_filename = "players.json";
+        final String pendingNotifications_filename = "pending_notifications.json";
         final String worlds_filename = "worlds.json";
         final String groups_filename = "groups.json";
 
@@ -113,6 +125,10 @@ public final class Hardcore24 extends JavaPlugin {
         File death_data  = new File(Hardcore24.plugin.getDataFolder(), deadPlayers_filename);
         playerdataContainer players_container = new playerdataContainer(deadPlayers);
         Player_dataJSON.jsonSave(players_container, death_data);
+
+        File notification_data = new File(Hardcore24.plugin.getDataFolder(), pendingNotifications_filename);
+        playernotificationContainer notifications_container = new playernotificationContainer(pendingPlayerNotifications);
+        Player_notificationJSON.jsonSave(notifications_container, notification_data);
 
         //worlds.json shutdown logic
         File world_data  = new File(Hardcore24.plugin.getDataFolder(), worlds_filename);
@@ -130,6 +146,8 @@ public final class Hardcore24 extends JavaPlugin {
         Hardcore24.plugin.reloadConfig();
 
         deadPlayers = Player_dataJSON.jsonInit(death_data, deadPlayers).players;
+
+        pendingPlayerNotifications = Player_notificationJSON.jsonInit(notification_data, pendingPlayerNotifications).notifications;
 
         worlds = World_groupJSON.jsonInit(world_data, worlds).world_groups;
 
@@ -154,6 +172,11 @@ public final class Hardcore24 extends JavaPlugin {
         File death_data  = new File(getDataFolder(), deadPlayers_filename);
         playerdataContainer players_container = new playerdataContainer(deadPlayers);
         Player_dataJSON.jsonSave(players_container, death_data);
+
+        //pending_notifications.json shutdown logic
+        File notification_data = new File(getDataFolder(), pendingNotifications_filename);
+        playernotificationContainer notifications_container = new playernotificationContainer(pendingPlayerNotifications);
+        Player_notificationJSON.jsonSave(notifications_container, notification_data);
 
         //worlds.json shutdown logic
         File world_data  = new File(getDataFolder(), worlds_filename);

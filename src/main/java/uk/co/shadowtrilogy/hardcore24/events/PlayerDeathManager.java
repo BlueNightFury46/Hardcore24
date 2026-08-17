@@ -8,10 +8,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import uk.co.shadowtrilogy.hardcore24.GroupWorldUtils;
 import uk.co.shadowtrilogy.hardcore24.Hardcore24;
 import uk.co.shadowtrilogy.hardcore24.PlayerDeathData;
 import uk.co.shadowtrilogy.hardcore24.json.groups.groupdata;
-import uk.co.shadowtrilogy.hardcore24.json.groups.json_location;
 
 import java.time.LocalDateTime;
 
@@ -25,6 +25,13 @@ public class PlayerDeathManager implements Listener {
 
 
         if(!ev.getPlayer().hasPermission("hardcore.immortal")){
+            // If the death occurred in a world that is not tracked by Hardcore24,
+            // do not apply a ban and simply allow default death behavior to proceed
+            String deathWorldName = ev.getPlayer().getWorld().getName();
+            if(!Hardcore24.worlds.containsKey(deathWorldName)){
+                return;
+            }
+
             try {
                 if (!Hardcore24.deadPlayers.containsKey(ev.getPlayer().getUniqueId())) {
 
@@ -34,7 +41,7 @@ public class PlayerDeathManager implements Listener {
                     //teleport.teleportToRespawnPoint(ev.getPlayer().getWorld(), ev.getPlayer());
 
                     //TODO fix timezones probably
-                    Hardcore24.deadPlayers.put(ev.getPlayer().getUniqueId(), new PlayerDeathData(ev.getPlayer().getWorld(), LocalDateTime.now()));
+                    sendDeathBanNotification(ev.getPlayer());
 
                     try {
                         if (Hardcore24.DROP_ENDERCHEST && !ev.getKeepInventory()) {
@@ -61,7 +68,7 @@ public class PlayerDeathManager implements Listener {
                 //teleport.teleportToRespawnPoint(ev.getPlayer().getWorld(), ev.getPlayer());
 
                 //TODO fix timezones probably
-                Hardcore24.deadPlayers.put(ev.getPlayer().getUniqueId(), new PlayerDeathData(ev.getPlayer().getWorld(), LocalDateTime.now()));
+                sendDeathBanNotification(ev.getPlayer());
 
                 try {
                     if (Hardcore24.DROP_ENDERCHEST && !ev.getKeepInventory()) {
@@ -104,7 +111,7 @@ public class PlayerDeathManager implements Listener {
 
                 for(groupdata g : Hardcore24.groups){
                     if(g.group_name.equalsIgnoreCase(group_name)){
-                        if(!g.respawn_location.hasBeenSet){
+                        if(g.respawn_location == null || !g.respawn_location.hasBeenSet){
                             if(player.isOp() && Hardcore24.WARNINGS){
                                 player.sendMessage(ChatColor.RED+"Warning! The respawn location for group \"" + g.group_name + "\" has not been set...");
                                 Hardcore24.plugin.getLogger().warning("Warning! The respawn location for group \"" + g.group_name + "\" has not been set...");
@@ -112,18 +119,18 @@ public class PlayerDeathManager implements Listener {
                             } else if(Hardcore24.WARNINGS) {
                                 Hardcore24.plugin.getLogger().warning("Warning! The respawn location for group \"" + g.group_name + "\" has not been set...");
                             }
-                        }
-
-                        json_location loc = g.respawn_location;
-
-                        try{
-                            World w = Hardcore24.plugin.getServer().getWorld(loc.world);
-                            ev.setRespawnLocation(new Location(w, loc.x, loc.y, loc.z));
-
-                        }catch(NullPointerException ex){
-                            Hardcore24.plugin.getLogger().severe("Warning! World for teleport does not exist (how have you managed that then?)");
                             return;
                         }
+
+                        Location respawnLocation = GroupWorldUtils.getGroupRespawnLocation(g.group_name);
+                        if(respawnLocation == null){
+                            Hardcore24.plugin.getLogger().severe("Warning! Respawn location for group \"" + g.group_name + "\" is invalid. Check groups.json and ensure respawn world exists.");
+                            player.sendMessage(ChatColor.RED + "Warning! Hardcore respawn configuration is invalid. Using server default respawn...");
+                            return;
+                        }
+
+                        ev.setRespawnLocation(respawnLocation);
+                        return;
 
                     }
                 }
@@ -141,5 +148,16 @@ public class PlayerDeathManager implements Listener {
             }
         }
 
+    }
+
+    private void sendDeathBanNotification(Player player){
+        PlayerDeathData data = Hardcore24.deadPlayers.get(player.getUniqueId());
+        if(data == null){
+            return;
+        }
+
+        Hardcore24.pendingPlayerNotifications.remove(player.getUniqueId());
+        LocalDateTime unbanTime = LocalDateTime.of(data.deathYear, data.deathMonth, data.deathDayOfMonth, data.deathHour, data.deathMinute, data.deathSecond);
+        player.sendMessage(ChatColor.RED + "" + ChatColor.ITALIC + "You are now banned from hardcore. Unban time: " + unbanTime);
     }
 }

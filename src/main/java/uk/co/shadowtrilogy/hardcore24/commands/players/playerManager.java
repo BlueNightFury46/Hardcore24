@@ -2,14 +2,20 @@ package uk.co.shadowtrilogy.hardcore24.commands.players;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import uk.co.shadowtrilogy.hardcore24.Hardcore24;
+import uk.co.shadowtrilogy.hardcore24.PlayerBanEjectionUtils;
+import uk.co.shadowtrilogy.hardcore24.PlayerBanUtils;
 import uk.co.shadowtrilogy.hardcore24.PlayerDeathData;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
@@ -61,14 +67,21 @@ public class playerManager implements CommandExecutor {
                     return true;
                 }
 
-                PlayerDeathData activeBan = Hardcore24.deadPlayers.get(player);
+                PlayerDeathData activeBan = PlayerBanUtils.getActiveBan(player);
                 if(activeBan == null){
                     commandSender.sendMessage(ChatColor.RED + "Error! Player \"" + args[PLAYER] + "\" is not banned from hardcore...");
                     return true;
                 }
 
+                boolean hadPendingEjection = PlayerBanEjectionUtils.clearPendingEjection(player);
                 Hardcore24.deadPlayers.remove(player);
                 commandSender.sendMessage(ChatColor.BLUE + "Successfully unbanned player \"" + ChatColor.LIGHT_PURPLE + args[PLAYER] + ChatColor.BLUE + "\" from all hardcore bans.");
+                notifyOrQueuePlayer(player, ChatColor.GREEN + "You have been unbanned from hardcore by a server admin.");
+
+                Player onlineTarget = Hardcore24.plugin.getServer().getPlayer(player);
+                if(hadPendingEjection && onlineTarget != null && onlineTarget.isOnline()){
+                    onlineTarget.sendMessage(ChatColor.YELLOW + "" + ChatColor.ITALIC + "Your ejection countdown has been cancelled. Be safe...");
+                }
 
 
                return true;
@@ -97,8 +110,16 @@ public class playerManager implements CommandExecutor {
                     if(player==null){
                         throw new NullPointerException();
                     }
-                        Hardcore24.deadPlayers.put(player, new PlayerDeathData(args[WORLD], LocalDateTime.now()));
+                    Hardcore24.deadPlayers.put(player, new PlayerDeathData(args[WORLD], LocalDateTime.now()));
+                    PlayerDeathData newBanData = Hardcore24.deadPlayers.get(player);
+                    LocalDateTime unbanTime = LocalDateTime.of(newBanData.deathYear, newBanData.deathMonth, newBanData.deathDayOfMonth, newBanData.deathHour, newBanData.deathMinute, newBanData.deathSecond);
                     commandSender.sendMessage(ChatColor.BLUE + "Successfully banned player \"" + ChatColor.LIGHT_PURPLE + args[PLAYER] +  ChatColor.BLUE + "\"  from hardcore world \"" + ChatColor.GREEN + args[WORLD] + ChatColor.BLUE + "\"");
+                    notifyOrQueuePlayer(player, ChatColor.RED + "" + ChatColor.ITALIC + "You have been banned from hardcore in world \"" + args[WORLD] + "\" by a server admin. Unban time: " + unbanTime);
+
+                    Player onlineTarget = Hardcore24.plugin.getServer().getPlayer(player);
+                    if(onlineTarget != null && onlineTarget.isOnline()){
+                        PlayerBanEjectionUtils.warnAndScheduleEjectionIfNeeded(onlineTarget, newBanData);
+                    }
 
 
                 } catch (NullPointerException ex){
@@ -118,26 +139,42 @@ public class playerManager implements CommandExecutor {
                         return true;
                     }
 
-                    commandSender.sendMessage(ChatColor.BLUE + "Hardcore banned players (" + Hardcore24.deadPlayers.size() + "):");
-                    for(Map.Entry<UUID, PlayerDeathData> entry : Hardcore24.deadPlayers.entrySet()){
+                    List<String> activeBanLines = new ArrayList<>();
+
+                    for(Map.Entry<UUID, PlayerDeathData> entry : new HashMap<>(Hardcore24.deadPlayers).entrySet()){
+                        PlayerDeathData data = PlayerBanUtils.getActiveBan(entry.getKey());
+                        if(data == null){
+                            PlayerBanEjectionUtils.clearPendingEjection(entry.getKey());
+                            continue;
+                        }
+
                         String listedName = Hardcore24.plugin.getServer().getOfflinePlayer(entry.getKey()).getName();
                         if(listedName == null){
                             listedName = entry.getKey().toString();
                         }
 
-                        PlayerDeathData data = entry.getValue();
-                        LocalDateTime unbanTime = LocalDateTime.of(data.deathYear, data.deathMonth, data.deathDayOfMonth, data.deathHour, data.deathMinute, data.deathSecond);
+                        LocalDateTime unbanTime = PlayerBanUtils.getUnbanTime(data);
                         String groupName = Hardcore24.worlds.get(data.world);
                         if(groupName==null){
                             groupName = "(unmapped for world \"" + data.world + "\")";
                         }
-                      String res = "";
-                      res+=ChatColor.BLUE + "- " + ChatColor.LIGHT_PURPLE + listedName + ChatColor.BLUE;
-                      res+=" | Group: " + ChatColor.GREEN + groupName + ChatColor.BLUE;
-                      res+= " | Unban: " + ChatColor.GREEN + unbanTime + ChatColor.BLUE;
-                      res+= " | Deathworld: " + ChatColor.GREEN + data.world + ChatColor.BLUE;
+                        String res = "";
+                        res+=ChatColor.BLUE + "- " + ChatColor.LIGHT_PURPLE + listedName + ChatColor.BLUE;
+                        res+=" | Group: " + ChatColor.GREEN + groupName + ChatColor.BLUE;
+                        res+= " | Unban: " + ChatColor.GREEN + unbanTime + ChatColor.BLUE;
+                        res+= " | Deathworld: " + ChatColor.GREEN + data.world + ChatColor.BLUE;
 
-                        commandSender.sendMessage(res);
+                        activeBanLines.add(res);
+                    }
+
+                    if(activeBanLines.isEmpty()){
+                        commandSender.sendMessage(ChatColor.GREEN + "There are no players currently banned from hardcore.");
+                        return true;
+                    }
+
+                    commandSender.sendMessage(ChatColor.BLUE + "Hardcore banned players (" + activeBanLines.size() + "):");
+                    for(String activeBanLine : activeBanLines){
+                        commandSender.sendMessage(activeBanLine);
                     }
                     return true;
                 }
@@ -163,10 +200,15 @@ public class playerManager implements CommandExecutor {
                     return true;
                 }
 
-                PlayerDeathData data = Hardcore24.deadPlayers.get(player);
-                LocalDateTime unbanTime = LocalDateTime.of(data.deathYear, data.deathMonth, data.deathDayOfMonth, data.deathHour, data.deathMinute, data.deathSecond);
+                PlayerDeathData data = PlayerBanUtils.getActiveBan(player);
+                if(data == null){
+                    PlayerBanEjectionUtils.clearPendingEjection(player);
+                    commandSender.sendMessage(ChatColor.GREEN + "Player \"" + args[PLAYER] + "\" is not currently banned from hardcore.");
+                    return true;
+                }
+
+                LocalDateTime unbanTime = PlayerBanUtils.getUnbanTime(data);
                 String groupName = Hardcore24.worlds.get(data.world);
-                boolean banElapsed = LocalDateTime.now().isAfter(unbanTime);
 
                 if(groupName==null){
                     groupName = "(unmapped for world \"" + data.world + "\")";
@@ -174,20 +216,14 @@ public class playerManager implements CommandExecutor {
 
                 commandSender.sendMessage(ChatColor.BLUE + "Hardcore status for \"" + ChatColor.LIGHT_PURPLE + args[PLAYER] + ChatColor.BLUE + "\": " + ChatColor.RED + "BANNED");
                 commandSender.sendMessage(ChatColor.BLUE + "Group: " + ChatColor.GREEN + groupName + ChatColor.BLUE + " | Death world: " + ChatColor.GREEN + data.world);
-                commandSender.sendMessage(ChatColor.BLUE + "Unban time: " + ChatColor.GREEN + unbanTime + ChatColor.BLUE + " | Ban elapsed: " + ChatColor.GREEN + banElapsed);
+                commandSender.sendMessage(ChatColor.BLUE + "Unban time: " + ChatColor.GREEN + unbanTime);
 
                 return true;
 
             }
 
-
-
         }
-
         return true;
-
-
-
 
     }
 
@@ -211,9 +247,7 @@ public class playerManager implements CommandExecutor {
                 return player.getUniqueId();
             }
         }
-
         return null;
-
     }
 
 
@@ -224,12 +258,8 @@ public class playerManager implements CommandExecutor {
             if(p.toLowerCase().equalsIgnoreCase((w.getName().toLowerCase()))){
                 return true;
             }
-
-
-
-    }
+        }
         return false;
-
     }
 
     boolean worldIsInConfiguredGroup(String worldName){
@@ -237,5 +267,18 @@ public class playerManager implements CommandExecutor {
             return false;
         }
         return Hardcore24.worlds.containsKey(worldName);
+    }
+
+    // Sends a message to the player if they are online, or queues it for later delivery if they are offline.
+    void notifyOrQueuePlayer(UUID playerId, String message){
+        Player target = Hardcore24.plugin.getServer().getPlayer(playerId);
+        if(target != null && target.isOnline()){
+            Hardcore24.pendingPlayerNotifications.remove(playerId);
+            target.sendMessage(message);
+            return;
+        }
+
+        // Coalesce offline notifications by UUID so only latest state is delivered.
+        Hardcore24.pendingPlayerNotifications.put(playerId, message);
     }
 }
